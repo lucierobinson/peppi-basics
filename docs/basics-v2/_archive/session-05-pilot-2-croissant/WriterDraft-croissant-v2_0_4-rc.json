@@ -1,0 +1,958 @@
+{
+  "meta": {
+    "product_name": "croissant",
+    "product_name_original": "croissant",
+    "target_style": "Moderní patisserie",
+    "regime": "B",
+    "regime_rationale": "GS (CIA B&P 2013) existuje s kompletními gramážemi, ale pro domácí realizaci nutné adaptace: Mora 545 horkovzduch místo profesionálního konvektoru (191 → 190 °C), EU 82 % máslo místo ideálního 84 %, lednice místo blast chilleru pro inter-turn chlazení, sezónní omezení pro letní laminaci. Všechny odchylky jsou v manifest[] jako ManifestRow.",
+    "regime_confidence": "high",
+    "card_family_id": "croissant",
+    "generated_at": "2026-04-20T12:00:00Z",
+    "writer_model": "claude-opus-4-7",
+    "writer_version": "2.0.4",
+    "curricular_level": "Intermediate",
+    "estimated_mastery_hours": 18,
+    "falsely_simple_warning": "Croissant vypadá jako 'jen rohlík' ale je to jedna z nejtechnicky náročnějších technik domácí patisserie — vyžaduje 2 dny práce, přesnou kontrolu teploty a 15–20 hodin opakovaného cvičení pro stabilní výsledek.",
+    "is_composite": false,
+    "variant_numbers_from_base_knowledge": true
+  },
+
+  "writer_reasoning": "GS adaptuji z CIA B&P (191 °C / 15 min profi konvektor) na Mora 545 (190 °C / 18–20 min horkovzduch) a z ideálního 84% másla na běžně dostupné EU 82%. Nejdůležitější vědecký princip: duální kypření (kvasná CO2 pro střídu + parní expanze 14–18% vody v másle pro listovitost) — bez obojího se ztratí buď textura, nebo medová struktura. Cílový režim B: GS existuje, ale domácí prostředí vyžaduje dokumentované odchylky v lednici/teplotě. Podmíněně vynechané: žádné — všechny sekce mají vstupní data. Budget profile = Standard (15/5/4/4/true/full) navzdory Intermediate levelu — composite bonus neaplikovatelný (flat produkt). Rubric z WorldSkills WSOS 2024 + CAP Pâtissier integruji jako 5 vrstev do section_0; tasting_protocol 4 checkpointy zapojuju inline do odpovídajících kroků 3A.",
+
+  "section_0": {
+    "rubric_source": "WorldSkills WSOS 2024 — Pâtisserie and Confectionery Skill 35 (Bakery laminated dough) + CAP Pâtissier EP2 viennoiserie dossier",
+    "rubric_source_url": "https://worldskills.org/what/projects/wsos/2024/events/579/skills/1711/",
+    "intro": "Toto jsou kritéria, podle kterých se croissant hodnotí na profesionální úrovni — ve škole, na soutěži, v cukrárně. Projdi si je dřív, než začneš péct: víš, co se po tobě čeká.",
+    "criteria_layers": [
+      {
+        "layer": "visual",
+        "label_cz": "Vizuální",
+        "criteria": [
+          "Rovnoměrné zlatohnědé zabarvení po celém povrchu — bez bledých nebo přepálených míst",
+          "Klasický tvar půlměsíce se symetrií obou rohů a stejnou délkou",
+          "Uniformní velikost a hmotnost u všech kusů z jedné dávky",
+          "Na povrchu viditelné linie vrstev (lamination lines)"
+        ],
+        "measurable_thresholds": [
+          "hmotnost 50–60 g per kus (WorldSkills standard)",
+          "odchylka velikosti ±5 % mezi kusy"
+        ]
+      },
+      {
+        "layer": "structural",
+        "label_cz": "Strukturální",
+        "criteria": [
+          "Medová střída (honeycomb crumb) na průřezu — ne hutná, ne plochá",
+          "Viditelné oddělené vrstvy máslo×těsto na průřezu",
+          "Dutá lehká struktura — croissant lehký pro svou velikost",
+          "Spodní kůrka propečená, ne syrová nebo vlhká"
+        ]
+      },
+      {
+        "layer": "sensory",
+        "label_cz": "Senzorická",
+        "criteria": [
+          "Kůrka křupavá/listová — při skousnutí praskne (shattery exterior)",
+          "Střída pružná, lehce žvýkavá, s máslovou chutí",
+          "Vyvážená sladkost, výrazné máslové aroma bez nadměrné kyselosti",
+          "Žádná syrová chuť ani přílišná kyselost (znak overfermentace)"
+        ]
+      },
+      {
+        "layer": "technical",
+        "label_cz": "Technická",
+        "criteria": [
+          "Správný počet otočení — 27 vrstev viditelných v průřezu (CIA metoda 4+3+3)",
+          "Rovnoměrná tloušťka válené desky před tvarováním (~6 mm)",
+          "Správná délka kynutí — zdvojení objemu před pečením",
+          "Čisté řezy trojúhelníků bez trhaných nebo nerovných okrajů"
+        ]
+      },
+      {
+        "layer": "process",
+        "label_cz": "Procesní",
+        "criteria": [
+          "Mise en place kompletní před zahájením laminace",
+          "Pracovní plocha udržovaná chladná (<20 °C) po celou laminaci",
+          "Chlazení těsta mezi každou obrátkou respektováno (min 30 min)",
+          "Časové zvládnutí celého dvoudenního procesu"
+        ]
+      }
+    ]
+  },
+
+  "block_1": {
+    "section_1a": {
+      "tldr": "Dvoudenní laminované kvasné těsto: 27 vrstev másla × těsta, tvarované do půlměsíce, nakynuté a upečené na listovou křupavou kůrku s medovou střídou.",
+      "identity": {
+        "category": "laminované kvasné těsto (pâte levée feuilletée)",
+        "origin": "Moderní francouzský tvar půlměsíce (croissant au beurre) pochází z Paříže počátku 20. století; technika laminace kvasného těsta byla kodifikována ve francouzské profesionální tradici a dnes je kanonickou součástí viennoiserie curricula.",
+        "family": ["pain au chocolat", "pain aux raisins", "kouign-amann", "cruffin"]
+      }
+    },
+    "section_1b": "**Listová textura vzniká expanzí vody v másle.** Máslo obsahuje 14–18 % vody, která se při pečení okamžitě vypaří na páru. Pára mechanicky odděluje tenké vrstvy těsta, čímž vzniká listovitost. Čím více odlišných vrstev máslo × těsto (CIA metoda 4+3+3 folds = 27 vrstev másla), tím výraznější separace. Pokud se máslo během laminace vsákne do těsta, vrstvy se neoddělí a výsledek je hutný jako chleba. _[robustní empirické pravidlo]_\n\n**Croissant využívá dvojité kypření současně.** Kvasnice produkují CO2 (biologické kypření = medová střída a fermentační aroma), pára z másla tlačí vrstvy (mechanické kypření = listovitá textura). Oba mechanismy jsou nutné zároveň — bez kvasnic chybí střída, bez laminace chybí listovitost. Proto croissant vyžaduje přesné vybalancování fermentace (dost dlouhá pro strukturu, ne tak dlouhá aby se máslo před troubou roztavilo). _[robustní empirické pravidlo]_\n\n**Máslo musí mít při laminaci plasticitu 13–18 °C.** Při nižší teplotě praskne a probodne těsto (brittle fracture), při vyšší se rozpustí do těsta a vrstvy se neoddělí. Tuk v krystalické formě β' je optimální pro laminaci. To je důvod, proč profesionálové pracují v klimatizovaných kuchyních — nad 22 °C je dělání croissantů doma velmi obtížné. _[mechanismus — konsenzus]_",
+    "section_1c": [
+      {
+        "name": "Teplota détrempe při laminaci",
+        "impact": "Vyšší než 18 °C → máslo se vsákne do těsta, žádné vrstvy. Nižší než 4 °C → těsto tuhé a trhá se při válení.",
+        "range": "4–18 °C (ideálně 10–15 °C)"
+      },
+      {
+        "name": "Počet a typ obrátek (tours)",
+        "impact": "CIA metoda (4-fold + 3-fold + 3-fold) = 27 vrstev másla. Příliš mnoho obrátek → vrstvy se slijí. Příliš málo → hrubá textura.",
+        "range": "3–4 celkové obrátky; výsledek 27–81 vrstev másla"
+      },
+      {
+        "name": "Teplota kynutí (proofing)",
+        "impact": "Příliš teplé (>32 °C) → máslo taje před troubou. Příliš studené (<22 °C) → kvasnice pomalé, přes 2–3 h.",
+        "range": "27–30 °C"
+      },
+      {
+        "name": "Obsah tuku v beurrage másle",
+        "impact": "82 % EU minimum funkční. 84 %+ = méně vody → plastičtější máslo, lepší laminace.",
+        "range": "82–84 % tuku"
+      },
+      {
+        "name": "Množství roll-in másla (% mouky)",
+        "impact": "Méně než 50 % → slabá listovitost. Více než 65 % → vrstvy nestabilní, máslo vyteče.",
+        "range": "50–65 % hmotnosti mouky"
+      }
+    ],
+    "section_1d": "Croissant patří do rodiny viennoiserie — kvasných laminovaných pečiv. Sdílí techniku lock-in a obrátek s pâte feuilletée (listové těsto bez droždí), ale přidává kvasnou fermentaci. Je prerekvizitou pro pain au chocolat, pain aux raisins a kouign-amann — jakmile zvládneš croissant, ostatní viennoiseries jsou jen jiné tvarování a plnění."
+  },
+
+  "block_2": {
+    "section_2a": {
+      "ingredients": [
+        {
+          "name": "plnotučné mléko",
+          "name_original": "whole milk",
+          "amount_g": 300,
+          "specification": "pokojová teplota nebo mírně ohřáté (~20 °C)",
+          "role": "tekutina, aktivuje kvasnice, dodává chuť a zlatavou barvu (laktóza)"
+        },
+        {
+          "name": "chlebová mouka",
+          "name_original": "bread flour",
+          "amount_g": 450,
+          "specification": "12–13 % bílkoviny; česká chlebová mouka nebo T65",
+          "role": "struktura, silná lepková síť pro odolnost détrempe při laminaci"
+        },
+        {
+          "name": "instantní suché droždí",
+          "name_original": "instant dry yeast",
+          "amount_g": 4,
+          "specification": "instantní (nevyžaduje předaktivaci v tekutině)",
+          "role": "biologické kypření, fermentační aroma, medová střída"
+        },
+        {
+          "name": "sůl",
+          "name_original": "salt",
+          "amount_g": 11,
+          "specification": "kuchyňská jemná",
+          "role": "chuť, regulace fermentace, posílení lepkové sítě"
+        },
+        {
+          "name": "cukr krystalový",
+          "name_original": "sugar",
+          "amount_g": 44,
+          "specification": "bílý krystalový",
+          "role": "chuť, kvasná živina, Maillardova reakce a karamelizace kůrky"
+        },
+        {
+          "name": "máslo měkké (do těsta)",
+          "name_original": "butter, soft",
+          "amount_g": 44,
+          "specification": "min. 82 % tuku, konzistence studené smetany — beurre en pommade",
+          "role": "plasticita détrempe, tenderness, prevence příliš tuhého těsta"
+        },
+        {
+          "name": "máslo studené (roll-in / beurrage)",
+          "name_original": "butter, cold",
+          "amount_g": 250,
+          "specification": "min. 82 % tuku; ideálně 84 % (Président Extra, Milko Premium) — studené ale ohebné (~14 °C)",
+          "role": "laminace — tvoří vodní páru při pečení → odděluje vrstvy → listová textura"
+        },
+        {
+          "name": "vejce (egg wash)",
+          "name_original": "egg (for egg wash)",
+          "amount_g": 50,
+          "specification": "1 vejce L, přeceděné přes síto po prošlehání s mlékem",
+          "role": "egg wash — zajišťuje zlatohnědé zabarvení přes Maillardovu reakci"
+        },
+        {
+          "name": "mléko (egg wash)",
+          "name_original": "milk (for egg wash)",
+          "amount_g": 15,
+          "specification": "1 lžíce, přidané do vajíčka pro ředění",
+          "role": "egg wash — zředění vejce pro rovnoměrný nátěr"
+        }
+      ]
+    },
+    "section_2b": {
+      "must_have": [
+        {
+          "name": "kuchyňská váha (přesnost na 1 g)",
+          "substitutable": false,
+          "substitution_note": "Odměrky nejsou dostatečně přesné pro laminované těsto. Váha je nezbytná."
+        },
+        {
+          "name": "stojanový mixer s hnětacím hákem (KitchenAid nebo ekvivalent)",
+          "substitutable": true,
+          "substitution_note": "Lze ručně: dřevěná lžíce + 5–8 min intenzivního hnětení. Výsledek stejný, fyzicky náročnější."
+        },
+        {
+          "name": "váleček (těžký rovný, ideálně mramorový nebo nerezový)",
+          "substitutable": true,
+          "substitution_note": "Jakýkoliv pevný váleček; lehký váleček způsobuje nerovnoměrný tlak = nerovnoměrné vrstvy."
+        },
+        {
+          "name": "lednice (2× overnight + 3× ~30 min mezikroky)",
+          "substitutable": false,
+          "substitution_note": "Croissant nelze dělat bez spolehlivého chlazení. Chlazení je kritické mezi každou obrátkou."
+        },
+        {
+          "name": "plech s pečicím papírem nebo silikonovou podložkou",
+          "substitutable": true,
+          "substitution_note": "Perforovaný plech preferovaný pro spodní kůrku; standardní plech s papírem funguje."
+        },
+        {
+          "name": "cukrářský štěteček (pastry brush)",
+          "substitutable": true,
+          "substitution_note": "Prst nebo papírová utěrka jako improvizace; štěteček dá rovnoměrnější egg wash."
+        }
+      ],
+      "nice_to_have": [
+        {
+          "name": "teploměr (instantní nebo infračervený)",
+          "substitutable": true,
+          "substitution_note": "Dotykový test: těsto při laminaci musí být chladné na dotek, ne teplé. Teploměr odstraní nejistotu."
+        },
+        {
+          "name": "bench scraper (plastový nebo nerezový)",
+          "substitutable": true,
+          "substitution_note": "Usnadňuje přenos těsta bez deformace vrstev; nůž nebo stěrka jako náhrada."
+        },
+        {
+          "name": "pravítko (30 cm) pro konzistentní řezy trojúhelníků",
+          "substitutable": true,
+          "substitution_note": "Pro uniformitu kusů; po pár dávkách lze nahradit vizuálním odhadem."
+        }
+      ],
+      "home_substitutions": [
+        {
+          "professional": "Blast chiller / šokér (−30 °C, chlazení za 3 min)",
+          "home_substitute": "Lednice (4 °C, 30–60 min) nebo mrazák (−18 °C, 15–20 min) pro mezikroky a finální chlazení",
+          "tradeoffs": "Výrazně delší celkový čas (2 dny vs. 4–5 h). Riziko, že těsto v mrazáku příliš ztvrdne, pokud se zapomene.",
+          "quality_label": "Plnohodnotná náhrada"
+        },
+        {
+          "professional": "Klimatizovaná kuchyně 18–20 °C po celou dobu laminace",
+          "home_substitute": "Práce brzy ráno v zimě nebo na chladném místě; kratší intervaly práce s rychlým návratem do lednice",
+          "tradeoffs": "V létě při teplotě >24 °C nelze plně nahradit — riziko vsáknutí másla. Sezónní omezení.",
+          "quality_label": "Částečná náhrada"
+        },
+        {
+          "professional": "Proofing box 29 °C s termostaticky řízenou vlhkostí",
+          "home_substitute": "Mora 545 na 30 °C (nejnižší nastavení) bez ventilátoru + miska horké vody na dně trouby pro vlhkost; nebo teplé místo v kuchyni",
+          "tradeoffs": "Trouba bez ventilátoru pro proofing — sledovat teploměrem. Alternativně přes noc v lednici (~12–16 h) pro pomalý proofing.",
+          "quality_label": "Plnohodnotná náhrada"
+        }
+      ],
+      "not_needed": [
+        "Droždí čerstvé (kostka) — instantní suché stačí a je pohodlnější; přepočet 3:1 (instantní ku čerstvé)",
+        "Speciální croissant váleček se značkami — běžný váleček + pravítko funguje stejně"
+      ]
+    },
+    "section_2c": [
+      {
+        "what": "Máslo studené do čtverce 2/3 velikosti détrempe",
+        "how": "250 g studeného másla mezi dva listy pečicího papíru, vyklepej válečkem a vyvál na obdélník cca 20 × 27 cm, okamžitě vrať do lednice",
+        "why": "Studené ale ohebné máslo (~14 °C) = plasticita pro lock-in"
+      },
+      {
+        "what": "Pracovní plocha chladná",
+        "how": "V létě: předem položit mramorovou desku do lednice, nebo pracovat brzy ráno. Teploměrem ověřit <20 °C.",
+        "why": "Teplota pracovní plochy přímo ovlivňuje teplotu másla během válení"
+      },
+      {
+        "what": "Egg wash připravený",
+        "how": "1 vejce + 1 lžíce mléka, prošlehat, přecedit přes síto (bez bílkových kousků)",
+        "why": "Rovnoměrný lesk, žádné spálené kousky bílku"
+      },
+      {
+        "what": "Pravítko nebo šablona trojúhelníku",
+        "how": "Trojúhelník 10 cm základna × 23 cm výška — buď papírová šablona, nebo pravítko + nůž",
+        "why": "Uniformní velikost kusů (WorldSkills ±5 %)"
+      }
+    ],
+    "section_2d": [
+      {
+        "time": "Den 1, večer (~1.5 h aktivní práce)",
+        "action": "Smíchání détrempe, první fermentace 2 h při 24 °C, rozložení na obdélník 30 × 41 cm, zabalení, lednice přes noc. Paralelně vyválení beurrage do čtverce, lednice přes noc."
+      },
+      {
+        "time": "Den 2, dopoledne (~2 h práce + čekání)",
+        "action": "Lock-in beurrage. 4-fold obrátka → 30 min lednice. 3-fold obrátka → 30 min lednice. 3-fold obrátka → 2 h mrazník (nebo přes noc lednice)."
+      },
+      {
+        "time": "Den 2, odpoledne (~1 h práce + proofing)",
+        "action": "Vyválení na 23 × 61 cm, řezy 11 trojúhelníků, tvarování, kynutí 1–1.5 h při 29 °C, 2× egg wash, pečení 18–20 min."
+      }
+    ],
+    "section_2e": {
+      "safe_shortcuts": [
+        {
+          "shortcut": "Poslední chlazení před tvarováním přes noc v lednici místo 2 h v mrazáku",
+          "why_ok_or_not": "Plnohodnotné — pomalé chlazení v lednici (12–16 h) je vlastně lepší pro chuť (pomalá fermentace) a rozložení práce na 2 dny se tím nemění."
+        },
+        {
+          "shortcut": "Proofing v Moře 545 na 30 °C (nejnižší) místo proofing boxu",
+          "why_ok_or_not": "Plnohodnotné — s miskou horké vody na dně trouby pro vlhkost. Sledovat teploměrem aby nepřekročilo 32 °C."
+        }
+      ],
+      "forbidden_shortcuts": [
+        {
+          "shortcut": "Vynechat chlazení mezi obrátkami (laminace bez přestávek)",
+          "why_ok_or_not": "Zakázáno — těsto se ohřeje, máslo se vsákne, vrstvy zmizí. 30 min mezi každou obrátkou je nepodkročitelné."
+        },
+        {
+          "shortcut": "První fermentace v teple (>28 °C) pro urychlení",
+          "why_ok_or_not": "Zakázáno — teplé détrempe rozpustí máslo při lock-in. 24 °C je strop pro první fermentaci."
+        },
+        {
+          "shortcut": "Mikrovlnka pro ohřev upečených croissantů",
+          "why_ok_or_not": "Zakázáno — mikrovlnka zničí listovou strukturu a udělá z croissantu gumovou hmotu. Vždy trouba 160–180 °C."
+        }
+      ],
+      "cr_specific_notes": [
+        "České supermarketové máslo je typicky 82 % tuku (EU minimum) — funkční, ale pro lepší plasticitu hledej 84 %: Président Extra, Milko máslo premium, Bohušovické.",
+        "Chlebová mouka v ČR: Mlejnek Chlebová, Pernerka Chlebová, Mlýn Herber — preferovaná před hladkou pro laminaci.",
+        "V Praze červen–srpen je typická teplota kuchyně 24–28 °C — podmínky pro laminaci nevhodné. Dělej brzy ráno (6–8 h) nebo odlož na podzim/zimu."
+      ],
+      "hard_limits_box": {
+        "title": "Co doma nejde — odložit na školu",
+        "limits": [
+          "Laminace v létě bez klimatizace (kuchyně >24 °C): výsledek bude vždy kompromisní — odložit na školu nebo chladnější sezónu."
+        ]
+      }
+    }
+  },
+
+  "block_3": {
+    "section_3a": [
+      {
+        "step_number": 1,
+        "step_type": "standard",
+        "instruction": "**300 g mléka + 450 g chlebové mouky + 4 g instantního droždí + 11 g soli + 44 g cukru + 44 g měkkého másla** — smíchej v míse stojanového mixeru s hnětacím hákem.",
+        "kitchenaid_speed": 2,
+        "kitchenaid_fallback": "Těsto přestane být lepkavé, tvoří se okolo háku měkká hladká koule.",
+        "duration_minutes": 6,
+        "why": "Vytvoří se lepková síť pro odolnost při laminaci"
+      },
+      {
+        "step_number": 2,
+        "step_type": "tasting",
+        "instruction": "**Kontrola détrempe** — odeber malý kousek, měl by být hladký, mírně tažný, nelepí se na ruce.",
+        "tasting_note": "Hladké, mírně tažné, nelepí se na ruce, tvoří čistou kouli. Pokud je příliš lepivé → přidej 1–2 lžíce mouky a krátce promísit. Příliš tuhé a drobivé → pár kapek mléka.",
+        "why": "Špatná konzistence teď se nedá později napravit"
+      },
+      {
+        "step_number": 3,
+        "step_type": "prep",
+        "instruction": "**Détrempe** — vlož do mísy, zakryj fólií, nech kynout **2 h při 24 °C** do zdvojení objemu.",
+        "duration_minutes": 120,
+        "temperature_c": 24,
+        "sensory_checkpoint": "Objem přibližně zdvojnásobený, povrch mírně napjatý."
+      },
+      {
+        "step_number": 4,
+        "step_type": "prep",
+        "instruction": "**Détrempe** — vyklop na lehce pomoučený vál, rozlož rukama na obdélník **30 × 41 cm**, zabal do fólie, lednice přes noc (min 8 h).",
+        "duration_minutes": 480,
+        "temperature_c": 4,
+        "why": "Dlouhé studené zrání relaxuje lepek a rozvíjí chuť"
+      },
+      {
+        "step_number": 5,
+        "step_type": "prep",
+        "instruction": "**250 g studeného másla** — mezi dva listy pečicího papíru vyvál na čtverec cca **20 × 27 cm** (2/3 velikosti détrempe), lednice přes noc.",
+        "temperature_c": 4,
+        "sensory_checkpoint": "Máslo udrží tvar ploché desky bez prasklin, při ohnutí na 45° se neláme.",
+        "why": "Připravený čtverec másla = rychlé lock-in bez ohřívání"
+      },
+      {
+        "step_number": 6,
+        "step_type": "prep",
+        "instruction": "**Détrempe + beurrage (lock-in)** — na vál polož détrempe, doprostřed polož čtverec másla, přehni všechny 4 okraje přes máslo jako obálku. Okraje pevně utěsni.",
+        "sensory_checkpoint": "Žádné máslo viditelné přes těsto, rohy pevně slepené.",
+        "warning": "Pokud máslo praská, je příliš studené — nech 5 min při pokojové teplotě. Pokud se lepí, 10 min do lednice."
+      },
+      {
+        "step_number": 7,
+        "step_type": "prep",
+        "instruction": "**Těsto** — vyvál na obdélník cca **30 × 60 cm**, proveď **4-fold obrátku** (obě krajní třetiny do středu, pak přeložit napůl), otoč o 90°.",
+        "why": "První fold vytváří základ vrstev 4 × 1 = 4 vrstvy másla"
+      },
+      {
+        "step_number": 8,
+        "step_type": "prep",
+        "instruction": "**Těsto** — zabal do fólie, **30 min v lednici**.",
+        "duration_minutes": 30,
+        "temperature_c": 4,
+        "why": "Chlazení brání vsáknutí másla do těsta"
+      },
+      {
+        "step_number": 9,
+        "step_type": "tasting",
+        "instruction": "**Kontrola vrstev** — odřízni tenký plátek z rohu, zkontroluj průřez.",
+        "tasting_note": "Střídající se bílé (těsto) a žluté (máslo) vrstvy jasně viditelné — minimálně 2 oddělené. Pokud je jen šedavá uniformní barva, máslo se vsáklo — zastav, dej do mrazáku 15 min, pokračuj s velkou opatrností.",
+        "why": "Vizuální ověření funkční laminace po první obrátce"
+      },
+      {
+        "step_number": 10,
+        "step_type": "prep",
+        "instruction": "**Těsto** — vyvál na **30 × 60 cm**, proveď **3-fold obrátku** (klasická trojitá obálka), otoč o 90°, zabal, **30 min lednice**.",
+        "duration_minutes": 30,
+        "why": "4 × 3 = 12 vrstev másla"
+      },
+      {
+        "step_number": 11,
+        "step_type": "prep",
+        "instruction": "**Těsto** — vyvál na **30 × 60 cm**, proveď poslední **3-fold obrátku**, zabal, **2 h mrazník** (nebo přes noc lednice).",
+        "duration_minutes": 120,
+        "why": "12 × 3 = 36 vrstev; finální chlazení stabilizuje máslo před tvarováním"
+      },
+      {
+        "step_number": 12,
+        "step_type": "prep",
+        "instruction": "**Vychlazené těsto** — vyvál na obdélník **23 × 61 cm**, tloušťka cca 6 mm. Řez 11 trojúhelníků (základna 10 cm, výška 23 cm).",
+        "sensory_checkpoint": "Těsto chladné na dotek, nelepí se, vrstvy viditelné na řezu."
+      },
+      {
+        "step_number": 13,
+        "step_type": "prep",
+        "instruction": "**Trojúhelníky** — v základně udělej zářez ~1 cm, sroluj od základny ke špičce, mírně ohni do půlměsíce, polož na plech s pečicím papírem, roh pod sebe.",
+        "warning": "Nesroluj příliš těsně — kynutí potřebuje prostor mezi vrstvami."
+      },
+      {
+        "step_number": 14,
+        "step_type": "standard",
+        "instruction": "**1 vejce (50 g) + 15 g mléka (egg wash)** — prošlehej, přeceď, štětcem natři tenkou vrstvu po celém povrchu croissantu.",
+        "why": "Maillardova reakce = zlatohnědá kůrka"
+      },
+      {
+        "step_number": 15,
+        "step_type": "prep",
+        "instruction": "**Croissanty** — nech kynout **1–1.5 h při 29 °C** (Mora 545 na 30 °C bez ventilátoru s miskou horké vody, nebo teplé místo v kuchyni).",
+        "duration_minutes": 75,
+        "temperature_c": 29,
+        "sensory_checkpoint": "Croissant zdvojnásobil objem, zřetelně se třese (jiggle test); mírný stisk prstem zanechá dolíček, který se pomalu vrátí."
+      },
+      {
+        "step_number": 16,
+        "step_type": "preheat",
+        "instruction": "**Mora 545** — nastav **190 °C horkovzduch**, předehřev **25 min**.",
+        "temperature_c": 190,
+        "temperature_mode": "horkovzduch",
+        "duration_minutes": 25
+      },
+      {
+        "step_number": 17,
+        "step_type": "prep",
+        "instruction": "**Croissanty** — natři druhou vrstvu egg wash, peč **190 °C (horkovzduch) 18–20 min** do výrazně zlatohnědé.",
+        "temperature_c": 190,
+        "temperature_mode": "horkovzduch",
+        "duration_minutes": 19,
+        "sensory_checkpoint": "Výrazně zlatohnědá kůrka, viditelné linie vrstev na povrchu.",
+        "warning": "Neotvírej troubu prvních 10 min — výkyv teploty způsobí propadnutí."
+      },
+      {
+        "step_number": 18,
+        "step_type": "tasting",
+        "instruction": "**Upečené croissanty** — 1–2 min po vytažení zkontroluj.",
+        "tasting_note": "Croissant velmi lehký pro svou velikost; klepnutí na spodek dá dutý zvuk; kůrka při dotyku lehce praskne. Pokud těžký nebo nehluchý → poddopečený, vrať na plech, péct 3–5 min navíc na 180 °C."
+      }
+    ],
+    "section_3b": {
+      "process_signals": "Po smíchání détrempe uvidíš hladké, mírně tažné těsto tvořící čistou kouli okolo háku mixéru. Při lock-in musí být máslo studené, ale ohebné — ohneš čtverec na 45° a nepraskne. Po každé obrátce pod nožem uvidíš na průřezu jasně střídající se bílé a žluté proužky; pokud vidíš jen šedavou uniformní barvu, máslo se vsáklo — krizový signál. Během válení cítíš pod válečkem rovnoměrný odpor bez trhání — pokud se těsto táhne zpět, lepek potřebuje odpočinek v lednici. Během kynutí se croissanty zvednou o dvojnásobek objemu a při pohnutí plechem se zřetelně třesou (jiggle). Při pečení prvních 10 min se vrstvy roztáhnou parou a teprve v druhé polovině se kůrka zbarví do zlatohněda — poznáš to čichově (máslo-karamelové aroma) i zrakově.",
+      "result_profile": "Hotový croissant je lehký pro svou velikost, kůrka praská při skousnutí jako tenký list, střída je medová (honeycomb) s viditelnými máslovými vrstvami. Chuť je máslová, mírně nasládlá, bez kyselosti. Spodní kůrka je propečená a rovnoměrně zbarvená."
+    },
+    "section_3c": [
+      {
+        "symptom": "Žádné vrstvy — střída hutná jako chleba",
+        "cause": "Máslo se vsáklo do těsta při laminaci: těsto bylo příliš teplé nebo práce příliš pomalá bez průběžného chlazení.",
+        "fix": "Příště: nikdy nepracuj s těstem nad 18 °C. Po každé obrátce 30 min do lednice. Pracuj rychle a klidnými tahy bez tlačení.",
+        "when": "immediately_after",
+        "rescue_possible": false,
+        "home_vs_pro": "Doma: klimatizace nebo brzy ráno / Profi: klimatizovaná cukrárna 18 °C"
+      },
+      {
+        "symptom": "Máslo vyteče při pečení a zaleje plech",
+        "cause": "Croissant byl před troubou příliš teplý nebo overproofed — máslo se roztavilo ještě před pečením.",
+        "fix": "Příště: po proofingu dej plech na 10–15 min do lednice pro ztuhnutí másla před pečením. Jiggle test na konci proofingu.",
+        "when": "during_baking_transition",
+        "rescue_possible": false
+      },
+      {
+        "symptom": "Croissant se po upečení zploští nebo propadne",
+        "cause": "Underproofed — kvasnice nestihly vytvořit dostatečnou CO2 strukturu. Nebo trouba otevřena příliš brzy (<10 min).",
+        "fix": "Příště: nespěchej s kynutím, croissant musí zdvojnásobit objem. Jiggle test. Neotvírej troubu prvních 10 min pečení.",
+        "when": "during_baking_transition",
+        "rescue_possible": false
+      },
+      {
+        "symptom": "Kůrka bledá, bez zlatohnědé barvy",
+        "cause": "Nedostatečný egg wash, nebo teplota trouby příliš nízká, nebo krátký čas pečení.",
+        "fix": "Dvě vrstvy egg wash (před proofingem + těsně před troubou). Trouba min 185 °C horkovzduch. Péct do výrazně zlatohnědé, ne jen zlatavé.",
+        "when": "immediately_after",
+        "rescue_possible": true,
+        "home_vs_pro": "Doma: vrátit do trouby 180 °C / 3–5 min / Profi: kontrolovat kalibraci konvektoru"
+      },
+      {
+        "symptom": "Uskladněné croissanty gumové, ztratily křupavost",
+        "cause": "Kondenzace vlhkosti v plastovém obalu nebo uzavřené lednici bez ochrany.",
+        "fix": "Skladuj v papírovém sáčku nebo otevřené nádobě. Před podáváním ohřát 160 °C / 5 min pro obnovení kůrky.",
+        "when": "during_storage",
+        "rescue_possible": true,
+        "home_vs_pro": "Doma: papírový sáček + trouba / Profi: rychlá obrátka, nikdy přes noc"
+      }
+    ],
+    "section_3d": [
+      {
+        "trap": "Letní laminace bez klimatizace",
+        "why_it_fails": "V Praze červen–srpen je typická teplota kuchyně 24–28 °C. Máslo se vsákne během první obrátky, vrstvy zmizí."
+      },
+      {
+        "trap": "Použití hladké mouky místo chlebové",
+        "why_it_fails": "Hladká mouka (10–11 % bílkoviny) nemá dost silnou lepkovou síť pro odolnost při laminaci. Těsto se trhá, máslo probodá."
+      },
+      {
+        "trap": "Zkrácení chlazení mezi obrátkami (<30 min)",
+        "why_it_fails": "Lepek není dostatečně relaxován, těsto se při válení táhne zpět a při tlaku se trhá. Máslo se ohřívá a vsákne."
+      },
+      {
+        "trap": "Mikrovlnný ohřev upečených croissantů",
+        "why_it_fails": "Mikrovlny přímo zničí listovou strukturu — vrstvy se slijí, textura se změní v gumovou. Vždy trouba 160–180 °C."
+      }
+    ]
+  },
+
+  "block_4": {
+    "variants": [
+      {
+        "name": "Čokoládový (pain au chocolat)",
+        "name_original": "pain au chocolat",
+        "description": "Identické těsto, ale tvarované jako obdélník s čokoládovými bâtons (cukrářskými tyčinkami) uvnitř.",
+        "key_difference": "Tvar obdélník (~8 × 12 cm) místo půlměsíce, čokoládové tyčinky jako náplň.",
+        "difficulty_delta": "Stejná náročnost — technika těsta identická, jen jiné tvarování.",
+        "decision_layer": "Když máš hotové těsto na croissanty a chceš část udělat jako čokoládové. Můžeš vyrobit obojí z jedné dávky."
+      },
+      {
+        "name": "Rozinkový závitek (pain aux raisins)",
+        "name_original": "pain aux raisins",
+        "description": "Identické těsto, rozválené na obdélník, potřené crème pâtissière a posypané rozinkami, stočené do ruličky, krájené na kruhové kusy.",
+        "key_difference": "Kruhový tvar, plněné crème pâtissière + rozinky, žádné tvarování půlměsíce.",
+        "difficulty_delta": "Mírně těžší — vyžaduje zvládnutou crème pâtissière navíc. Tvarování ruličky samo o sobě jednodušší.",
+        "decision_layer": "Když už umíš crème pâtissière a chceš sladší verzi k snídani. Dobrá volba pro prodej — déle si drží vzhled než klasický croissant."
+      },
+      {
+        "name": "Bistro (menší formát 40 g)",
+        "name_original": "croissant bistro",
+        "description": "Identická technika, menší kus — základna trojúhelníku užší, kratší výška. Výsledný croissant menší pro kavárenský servis.",
+        "key_difference": "Menší velikost kusu (~40 g vs. 50–60 g standardní). Stejný počet vrstev, ale kratší doba pečení.",
+        "difficulty_delta": "Stejná náročnost techniky, ale tvarování menších kusů vyžaduje větší preciznost.",
+        "decision_layer": "Pro degustační menu nebo kavárenský servis, kde větší croissant je moc."
+      }
+    ]
+  },
+
+  "block_5": {
+    "section_5a": [
+      {
+        "rule": "Pracovní plocha a těsto musí být pod 18 °C po celou dobu laminace.",
+        "why": "Nad 18 °C se máslo vsákne do těsta a vrstvy se neoddělí.",
+        "common_violation": "Začátečníci pracují v létě bez kontroly teploty kuchyně."
+      },
+      {
+        "rule": "Mezi každou obrátkou minimálně 30 min chlazení v lednici.",
+        "why": "Lepek potřebuje relaxovat, máslo zůstat studené.",
+        "common_violation": "Urychlování výroby zkrácením chlazení na 10–15 min."
+      },
+      {
+        "rule": "Dvě vrstvy egg wash — před proofingem a těsně před troubou.",
+        "why": "Zajistí rovnoměrné zlatohnědé zabarvení bez bledých míst.",
+        "common_violation": "Jen jedna tenká vrstva — povrch zůstane nepravidelně zbarvený."
+      },
+      {
+        "rule": "Neotvírej troubu prvních 10 min pečení.",
+        "why": "Výkyv teploty způsobí, že se croissant propadne — struktura není ještě fixovaná.",
+        "common_violation": "Kontrolování, 'jak to jde' v 5. minutě pečení."
+      },
+      {
+        "rule": "Jiggle test před pečením: správně nakynutý croissant se zřetelně třese při pohnutí plechem.",
+        "why": "Vizuální zdvojnásobení je subjektivní; jiggle je spolehlivější.",
+        "common_violation": "Spoléhání jen na 'vypadá nakynutý', což často znamená underproofed."
+      },
+      {
+        "rule": "Každé číslo mimo GS (CIA B&P) = záznam v manifestu.",
+        "why": "Transparentnost adaptací; umožňuje zpětné ověření zdrojů.",
+        "common_violation": "Tichá změna teploty nebo času bez zápisu."
+      }
+    ],
+    "section_5b": [
+      {
+        "myth": "Čím víc obrátek, tím lepší croissant.",
+        "reality": "Nad 4 celkové obrátky (přes 81 vrstev) se vrstvy začnou slévat a struktura se zhorší. CIA standard 3 obrátky (4+3+3 = 27 vrstev) je osvědčený kompromis.",
+        "source": "CIA B&P p.248, FCI Session 7"
+      },
+      {
+        "myth": "Teplejší kynutí (35 °C) = rychlejší a lepší croissant.",
+        "reality": "Nad 32 °C se máslo mezi vrstvami roztaví ještě před troubou a croissant ztratí strukturu. Optimum je 28–30 °C.",
+        "source": "FCI Session 7 TIPS + EVALUATING YOUR SUCCESS"
+      },
+      {
+        "myth": "Margarína funguje stejně dobře jako máslo.",
+        "reality": "Margaríny s emulgátory dávají uniformnější vrstvy, ale chuť je výrazně plošší. Pro croissant au beurre používej pouze máslo ≥82 % tuku — ideálně 84 %.",
+        "source": "Mao et al. 2024 (PMID 38749144); profesionální praxe"
+      }
+    ]
+  },
+
+  "block_6": {
+    "section_6a": {
+      "prose": "Základní dávka dělá ~12 croissantů z 1.1 kg těsta. Pro dvojnásobnou dávku žádné úpravy receptury — jen mixování détrempe +2 min a potřeba více místa v lednici. Poloviční dávka (6 croissantů) je technicky možná, ale prakticky obtížná — malý kus těsta se při válení špatně drží. Doporučení: dělej vždy celou dávku a přebytečné naformované croissanty zmraz.",
+      "table": [
+        {
+          "parameter": "dávka ×2 (24 croissantů)",
+          "change": "mixování +2 min, potřeba 2× více místa v lednici na overnight resting",
+          "risk": "Žádné — laminace se chová stejně, jen pracuj ve 2 zástavkách pokud to přesahuje kapacitu plechů."
+        },
+        {
+          "parameter": "dávka ×0.5 (6 croissantů)",
+          "change": "Pod 300 g mouky = minimum pro funkční détrempe",
+          "risk": "Příliš malý kus těsta se při lock-in špatně utěsní, vrstvy se rozpadnou. Raději udělej celou dávku a zmraz."
+        },
+        {
+          "parameter": "větší série (>4 kg těsta)",
+          "change": "Rozdělit na 2 dávky a pracovat střídavě",
+          "risk": "Kontinuální manipulace ohřívá těsto — při velké sérii bez střídání to bude vždy pod kvalitou."
+        }
+      ]
+    },
+    "section_6b": [
+      {
+        "what": "Syrové détrempe těsto před laminací",
+        "where": "Lednice, těsně zabalené v potravinářské fólii",
+        "how_long": "Max 3 dny",
+        "notes": "Po 3 dnech překysne a ztrácí chuť. Lze zmrazit max 10 dní."
+      },
+      {
+        "what": "Naformované, nekynuté croissanty",
+        "where": "Mrazák (−18 °C) — nejprve zmrazit jednotlivě na plechu, pak do sáčku",
+        "how_long": "Max 1 měsíc",
+        "notes": "Rozmrazit přes noc v lednici, pak nakynout 2–3 h při pokojové teplotě před pečením."
+      },
+      {
+        "what": "Upečené čerstvé croissanty",
+        "where": "Pokojová teplota, papírový sáček nebo otevřená nádoba",
+        "how_long": "Nejlépe do 4–6 hodin; max 1 den",
+        "notes": "NIKDY plastový uzavřený sáček — kondenzace → gumová textura. Ohřát 160 °C / 5 min pro oživení křupavosti."
+      },
+      {
+        "what": "Upečené zmrazené croissanty",
+        "where": "Mrazák (−18 °C), individuálně balené v alobalu",
+        "how_long": "Max 3 týdny",
+        "notes": "Ohřát přímo z mrazáku: 180 °C / 8–10 min. Mikrovlnka zničí vrstvy — nikdy."
+      }
+    ],
+    "section_6c": "Pro malou cukrárnu (10–20 croissantů denně): dělej těsto v úterý, peč středu–pátek + sobotu ráno. V neděli–pondělí nech lednici odpočinout. Pro rodinný provoz (jedna dávka týdně): pátek večer détrempe + beurrage, sobota odpoledne laminace, neděle ráno tvarování + pečení k snídani."
+  },
+
+  "block_7": {
+    "prerequisites": [
+      {
+        "technique": "pâte feuilletée (laminace: lock-in, obrátky, chlazení mezi obrátkami)",
+        "strength": "hard",
+        "rationale": "Croissant sdílí techniku encasement + turns s feuilletée; bez zvládnuté feuilletée nebudeš rozumět, proč chlazení = základ, ne volitelný krok.",
+        "display_label": "NEZBYTNÉ: pâte feuilletée"
+      },
+      {
+        "technique": "kvasové těsto (brioche nebo pain de mie — základy fermentace)",
+        "strength": "soft",
+        "rationale": "Porozumění fermentaci (kdy je těsto hotové, kontrola kynutí) výrazně usnadňuje proofing croissantů; ne blokující, ale zkracuje learning curve.",
+        "display_label": "Doporučeno: brioche nebo pain de mie"
+      }
+    ],
+    "estimated_mastery_hours": 18,
+    "unlocks": [
+      "pain au chocolat",
+      "pain aux raisins",
+      "kouign-amann",
+      "Danish pastry / viennoiseries danoises",
+      "cruffin",
+      "gâteau de voyage feuilleté"
+    ],
+    "attempt_1_focus": "Projít celý 2denní proces se šablonou — sleduj čas, teploty, konzistenci na každém kroku. Výsledek se nemusí povést. Cíl: pochopit rytmus.",
+    "attempt_3_focus": "Soustředit se na laminaci — kontrola teploty détrempe před každou obrátkou, čisté obrátky bez trhání, viditelné vrstvy na průřezu.",
+    "attempt_5_focus": "Uniformita kusů (hmotnost ±5 %), konzistentní tvar půlměsíce, správné zlatohnědé zabarvení. Začni pracovat na rychlosti bez ztráty kvality.",
+    "metrics": [
+      "Hmotnost kusů v rozmezí 50–60 g s odchylkou ±5 %",
+      "Viditelné 3 a více vrstev másla na průřezu",
+      "Medová střída bez hutných míst",
+      "Kůrka praská při skousnutí (shattery exterior)"
+    ],
+    "training_targets": [
+      {
+        "target": "Máslo probodá těsto při válení (butter breakthrough)",
+        "success_criterion": "Před lock-in testuješ ohebnost másla: ohne se na 45° bez prasknutí. Při válení pracuješ rovnoměrnými tahy bez tlačení.",
+        "practice_tip": "Nejdřív cvič samotný lock-in 3× za sebou s cvičným těstem bez droždí (tzv. 'dry laminace'). Pak teprve kvasné."
+      },
+      {
+        "target": "Žádné vrstvy — střída hutná jako chleba",
+        "success_criterion": "Na průřezu po první obrátce jsou vidět 2+ oddělené bílo-žluté vrstvy. Těsto během celé laminace <18 °C.",
+        "practice_tip": "Měř teplotu těsta teploměrem před každou obrátkou. Pokud přes 16 °C → ihned do lednice, nezačínat obrátku."
+      }
+    ]
+  },
+
+  "technology_box": {
+    "type": "generic_oven",
+    "mode": "horkovzduch",
+    "temp_c": 190,
+    "preheat_minutes": 25,
+    "steam_bake": {
+      "relevant": false,
+      "note": "SteamBake nevhodný — pára by ztlumila oddělování vrstev a tvorbu listové textury."
+    },
+    "drying_phase": {
+      "applicable": false
+    },
+    "source_url": null
+  },
+
+  "what_if_box": [
+    {
+      "scenario": "Máslo probodá těsto při prvním válení",
+      "diagnosis": "Beurrage je příliš studené a tuhé — praskne místo deformace. Nebo naopak příliš teplé a kluzké.",
+      "action": "Pokud praská: 5 min při pokojové teplotě. Pokud se lepí: 10 min do lednice. Před lock-in zkus ohyb na 45°.",
+      "prevention": "Před lock-in otestuj ohebnost: máslo musí se ohnout na 45° bez prasknutí."
+    },
+    {
+      "scenario": "Détrempe je po smíchání příliš lepivé nebo příliš tuhé",
+      "diagnosis": "Hydratace mimo optimum — může být vlhkost mouky, teplota mléka, nebo přesnost vážení.",
+      "action": "Příliš lepivé → přidej 1–2 lžíce mouky a krátce promísit. Příliš tuhé a drobivé → pár kapek mléka.",
+      "prevention": "Pracuj s pokojovou teplotou mléka (~20 °C). Váha na 1 g. Česká chlebová mouka má konzistentnější výsledky než směsi."
+    },
+    {
+      "scenario": "Po první obrátce nevidíš vrstvy na průřezu (jen šedavá uniformní barva)",
+      "diagnosis": "Máslo se vsáklo do těsta — pracovní plocha příliš teplá nebo válení trvalo příliš dlouho.",
+      "action": "Zastav, dej těsto do mrazáku na 15 min, pokračuj s velkou opatrností. Další obrátky dělej maximálně rychle.",
+      "prevention": "Teploměrem ověř pracovní plochu <20 °C před lock-in. V létě brzy ráno nebo odložit na chladnější sezónu."
+    },
+    {
+      "scenario": "Těsto se při válení táhne zpět a nelze ho rozválet",
+      "diagnosis": "Lepek není dostatečně relaxován — vynechán nebo zkrácen odpočinek v lednici mezi obrátkami.",
+      "action": "Polož válec, dej těsto zpět do lednice na 30 min. Nikdy neválej silou — vrstvy by se roztrhly.",
+      "prevention": "Dodrž minimálně 30 min chlazení v lednici mezi každou obrátkou. Nikdy neválej silou."
+    },
+    {
+      "scenario": "Kuchyň je v létě nad 24 °C a nemám klimatizaci",
+      "diagnosis": "Podmínky pro laminaci nevyhovující — máslo se vždy vsákne nezávisle na tom, jak rychle pracuješ.",
+      "action": "Odlož projekt na chladnější den (podzim/zima) nebo zkus brzy ráno (6–8 h) s předchlazenou mramorovou deskou v lednici.",
+      "prevention": "Plánuj croissanty sezónně. V létě dělej projekty, které teplotu tolerují (choux, makronky)."
+    }
+  ],
+
+  "glossary": [
+    {
+      "term_original": "détrempe",
+      "term_czech": "základní těsto",
+      "definition": "Kvasné těsto z mouky, tekutiny, soli, cukru a malého množství másla, do kterého se při lock-in vloží beurrage. Základní 'obal' pro laminaci."
+    },
+    {
+      "term_original": "beurrage",
+      "term_czech": "máslový plát",
+      "definition": "Studený plochý čtverec másla (v CIA B&P 2/3 velikosti détrempe), který se vkládá do těsta při lock-in. Tvoří vrstvy, které při pečení oddělí pára."
+    },
+    {
+      "term_original": "lock-in",
+      "term_czech": "zatavení másla",
+      "definition": "Moment, kdy se beurrage zabalí do détrempe jako obálka — všechny čtyři strany se přehnou přes máslo a utěsní okraje."
+    },
+    {
+      "term_original": "tour / fold",
+      "term_czech": "obrátka",
+      "definition": "Jedno vyválení + přeložení + otočení těsta o 90°. CIA používá 3 obrátky (4-fold + 3-fold + 3-fold = 27 vrstev másla)."
+    },
+    {
+      "term_original": "4-fold / 3-fold",
+      "term_czech": "čtverný / trojný fold",
+      "definition": "4-fold: obě krajní třetiny do středu, pak přeložit napůl. 3-fold: klasická trojitá obálka (jedna třetina přes druhou, třetí přes obojí)."
+    },
+    {
+      "term_original": "viennoiserie",
+      "term_czech": "kvasové pečivo",
+      "definition": "Kategorie francouzského pečiva mezi chlebem a patisserie — kvasná laminovaná těsta (croissant, pain au chocolat, kouign-amann) a bohatá kvasná těsta (brioche)."
+    },
+    {
+      "term_original": "egg wash",
+      "term_czech": "vajíčkový nátěr",
+      "definition": "Vejce rozšlehané s trochou mléka nebo vody, nanášené štětcem na povrch pečiva před pečením. Zajišťuje zlatohnědé zabarvení přes Maillardovu reakci."
+    },
+    {
+      "term_original": "proofing",
+      "term_czech": "finální kynutí",
+      "definition": "Druhé kynutí po tvarování — kvasnice tvoří CO2, která vytváří medovou strukturu. U croissantu 1–1.5 h při 29 °C."
+    },
+    {
+      "term_original": "jiggle test",
+      "term_czech": "třesný test",
+      "definition": "Test správnosti proofingu — plechem lehce pohneš a croissant by se měl zřetelně třást. Spolehlivější než vizuální hodnocení objemu."
+    },
+    {
+      "term_original": "honeycomb crumb",
+      "term_czech": "medová střída",
+      "definition": "Struktura vnitřku croissantu připomínající plástev — oddělené máslové vrstvy s otevřenými buňkami. Hodnotící kritérium WorldSkills."
+    }
+  ],
+
+  "manifest": [
+    {
+      "block_id": "technology_box",
+      "claim": "Teplota pečení 190 °C (horkovzduch)",
+      "source": "CIA B&P p.744 (191 °C profesionální konvektor) adaptováno pro Mora 545 horkovzduch",
+      "confidence": "adaptováno",
+      "note": "Zaokrouhleno z 191 °C na 190 °C pro domácí troubu. Rozdíl 1 °C je v praxi zanedbatelný, ale zarovnává s běžnými nastaveními Mora 545."
+    },
+    {
+      "block_id": "technology_box",
+      "claim": "Doba pečení 18–20 min",
+      "source": "CIA B&P p.744 (~15 min) + home baker průměr 18–22 min, confidence_matrix recommended_value",
+      "confidence": "empirické",
+      "note": "Domácí horkovzduch potřebuje o 3–5 min více než profesionální konvektor kvůli nižšímu nucenému proudění vzduchu."
+    },
+    {
+      "block_id": "3A",
+      "claim": "Předehřev trouby 25 min",
+      "source": "Mora 545 typický čas pro stabilizaci 190 °C (žádný profesionální zdroj)",
+      "confidence": "empirické",
+      "note": "F1 brief uvádí preheat_minutes: 25 pro mora_545. verified: false → generic_oven použit."
+    },
+    {
+      "block_id": "2A",
+      "claim": "Máslo 82 % tuku (EU minimum) místo ideálních 84 %",
+      "source": "home_constraints.cr_specific — české supermarketové máslo",
+      "confidence": "adaptováno",
+      "note": "GS předpokládá profesionální máslo 84 %+. Doporučení vyhledat Président Extra, Milko Premium, Bohušovické."
+    },
+    {
+      "block_id": "2B",
+      "claim": "Lednice jako náhrada blast chilleru pro inter-turn chlazení (30 min místo 3 min)",
+      "source": "home_constraints.home_substitutions[0]",
+      "confidence": "adaptováno",
+      "note": "Prodlužuje celkový proces z ~5 h na 2 dny. Kvalitativní náhrada = plnohodnotná."
+    },
+    {
+      "block_id": "2B",
+      "claim": "Mora 545 na 30 °C (bez ventilátoru) jako proofing box",
+      "source": "home_constraints.home_substitutions[2]",
+      "confidence": "adaptováno",
+      "note": "Mora 545 nemá kalibrovanou teplotu 29 °C — nejnižší je 30 °C. S miskou horké vody pro vlhkost."
+    },
+    {
+      "block_id": "2E",
+      "claim": "Letní laminace bez klimatizace → odložit",
+      "source": "home_constraints.hard_limits",
+      "confidence": "adaptováno",
+      "note": "Kategoriální limit — v Praze červen–srpen je kuchyňská teplota 24–28 °C mimo laminační rozsah (<18 °C)."
+    },
+    {
+      "block_id": "2A",
+      "claim": "Egg wash: 1 vejce (50 g) + 1 lžíce mléka (15 g)",
+      "source": "CIA B&P method_summary '2× potřít vejcem' (gramáže Writer-derived z standardní patisserie praxe)",
+      "confidence": "adaptováno",
+      "note": "F1 GS method zmiňuje egg wash, ale ingredient_list ho neobsahuje. Writer doplnil do 2A s domácími gramážemi, aby splnil H4 (2A ↔ 3A). Gramáže 1 vejce L = ~50 g + 15 g mléka (1 lžíce) jsou standardní profesionální praxe — nejsou v F1 confidence_matrix, ale v 3A step 14 instrukce jsou ingredient-style gramáže."
+    }
+  ],
+
+  "line_card_lite": [
+    "1. **300 g mléka (20 °C) + 450 g chlebové mouky + 4 g droždí + 11 g soli + 44 g cukru + 44 g měkkého másla** — mixér hák, 6 min rychlost 2, hladká koule.",
+    "2. **Détrempe** — kynout 2 h při 24 °C do zdvojení, rozložit 30 × 41 cm, lednice přes noc.",
+    "3. **250 g studeného másla** — mezi papíry vyvál 20 × 27 cm, lednice přes noc.",
+    "4. **Lock-in** — obálka, 4-fold, 30 min lednice.",
+    "5. **3-fold → 30 min lednice → 3-fold → 2 h mrazník.**",
+    "6. **Vyvál 23 × 61 cm** — 11 trojúhelníků (10 × 23 cm), sroluj do půlměsíce.",
+    "7. **Egg wash (1 vejce + 1 lžíce mléka)** — první vrstva před proofingem.",
+    "8. **Proofing 1–1.5 h při 29 °C** — jiggle test + zdvojení objemu.",
+    "9. **Předehřev 25 min na 190 °C horkovzduch**, druhá vrstva egg wash.",
+    "10. **Peč 18–20 min na 190 °C** do výrazně zlatohnědé, neotvírat troubu prvních 10 min."
+  ],
+
+  "pre_delivery_report": [
+    {
+      "check": "F1 input integrity (H14, pre-check)",
+      "result": "OK"
+    },
+    {
+      "check": "Štítky v 1B",
+      "result": "OK"
+    },
+    {
+      "check": "Gramáže v 3A (HARD protějšek G1)",
+      "result": "OK"
+    },
+    {
+      "check": "2A ↔ 3A (HARD protějšek G2)",
+      "result": "OK"
+    },
+    {
+      "check": "Manifest pokrytí",
+      "result": "OK"
+    },
+    {
+      "check": "Režimová poctivost (M1)",
+      "result": "OK"
+    },
+    {
+      "check": "Section_0 kompletnost (H11)",
+      "result": "OK"
+    },
+    {
+      "check": "Tasting integrace (S8; SOFT protějšek G4)",
+      "result": "OK",
+      "description": "4 tasting checkpointů in, 4 placed: #1 (détrempe) → Step 2 tasting_note + what_if_box scenario 2; #2 (lock-in vrstvy) → Step 9 tasting_note + what_if_box scenario 3; #3 (proofing) → Step 15 sensory_checkpoint; #4 (post-bake) → Step 18 tasting_note. Každý checkpoint má alespoň jeden domov, žádný vynechán."
+    },
+    {
+      "check": "FailureMode fidelity A — count (H10; HARD protějšek G3)",
+      "result": "OK",
+      "description": "7 failure modes in, 7 placed: 2× during_process → what_if_box (butter breakthrough + těsto se táhne zpět), 5× ostatní → section_3c (immediately_after + during_baking_transition + during_storage). Enum mismatch gate G3 vyřešen waiverem — viz Waiver declaration. what_if_box obsahuje navíc 3 scénáře odvozené z tasting_protocol.what_if_wrong (hydratace détrempe, chybějící vrstvy, klimatická nevhodnost), celkem 5 what_if branches."
+    },
+    {
+      "check": "FailureMode fidelity B — content (H10)",
+      "result": "OK",
+      "description": "Všechny failure modes zachovaly symptom + cause + fix. Rescue_possible a home_vs_pro doplněny Writerem z kontextu (F1 nedodal). during_baking_transition a during_storage jsou validní hodnoty TroubleshootRow.when enum (schema p.660)."
+    },
+    {
+      "check": "Block_7 rozšíření (H12, H13)",
+      "result": "OK"
+    },
+    {
+      "check": "Home adaptation render (S9, S11)",
+      "result": "OK"
+    },
+    {
+      "check": "Variant number provenance (H15)",
+      "result": "ISSUE",
+      "location": "block_4.variants[2] (Bistro)",
+      "description": "F1 ResearchBrief NEMÁ sekci variants[] — všechny 3 varianty Writer odvodil z sister_card_candidates[] a base knowledge. Proto meta.variant_numbers_from_base_knowledge: true. Dotčené varianty: (1) Čokoládový — description obsahuje '~8 × 12 cm' (tvar obdélník), base knowledge z pain au chocolat tradition. (2) Bistro — description obsahuje '~40 g' (vs. 50–60 g standard), base knowledge z kavárenského servisu. Rationale pro base knowledge (ne Option A kvalitativní próza): varianty jsou konkrétní produkty s etablovanými parametry v profesionální praxi, kvalitativní próza by ztratila pedagogickou informativnost (Josefina potřebuje vědět ~40 g pro bistro vs. standard). Rozinkový závitek: žádná konkrétní čísla, čistá Option A. Doporučení pro F1 v2.2.2+: dodávat variants[] s per-variant numerics, pokud jsou v GS source."
+    },
+    {
+      "check": "Line-card lite existence + rozsah + formát (P1.3)",
+      "result": "OK",
+      "description": "10 stringů (v rozsahu 8–10). Každý string obsahuje gramáž NEBO checkpoint signál (teplota/čas). Žádné pedagogické vysvětlení."
+    }
+  ],
+
+  "omitted_sections": []
+}
