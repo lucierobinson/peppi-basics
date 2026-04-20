@@ -1,88 +1,145 @@
-# Comet Skills pro Peppi Basics review panel
+# Comet Dovednosti (Skills) pro Peppi Basics review panel
 
-> **Poznámka (2026-04-20):** Perplexity přejmenoval "Shortcuts" na "Skills" (Dovednosti).
-> V Comet UI: Settings → Skills (nebo `/account/skills` na perplexity.ai).
-> Tato složka obsahuje skills ve dvou formátech — viz níže.
+> **Aktualizováno 2026-04-20 — oprava problému s Computer agentem**
 
 ---
 
-## Dva formáty
+## Co je správná funkce pro tyhle skripty?
 
-### Formát A — SKILL.md (doporučený, nový)
+**Perplexity Skills (Dovednosti)** — to je správná funkce. Stránka `/account/shortcuts`
+zobrazuje: _„Zkratky jsou nyní dovednosti"_ a přesměruje na `/account/skills`.
+Shortcuts byly přejmenovány na Skills, jde o tutéž funkci.
 
-Každý soubor `skill-*.md` v této složce je platný `SKILL.md` soubor s YAML frontmatter.
-Nahraj přímo do Comet: **Settings → Skills → Create skill → Upload a skill**.
-Drag & drop `.md` soubor.
+Skills instaluj na: **`perplexity.ai/account/skills`**
 
-**Jak napsat skill name jako trigger:** Pokud jsi pojmenoval skill `peppi-panel`,
-napíšeš v Comet search: `peppi-panel` nebo popíšeš úkol přirozeně.
-Varianta `/peppi-panel` funguje jako přímý trigger v Comet search baru.
+---
 
-**Vstupní proměnná:** Skills nemají explicitní `{input}` placeholder — produkt-verzi
-napíšeš ZA jméno skillu:
+## Proč `peppi-panel example-v0_1_0` vrátilo „Insufficient credits"?
+
+Perplexity AI automaticky rozhoduje, zda skill spustit jako:
+- **Normální Perplexity thread** → zdarma (Pro plán)
+- **Computer agent** → platí se kredity
+
+Rozhodnutí závisí na obsahu skill promptu. Tři ze 8 původních skillů obsahovaly
+frázování popisující browser automation:
+
+| Skill | Problematická fráze | Výsledek |
+|-------|---------------------|---------|
+| `peppi-panel` | _"Open all 7 tabs... Poll all 7 tabs every 60 seconds..."_ | → Computer (placené) |
+| `peppi-review-gemini-direct` | _"You are a Comet Assistant performing browser automation..."_ | → Computer (placené) |
+| `peppi-review-grok-direct` | _"Open a new browser tab and navigate to grok.com..."_ | → Computer (placené) |
+
+Ostatních 5 skillů (01 Gemini Perp, 03 Sonnet, 04 GPT, 05 Nemotron, 06 Sonar DR)
+popis browser automation **neobsahují** → spouštějí se jako normální Perplexity thread → **zdarma**.
+
+---
+
+## Rychlý start (po přeinstalaci)
+
+### 5 Perplexity threadů (zdarma):
+```
+peppi-review-gemini-perp croissant-v2_0_5
+peppi-review-sonnet-perp croissant-v2_0_5
+peppi-review-gpt-perp croissant-v2_0_5
+peppi-review-nemotron-perp croissant-v2_0_5
+peppi-review-sonar-dr-perp croissant-v2_0_5
+```
+
+### Master koordinátor (zdarma — nová verze):
 ```
 peppi-panel croissant-v2_0_5
 ```
-→ Comet AI skill dostane jako kontext: celý prompt + `croissant-v2_0_5` na konci.
-Prompty jsou proto psány tak, aby ENDING tvoří "The product-version slug:".
+→ Validuje package + vytiskne 7 příkazů. Robinson je spustí ručně.
 
-### Formát B — Manuální copy-paste (fallback)
-
-Každý soubor obsahuje i sekci "Prompt template" — čistý text k přímému vložení
-do Comet search baru, bez SKILL.md workflow.
-
----
-
-## Instalace SKILL.md (5 minut jednorázově)
-
-1. Otevři Comet browser → **Settings → Skills → Create skill → Upload a skill**
-2. Pro každý soubor `skill-0*.md` a `skill-MASTER*.md` v této složce:
-   - Drag & drop soubor do upload area
-   - Ověř, že se zobrazí `name` a `description` ze YAML frontmatter
-   - Potvrď
-3. Ověř, že skills jsou v sekci "My Skills"
-
----
-
-## Seznam skills
-
-| Soubor | Skill name | Účel |
-|--------|-----------|------|
-| `skill-01-gemini-perplexity.md` | `peppi-review-gemini-perp` | Gemini 3.1 Pro Thinking + DR v Perplexity |
-| `skill-02-gemini-direct.md` | `peppi-review-gemini-direct` | Gemini 3.1 Pro napřímo v gemini.google.com |
-| `skill-03-sonnet-perplexity.md` | `peppi-review-sonnet-perp` | Claude Sonnet 4.6 v Perplexity |
-| `skill-04-gpt-perplexity.md` | `peppi-review-gpt-perp` | GPT-5.4 v Perplexity |
-| `skill-05-nemotron-perplexity.md` | `peppi-review-nemotron-perp` | Nemotron 3 Super (single-response variant) |
-| `skill-06-sonar-dr-perplexity.md` | `peppi-review-sonar-dr-perp` | Sonar Deep Research v Perplexity |
-| `skill-07-grok-direct.md` | `peppi-review-grok-direct` | Grok napřímo v grok.com |
-| `skill-MASTER-peppi-panel.md` | `peppi-panel` | **Master orchestrátor** — všech 7 + Collector |
-
----
-
-## Denní použití (po instalaci)
-
+### 2 manuální recenzenti:
 ```
-peppi-panel croissant-v2_0_5
+peppi-review-gemini-direct croissant-v2_0_5   ← vygeneruje prompt k vložení do gemini.google.com
+peppi-review-grok-direct croissant-v2_0_5     ← vygeneruje prompt k vložení do grok.com
 ```
 
-nebo přirozeně: `"spusť peppi panel pro croissant-v2_0_5"`
+---
 
-Robinson jde dělat něco jiného. Za 20–40 minut notifikace "Panel complete".
+## Dva sety souborů v této složce
+
+### `shortcuts-v2/` — **OPRAVENÉ verze (použij tyto)**
+
+8 souborů s opravenými prompty. 3 klíčové změny:
+- `skill-MASTER-peppi-panel.md` — odstraněna tab automation, přidán launch guide
+- `skill-02-gemini-direct.md` — odstraněn "browser automation" jazyk, generuje copy-paste prompt
+- `skill-07-grok-direct.md` — stejné jako výše pro grok.com
+
+### `skill-*.md` (kořen složky) — **DEPRECATED verze**
+
+Původní soubory. Tři z nich (MASTER, 02, 07) obsahují browser automation jazyk
+a spustí Computer agent (placené). Označeny deprecated hlavičkou.
+Ponechány pro referenci.
 
 ---
 
-## Testing
+## Instalace opravených skillů (jednorázově, ~10 minut)
 
-Po instalaci spusť:
+### Krok 1 — Odinstaluj 3 problematické staré skilly
+
+1. Otevři `perplexity.ai/account/skills`
+2. Najdi `peppi-panel` → Akce dovednosti → Smazat
+3. Najdi `peppi-review-gemini-direct` → Akce dovednosti → Smazat
+4. Najdi `peppi-review-grok-direct` → Akce dovednosti → Smazat
+5. Ostatní 5 peppi skillů **NEmaž** — fungují správně
+
+### Krok 2 — Nainstaluj opravené verze z `shortcuts-v2/`
+
+Pro každý z těchto 3 souborů:
+- `shortcuts-v2/skill-MASTER-peppi-panel.md`
+- `shortcuts-v2/skill-02-gemini-direct.md`
+- `shortcuts-v2/skill-07-grok-direct.md`
+
+Postup:
+1. `perplexity.ai/account/skills` → **Vytvořit dovednost**
+2. Drag & drop `.md` souboru nebo vložení obsahu
+3. Ověř správné `name` a `description` z YAML frontmatter
+4. Uložit
+
+### Krok 3 — Otestuj
+
 ```
 peppi-panel example-v0_1_0
 ```
-Ověř: 7 GitHub Issues s labelem `review-submission` v `lucierobinson/peppi-basics`.
+
+Očekávaný výsledek: Perplexity thread (NE Computer agent), validace → 7 příkazů.
+
+---
+
+## Troubleshooting
+
+### Stále "Insufficient credits"?
+
+1. Používáš soubor z `shortcuts-v2/` (ne kořenový `skill-*.md`)?
+2. Zobrazuje se v `/account/skills` správný description (bez "tab automation" frází)?
+3. Zkus skill smazat a přidat znovu.
+
+### Jak zjistit, jestli skill spustil Computer nebo normální thread?
+
+Comet zobrazí `Computer` label v aktivní session. Normální thread žádný label nemá.
+
+---
+
+## Kompletní seznam dovedností
+
+| Soubor v `shortcuts-v2/` | Skill name | Typ | Stav |
+|--------------------------|------------|-----|------|
+| `skill-01-gemini-perplexity.md` | `peppi-review-gemini-perp` | Perplexity thread | ✅ funguje |
+| `skill-02-gemini-direct.md` | `peppi-review-gemini-direct` | Generuje manuální prompt | ✅ opraveno |
+| `skill-03-sonnet-perplexity.md` | `peppi-review-sonnet-perp` | Perplexity thread | ✅ funguje |
+| `skill-04-gpt-perplexity.md` | `peppi-review-gpt-perp` | Perplexity thread | ✅ funguje |
+| `skill-05-nemotron-perplexity.md` | `peppi-review-nemotron-perp` | Perplexity thread | ✅ funguje |
+| `skill-06-sonar-dr-perplexity.md` | `peppi-review-sonar-dr-perp` | Perplexity thread | ✅ funguje |
+| `skill-07-grok-direct.md` | `peppi-review-grok-direct` | Generuje manuální prompt | ✅ opraveno |
+| `skill-MASTER-peppi-panel.md` | `peppi-panel` | Koordinátor + launch guide | ✅ opraveno |
 
 ---
 
 ## Přihlášení (předpoklady)
 
-- [ ] perplexity.ai / Comet (Pro plan)
-- [ ] gemini.google.com (Google account)
-- [ ] grok.com (X account)
+- [x] perplexity.ai / Comet (Pro plán)
+- [ ] gemini.google.com (Google account) — pro reviewer #2
+- [ ] grok.com (X account) — pro reviewer #7

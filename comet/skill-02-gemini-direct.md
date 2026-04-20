@@ -1,3 +1,9 @@
+> **DEPRECATED — TRIGGERS COMPUTER AGENT (PAID)**
+> Prompt říká "You are a Comet Assistant performing browser automation. Open a new browser tab..." —
+> Perplexity tento jazyk vyhodnotí jako Computer task a požaduje kredity.
+> **Použij místo toho: `shortcuts-v2/skill-02-gemini-direct.md`**
+> Opravená verze generuje copy-paste prompt pro gemini.google.com bez browser automation.
+
 ---
 name: peppi-review-gemini-direct
 description: Run a Peppi Basics culinary card review using Gemini 3.1 Pro directly at gemini.google.com (different flavor than Perplexity-routed Gemini). Use when running the Gemini Direct reviewer in the Peppi panel. Trigger with "peppi-review-gemini-direct <product>-v<version>".

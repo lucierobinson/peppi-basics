@@ -8,10 +8,14 @@ Tento dokument popisuje, jak spustit review session pro novou verzi karty.
 
 ```
 Step 1 (Claude Code)  → karta vygenerována, zabalena do review-packages/
-Step 2 (Robinson)     → /peppi-panel <slug> v Comet → 7 tabů odpáleno
-Step 3 (Comet)        → reviews sesbírány, 7 GitHub Issues vytvořeno
-Step 4 (Claude.ai)    → triage, patch prompt pro další verzi
+Step 2 (Robinson)     → peppi-panel <slug> v Comet → validace + 7 příkazů k spuštění
+Step 3 (Robinson)     → spustí 5 Perplexity threadů + 2 manuální (Gemini Direct, Grok)
+Step 4 (Robinson)     → zkopíruje výstupy do 7 GitHub Issues
+Step 5 (Claude.ai)    → triage, patch prompt pro další verzi
 ```
+
+> **Instalace skillů:** viz [`comet/README.md`](comet/README.md) — zejm. sekci
+> „Instalace opravených skillů". Použij soubory z `comet/shortcuts-v2/`.
 
 ---
 
@@ -28,36 +32,34 @@ Claude Code provede F0→F4 chain pro nový produkt. Po dokončení:
 
 Skript vytvoří `review-packages/croissant-v2_0_5/` na základě `_template/`, commitne a pushne.
 
-Poté Claude Code oznámí Robinsonovi: **"Balíček připraven. V Comet napiš: `/peppi-panel croissant-v2_0_5`"**
+Poté Claude Code oznámí Robinsonovi: **"Balíček připraven. V Comet napiš: `peppi-panel croissant-v2_0_5`"**
 
 ---
 
-## Step 2 — Spuštění review panelu (Robinson v Comet, ~30 sekund)
+## Step 2 — Spuštění review panelu (Robinson v Comet, ~2 minuty)
 
 1. Otevři Comet
 2. Do search bar napiš:
    ```
-   /peppi-panel croissant-v2_0_5
+   peppi-panel croissant-v2_0_5
    ```
 3. Stiskni Enter
-4. Comet otevře 7 reviewerských tabů a spustí je
+4. Skill validuje balíček a vytiskne seznam 7 příkazů
 
-**Robinson jde dělat něco jiného — 15–30 minut.**
+**Pak spusť každý příkaz v nové Perplexity konverzaci (5× Perplexity + 2× ruční).**
 
 ---
 
-## Step 3 — Collector (Comet Assistant automaticky)
+## Step 3 — Sbírání výsledků (Robinson ručně, ~5 minut po dokončení)
 
-Master shortcut `/peppi-panel` po dokončení všech 7 reviews:
+Po dokončení všech 7 reviews Robinson ručně vytvoří GitHub Issues:
 
-1. Extrahuje text mezi `---REVIEW-SUBMISSION-START---` a `---REVIEW-SUBMISSION-END---`
-2. Pro každého reviewera vytvoří GitHub Issue v `lucierobinson/peppi-basics`:
+Pro každého reviewera:
+1. Zkopíruj text mezi `---REVIEW-SUBMISSION-START---` a `---REVIEW-SUBMISSION-END---`
+2. Vytvoř Issue v `lucierobinson/peppi-basics`:
    - Title: `[Review] <product>-v<version> — <reviewer-name>`
-   - Body: submission s metadaty (Reviewer, Date, Product, Version, Verdict)
-   - Labels: `review-submission`, `product:<product>`, `verdict:<verdict>`
-3. Pošle desktop notifikaci: *"Peppi Panel complete — N/7 reviews in"*
-
-Robinson dostane notifikaci + GitHub mail.
+   - Body: zkopírovaný submission text
+   - Labels: `review-submission`
 
 ---
 
@@ -77,17 +79,17 @@ Claude:
 
 ## Panel reviewerů (finální, nezpochybňovat)
 
-| # | Reviewer | Typ | Shortcut |
-|---|----------|-----|----------|
-| 1 | Gemini 3.1 Pro Thinking + Deep Research | Perplexity tab | `/peppi-review-gemini-perp` |
-| 2 | Gemini 3.1 Pro | gemini.google.com direct | `/peppi-review-gemini-direct` |
-| 3 | Claude Sonnet 4.6 | Perplexity tab | `/peppi-review-sonnet-perp` |
-| 4 | GPT-5.4 | Perplexity tab | `/peppi-review-gpt-perp` |
-| 5 | Nemotron 3 Super | Perplexity tab | `/peppi-review-nemotron-perp` |
-| 6 | Sonar Deep Research | Perplexity tab | `/peppi-review-sonar-dr-perp` |
-| 7 | Grok | grok.com direct | `/peppi-review-grok-direct` |
+| # | Reviewer | Typ | Skill command |
+|---|----------|-----|---------------|
+| 1 | Gemini 3.1 Pro Thinking + Deep Research | Perplexity thread (free) | `peppi-review-gemini-perp` |
+| 2 | Gemini 3.1 Pro | gemini.google.com (ruční) | `peppi-review-gemini-direct` → copy-paste |
+| 3 | Claude Sonnet 4.6 | Perplexity thread (free) | `peppi-review-sonnet-perp` |
+| 4 | GPT-5.4 | Perplexity thread (free) | `peppi-review-gpt-perp` |
+| 5 | Nemotron 3 Super | Perplexity thread (free) | `peppi-review-nemotron-perp` |
+| 6 | Sonar Deep Research | Perplexity thread (free) | `peppi-review-sonar-dr-perp` |
+| 7 | Grok | grok.com (ruční) | `peppi-review-grok-direct` → copy-paste |
 
-Všechny 7 shortcuts + master shortcut nainstaluj podle návodu v [`comet/README.md`](comet/README.md).
+Všechny skilly nainstaluj z `comet/shortcuts-v2/` — návod v [`comet/README.md`](comet/README.md).
 
 ---
 

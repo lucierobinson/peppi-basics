@@ -1,3 +1,9 @@
+> **DEPRECATED — TRIGGERS COMPUTER AGENT (PAID)**
+> Tento soubor obsahuje instrukce pro browser automation ("open 7 tabs", "poll tabs", "create GitHub Issues"),
+> které Perplexity směruje přes placený Computer agent.
+> **Použij místo toho: `shortcuts-v2/skill-MASTER-peppi-panel.md`**
+> Opravená verze validuje balíček a vypisuje 7 příkazů pro ruční spuštění — bez Computer.
+
 ---
 name: peppi-panel
 description: Orchestrate the full 7-reviewer Peppi Basics review panel for a culinary study card. Opens 7 review tabs (Gemini DR, Gemini direct, Sonnet, GPT, Nemotron, Sonar DR, Grok), collects submissions, creates GitHub Issues. Use when asked to run the Peppi review panel, evaluate a card with all reviewers, or start a multi-AI culinary review. Trigger with "peppi-panel <product>-v<version>" or "run peppi panel for [slug]".

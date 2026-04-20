@@ -1,3 +1,9 @@
+> **DEPRECATED — TRIGGERS COMPUTER AGENT (PAID)**
+> Prompt říká "Open a new browser tab, navigate to grok.com..." —
+> Perplexity tento jazyk vyhodnotí jako Computer task a požaduje kredity.
+> **Použij místo toho: `shortcuts-v2/skill-07-grok-direct.md`**
+> Opravená verze generuje copy-paste prompt pro grok.com bez browser automation.
+
 ---
 name: peppi-review-grok-direct
 description: Run a Peppi Basics culinary card review using Grok directly at grok.com (with real-time X/Twitter data access). Use when running the Grok reviewer in the Peppi panel. Trigger with "peppi-review-grok-direct <product>-v<version>".

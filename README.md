@@ -40,13 +40,18 @@ Aktuální verze promptů jsou v `prompts/`. Archivní verze v `prompts/archive/
 
 ## Review workflow
 
-Každá nová verze karty prochází **7-člennou AI review panelem** přes Comet Shortcuts. Viz [CONTRIBUTING.md](CONTRIBUTING.md) pro detailní návod.
+Každá nová verze karty prochází **7-člennou AI review panelem** přes Perplexity Skills (Dovednosti).
+Viz [CONTRIBUTING.md](CONTRIBUTING.md) pro detailní návod a [comet/README.md](comet/README.md) pro
+instalaci skillů.
+
+> **Poznámka:** Perplexity přejmenoval „Shortcuts" na „Skills" — jsou to táž funkce.
+> Skilly jsou v `comet/shortcuts-v2/` a instalují se na `perplexity.ai/account/skills`.
 
 Stručně:
 1. Claude Code vygeneruje kartu a zabalí ji do `review-packages/<product>-v<version>/`
-2. Robinson v Comet napíše `/peppi-panel <product>-v<version>` — odpálí všech 7 reviewerů automaticky
-3. Comet Collector sesbírá odpovědi a vytvoří GitHub Issues s labelem `review-submission`
-4. Claude v nové session načte Issues přes GitHub API a ztriaguje
+2. Robinson v Comet napíše `peppi-panel <product>-v<version>` → validace + seznam 7 příkazů
+3. Robinson spustí každý příkaz v nové Perplexity konverzaci (5 Perplexity + 2 ruční)
+4. Odpovědi reviewerů zkopíruje do GitHub Issues, Claude v nové session ztriaguje
 
 **Review panel (7 reviewerů, finální, nezpochybňovat):**
 
