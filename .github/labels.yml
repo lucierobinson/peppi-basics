@@ -1,0 +1,35 @@
+- name: review-submission
+  color: "0e8a16"
+  description: "Automated review panel submission"
+
+- name: "verdict:ships"
+  color: "36a64f"
+  description: "Reviewer verdict: SHIPS"
+
+- name: "verdict:ships-with-patches"
+  color: "fbca04"
+  description: "Reviewer verdict: SHIPS WITH PATCHES"
+
+- name: "verdict:redo"
+  color: "d73a4a"
+  description: "Reviewer verdict: REDO"
+
+- name: "product:croissant"
+  color: "c5def5"
+  description: "Product: croissant"
+
+- name: "product:choux"
+  color: "c5def5"
+  description: "Product: choux au craquelin"
+
+- name: "product:madeleines"
+  color: "c5def5"
+  description: "Product: madeleines"
+
+- name: "product:example"
+  color: "e4e669"
+  description: "Product: example (pipeline testing)"
+
+- name: setup
+  color: "d93f0b"
+  description: "One-time setup task"

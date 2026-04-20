@@ -1,0 +1,12 @@
+.DS_Store
+*.log
+node_modules/
+.env
+.env.local
+_handoff/archive/
+review-packages/_template/_submissions/*
+!review-packages/_template/_submissions/.gitkeep
+docs/basics-v2/_handoff/*
+!docs/basics-v2/_handoff/.gitkeep
+docs/basics-v2/_inbox/*
+!docs/basics-v2/_inbox/.gitkeep
