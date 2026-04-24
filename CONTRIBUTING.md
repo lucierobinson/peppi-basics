@@ -8,14 +8,17 @@ Tento dokument popisuje, jak spustit review session pro novou verzi karty.
 
 ```
 Step 1 (Claude Code)  → karta vygenerována, zabalena do review-packages/
-Step 2 (Robinson)     → peppi-panel <slug> v Comet → validace + 7 příkazů k spuštění
-Step 3 (Robinson)     → spustí 5 Perplexity threadů + 2 manuální (Gemini Direct, Grok)
-Step 4 (Robinson)     → zkopíruje výstupy do 7 GitHub Issues
+Step 2 (Claude Code)  → pre-flight check (login + /rest/models/config) → 6 REST reviewerů paralelně
+Step 3 (Robinson)     → copy-paste prompt do gemini.google.com → 7. reviewer (Gemini direct)
+Step 4 (Claude Code)  → vytvoří 6 GitHub Issues automaticky; Robinson přidá 7. ručně
 Step 5 (Claude.ai)    → triage, patch prompt pro další verzi
 ```
 
-> **Instalace skillů:** viz [`comet/README.md`](comet/README.md) — zejm. sekci
-> „Instalace opravených skillů". Použij soubory z `comet/shortcuts-v2/`.
+> **Primární path:** REST API (`POST /rest/sse/perplexity_ask`). Viz
+> [`docs/api-research/production-panel-spec.md`](docs/api-research/production-panel-spec.md).
+>
+> **Fallback:** Pokud REST API selže — Comet Skills z `comet/shortcuts-v2/`.
+> Viz [`comet/README.md`](comet/README.md) a GitHub Issue #1.
 
 ---
 
@@ -36,28 +39,27 @@ Poté Claude Code oznámí Robinsonovi: **"Balíček připraven. V Comet napiš:
 
 ---
 
-## Step 2 — Spuštění review panelu (Robinson v Comet, ~2 minuty)
+## Step 2 — Spuštění review panelu (Claude Code, ~40 s)
 
-1. Otevři Comet
-2. Do search bar napiš:
-   ```
-   peppi-panel croissant-v2_0_5
-   ```
-3. Stiskni Enter
-4. Skill validuje balíček a vytiskne seznam 7 příkazů
+Claude Code automaticky:
+1. Provede pre-flight check: login + `/rest/models/config` verifikace identifierů
+2. Spustí 6 REST reviewerů paralelně (`Promise.all`)
+3. Počká na dokončení všech streamů (dominuje Sonar DR, ~40 s)
+4. Vytvoří 6 GitHub Issues automaticky
 
-**Pak spusť každý příkaz v nové Perplexity konverzaci (5× Perplexity + 2× ruční).**
+Poté oznámí Robinsonovi: **"6/7 hotovo. Spusť Gemini direct: [prompt]"**
 
 ---
 
-## Step 3 — Sbírání výsledků (Robinson ručně, ~5 minut po dokončení)
+## Step 3 — Sbírání výsledků
 
-Po dokončení všech 7 reviews Robinson ručně vytvoří GitHub Issues:
+**6 REST reviewerů:** GitHub Issues vytvoří Claude Code automaticky.
 
-Pro každého reviewera:
-1. Zkopíruj text mezi `---REVIEW-SUBMISSION-START---` a `---REVIEW-SUBMISSION-END---`
-2. Vytvoř Issue v `lucierobinson/peppi-basics`:
-   - Title: `[Review] <product>-v<version> — <reviewer-name>`
+**7. reviewer (Gemini direct):** Robinson ručně:
+1. Zkopíruje prompt z Claude Code výstupu → vloží do gemini.google.com
+2. Zkopíruje odpověď (mezi `---REVIEW-SUBMISSION-START---` a `---REVIEW-SUBMISSION-END---`)
+3. Vytvoří Issue v `lucierobinson/peppi-basics`:
+   - Title: `[Review] <product>-v<version> — Gemini 3.1 Pro (direct)`
    - Body: zkopírovaný submission text
    - Labels: `review-submission`
 
@@ -77,25 +79,30 @@ Claude:
 
 ---
 
-## Panel reviewerů (finální, nezpochybňovat)
+## Panel reviewerů (finální, D57, nezpochybňovat)
 
-| # | Reviewer | Typ | Skill command |
-|---|----------|-----|---------------|
-| 1 | Gemini 3.1 Pro Thinking + Deep Research | Perplexity thread (free) | `peppi-review-gemini-perp` |
-| 2 | Gemini 3.1 Pro | gemini.google.com (ruční) | `peppi-review-gemini-direct` → copy-paste |
-| 3 | Claude Sonnet 4.6 | Perplexity thread (free) | `peppi-review-sonnet-perp` |
-| 4 | GPT-5.4 | Perplexity thread (free) | `peppi-review-gpt-perp` |
-| 5 | Nemotron 3 Super | Perplexity thread (free) | `peppi-review-nemotron-perp` |
-| 6 | Sonar Deep Research | Perplexity thread (free) | `peppi-review-sonar-dr-perp` |
-| 7 | Grok | grok.com (ruční) | `peppi-review-grok-direct` → copy-paste |
+| # | Reviewer | Path | Identifier |
+|---|----------|------|------------|
+| 1 | Claude Sonnet 4.6 | REST (automatický) | `claude46sonnet` |
+| 2 | GPT-5.4 | REST (automatický) | `gpt54` |
+| 3 | Gemini 3.1 Pro Thinking | REST (automatický) | `gemini31pro_high` |
+| 4 | Nemotron 3 Super | REST (automatický) | `nv_nemotron_3_super` |
+| 5 | Sonar Deep Research | REST (automatický) | `pplx_alpha` |
+| 6 | Grok 4.1 | REST (automatický) | `grok` |
+| 7 | Gemini 3.1 Pro | gemini.google.com (ruční) | — |
 
-Všechny skilly nainstaluj z `comet/shortcuts-v2/` — návod v [`comet/README.md`](comet/README.md).
+> ⚠️ **Nepoužívej `claude2`** — routes na Grok 4.1, ne na Claude (bug zjištěn 2026-04-24).
+> Správný identifier pro Claude Sonnet 4.6 je `claude46sonnet`.
+
+**Fallback (pokud REST API selže):** Comet Skills z `comet/shortcuts-v2/` — návod v [`comet/README.md`](comet/README.md).
 
 ---
 
-## Ruční review (fallback)
+## Ruční review (fallback — pokud REST API selže)
 
-Pokud master shortcut nefunguje, spusť každý shortcut ručně nebo paste reviewer prompt přímo do daného AI tabu. Extrahuj output mezi markery a vlož ho do GitHub Issue ručně s tímto formátem v titulu:
+Pokud REST API nefunguje (viz `comet/README.md`), spusť každý Comet skill ručně
+nebo paste reviewer prompt přímo do daného AI tabu. Extrahuj output mezi markery
+a vlož ho do GitHub Issue ručně s tímto formátem v titulu:
 
 ```
 [Review] <product>-v<version> — <Reviewer Name>

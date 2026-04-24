@@ -40,30 +40,31 @@ Aktuální verze promptů jsou v `prompts/`. Archivní verze v `prompts/archive/
 
 ## Review workflow
 
-Každá nová verze karty prochází **7-člennou AI review panelem** přes Perplexity Skills (Dovednosti).
-Viz [CONTRIBUTING.md](CONTRIBUTING.md) pro detailní návod a [comet/README.md](comet/README.md) pro
-instalaci skillů.
-
-> **Poznámka:** Perplexity přejmenoval „Shortcuts" na „Skills" — jsou to táž funkce.
-> Skilly jsou v `comet/shortcuts-v2/` a instalují se na `perplexity.ai/account/skills`.
+Každá nová verze karty prochází **7-člennou AI review panelem**.
+Viz [CONTRIBUTING.md](CONTRIBUTING.md) pro detailní návod a
+[docs/api-research/production-panel-spec.md](docs/api-research/production-panel-spec.md)
+pro technický popis REST API pipeline.
 
 Stručně:
 1. Claude Code vygeneruje kartu a zabalí ji do `review-packages/<product>-v<version>/`
-2. Robinson v Comet napíše `peppi-panel <product>-v<version>` → validace + seznam 7 příkazů
-3. Robinson spustí každý příkaz v nové Perplexity konverzaci (5 Perplexity + 2 ruční)
-4. Odpovědi reviewerů zkopíruje do GitHub Issues, Claude v nové session ztriaguje
+2. Claude Code spustí 6 REST reviewerů paralelně přes `POST /rest/sse/perplexity_ask`
+3. Robinson copy-pastuje prompt do gemini.google.com pro 7. reviewera (Gemini direct)
+4. Claude Code vytvoří GitHub Issues s výsledky, Claude v nové session ztriaguje
 
-**Review panel (7 reviewerů, finální, nezpochybňovat):**
+**Review panel (7 reviewerů, finální — D57):**
 
-| # | Reviewer | Platforma |
-|---|----------|-----------|
-| 1 | Gemini 3.1 Pro Thinking + Deep Research | Perplexity Pro (Comet) |
-| 2 | Gemini 3.1 Pro | gemini.google.com (direct) |
-| 3 | Claude Sonnet 4.6 | Perplexity Pro (Comet) |
-| 4 | GPT-5.4 | Perplexity Pro (Comet) |
-| 5 | Nemotron 3 Super | Perplexity Pro (Comet) |
-| 6 | Sonar Deep Research | Perplexity Pro (Comet) |
-| 7 | Grok | grok.com (direct) |
+| # | Reviewer | Path |
+|---|----------|------|
+| 1 | Claude Sonnet 4.6 | REST (`claude46sonnet`) |
+| 2 | GPT-5.4 | REST (`gpt54`) |
+| 3 | Gemini 3.1 Pro Thinking | REST (`gemini31pro_high`) |
+| 4 | Nemotron 3 Super | REST (`nv_nemotron_3_super`) |
+| 5 | Sonar Deep Research | REST (`pplx_alpha`) |
+| 6 | Grok 4.1 | REST (`grok`) |
+| 7 | Gemini 3.1 Pro | gemini.google.com (copy-paste) |
+
+**Fallback:** Pokud REST API selže, použij Comet Skills z `comet/shortcuts-v2/`.
+Viz `comet/README.md` a GitHub Issue #1.
 
 ---
 
