@@ -107,6 +107,12 @@
 | D55 | **TODO F1 v2.2.2+: bake params per component v `GoldenStandardComponent.recipe_gs`.** Gap detekován 2026-04-17: `GoldenStandardComponent.recipe_gs` neobsahuje `bake_temp_c` ani `bake_mode` — ty jsou pouze na top-level `golden_standard`. Pro composites s různými teplotami pečení per component (napoleon, millefeuille) to nestačí. Non-blocking pro croissant pilot (flat product) a choux+craquelin pilot (stejná teplota pro oba components). Aktivuje se pouze při composites s různými bake params. | Detekováno při patch surface analýze F2 v2.0.3 — F1 schema gap, ne F2 bug. Choux au craquelin test case: choux shell i craquelin disk pečou společně na 170 °C, takže gap se tam neprojevil. | Patch surface analýza F2 v2.0.3 (2026-04-17) | 2026-04-17 |
 | D56 | **TODO recipe-card skill: multi-component card rendering pro composite products.** Blocker pro composite pilot (choux au craquelin). F2 v2.0.3 emituje `WriterDraft.section_2a.components[]` a `section_3a[].component_name` — card template musí renderovat více ingredient tables a více method sekcí s component headers. NOT a blocker pro croissant pilot (flat product, `is_composite: false`). | F2 v2.0.3 changelog explicitně: "Blocker lifted for flat products; composite pilot gated on recipe-card skill update." | F2 v2.0.3 patch (2026-04-17) | 2026-04-17 |
 
+### Review pipeline — REST API (2026-04-24)
+
+| # | Rozhodnutí | Důvod | Zdroj | Datum |
+|---|---|---|---|---|
+| D57 | **Review pipeline primary path: REST API, not Comet skills.** `POST /rest/sse/perplexity_ask` verified for 6 models; `claude2` identifier bug caught before production (`claude2` routes to `grok41nonreasoning`, not Claude — correct key is `claude46sonnet`). Panel frozen at 7 members (6 REST + 1 copy-paste Gemini direct). `search_focus: "writing"` mandatory. Pre-flight `/rest/models/config` check required before every run. Comet skills remain as fallback. Descoped: `gemini31pro_low` (redundant), Kimi K2.6 (wrapper confusion), Grok direct (redundant with REST grok), Claude Opus 4.7 (Max-only). See `docs/api-research/production-panel-spec.md`. | REST API: 6 models parallel in ~40 s wall-clock, 6 queries/run from Pro quota, no credits. Comet skills required manual trigger and Comet app dependency. REST enables full Claude Code orchestration without user interaction. | API verification session 2026-04-24 (Chrome MCP live tests) | 2026-04-24 |
+
 ### Ekonomika
 
 | # | Rozhodnutí | Důvod | Zdroj | Datum |
