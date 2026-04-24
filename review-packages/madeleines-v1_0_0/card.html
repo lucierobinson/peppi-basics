@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peppi · Tech karta · Madeleines (klasické francouzské)</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ruby: #8A2230; --ruby-light: #a82e3e; --ruby-bg: #fdf2f3; --ruby-border: #e8b5bb;
+  --honey: #c89664; --honey-bg: #fdf8f0; --honey-border: #e8d4b8;
+  --cream: #faf6f0; --cream-deep: #f3ece2;
+  --ink: #2a2420; --ink-l: #5a5248; --ink-m: #8a8278;
+  --border: #e8e2d8;
+  --mint-bg: #f0f7f4; --mint-border: #b8d8c8; --mint: #2a7a5a;
+  --warn-bg: #fdf2f0; --warn-border: #e8b8b0; --warn: #c0392b;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Source Sans 3',sans-serif; font-size:17px; line-height:1.65; color:var(--ink); background:var(--cream); }
+.page { max-width:780px; margin:0 auto; padding:48px 40px 80px; }
+
+/* Cover */
+.cover { text-align:center; margin-bottom:48px; padding-bottom:32px; border-bottom:2px solid var(--border); }
+.cover-label { font-family:'JetBrains Mono',monospace; font-size:13px; letter-spacing:2px; text-transform:uppercase; color:var(--ink-m); margin-bottom:12px; }
+.cover h1 { font-family:'Cormorant Garamond',serif; font-size:48px; font-weight:700; color:var(--ruby); line-height:1.15; margin-bottom:8px; }
+.cover .subtitle { font-family:'Source Sans 3',sans-serif; font-size:19px; font-weight:300; color:var(--ink-l); margin-bottom:16px; }
+.cover .badge { display:inline-block; font-family:'JetBrains Mono',monospace; font-size:12px; background:var(--ruby-bg); color:var(--ruby); padding:6px 16px; border-radius:20px; border:1px solid var(--ruby-border); }
+
+/* Headings */
+h2 { font-family:'Cormorant Garamond',serif; font-size:32px; font-weight:600; color:var(--ruby); margin:48px 0 16px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+h3 { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:600; color:var(--ink); margin:32px 0 12px; }
+h4 { font-family:'Source Sans 3',sans-serif; font-size:18px; font-weight:600; color:var(--ink); margin:24px 0 8px; }
+p { margin-bottom:14px; }
+
+/* Sister card box */
+.sister-card-box { background:var(--honey-bg); border:1px solid var(--honey-border); border-radius:10px; padding:16px 20px; margin-bottom:32px; font-size:15px; }
+.sister-card-box strong { color:var(--ruby); }
+
+/* TL;DR */
+.tldr { background:var(--ruby-bg); border-left:4px solid var(--ruby); border-radius:0 8px 8px 0; padding:16px 20px; margin:20px 0 28px; }
+.tldr-label { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--ruby); margin-bottom:6px; }
+.tldr p { margin-bottom:6px; font-size:16px; }
+.tldr p:last-child { margin-bottom:0; }
+
+/* Boxes */
+.tip { background:var(--honey-bg); border:1px solid var(--honey-border); border-radius:8px; padding:14px 18px; margin:16px 0; }
+.tip-label { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--honey); margin-bottom:4px; }
+.ex { background:var(--mint-bg); border:1px solid var(--mint-border); border-radius:8px; padding:14px 18px; margin:16px 0; }
+.ex-label { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--mint); margin-bottom:4px; }
+.warn { background:var(--warn-bg); border:1px solid var(--warn-border); border-radius:8px; padding:14px 18px; margin:16px 0; }
+.warn-label { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--warn); margin-bottom:4px; }
+
+/* Tooltip */
+.term { position:relative; cursor:help; border-bottom:1px dotted var(--ruby); color:inherit; }
+.term::after { content:attr(data-tooltip); position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:var(--cream-deep); color:var(--ink); border:1px solid var(--border); border-radius:6px; padding:8px 12px; font-size:14px; line-height:1.4; max-width:300px; min-width:160px; white-space:normal; box-shadow:0 4px 12px rgba(0,0,0,0.08); opacity:0; visibility:hidden; transition:opacity 0.2s, visibility 0.2s; pointer-events:none; z-index:100; }
+.term:hover::after, .term:focus::after { opacity:1; visibility:visible; }
+
+/* Recipe card */
+.recipe-card { background:#fff; border:3px solid var(--ruby); border-radius:12px; padding:32px 28px; margin:28px 0; }
+.recipe-card h3 { color:var(--ruby); margin-top:0; }
+.step { display:flex; gap:16px; margin-bottom:20px; padding-bottom:16px; border-bottom:1px solid var(--border); }
+.step:last-of-type { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+.step-num { font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:700; color:var(--ruby); min-width:36px; line-height:1.2; }
+.step-content { flex:1; }
+.step-content p { margin-bottom:6px; }
+.step-why { font-size:14px; color:var(--ink-l); font-style:italic; }
+.step-checkpoint { background:var(--mint-bg); border-radius:6px; padding:8px 12px; font-size:14px; margin-top:6px; }
+.step-checkpoint::before { content:"👁 "; }
+
+/* Tables */
+.ingredient-table { width:100%; border-collapse:collapse; margin:16px 0; font-size:15px; }
+.ingredient-table th { background:var(--cream-deep); font-family:'JetBrains Mono',monospace; font-size:12px; text-transform:uppercase; letter-spacing:1px; padding:10px 12px; text-align:left; border-bottom:2px solid var(--border); }
+.ingredient-table td { padding:10px 12px; border-bottom:1px solid var(--border); }
+.ingredient-table tr:nth-child(even) td { background:var(--cream); }
+
+.troubleshooting { width:100%; border-collapse:collapse; margin:16px 0; font-size:14px; }
+.troubleshooting th { background:var(--warn-bg); font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; padding:10px 8px; text-align:left; border-bottom:2px solid var(--warn-border); }
+.troubleshooting td { padding:10px 8px; border-bottom:1px solid var(--border); vertical-align:top; }
+.troubleshooting tr:nth-child(even) td { background:var(--cream); }
+
+/* Mora box */
+.mora-box { background:var(--honey-bg); border:2px solid var(--honey-border); border-radius:10px; padding:20px 24px; margin:24px 0; }
+.mora-box h4 { color:var(--honey); margin-top:0; font-family:'JetBrains Mono',monospace; font-size:13px; letter-spacing:1px; text-transform:uppercase; }
+.mora-box table { width:100%; font-size:15px; }
+.mora-box td { padding:6px 0; vertical-align:top; }
+.mora-box td:first-child { font-weight:600; width:140px; color:var(--ink-l); }
+
+/* Critical timing */
+.critical-timing { background:var(--warn-bg); border:1px solid var(--warn-border); border-radius:8px; padding:14px 18px; margin:16px 0; font-size:15px; font-weight:500; }
+.critical-timing::before { content:"⏱ KRITICKÉ STOPKY · "; font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:1px; color:var(--warn); }
+
+/* Pre-bake check */
+.prebake-check { background:var(--mint-bg); border:2px solid var(--mint-border); border-radius:10px; padding:16px 20px; margin:20px 0; }
+.prebake-check h4 { color:var(--mint); margin-top:0; font-family:'JetBrains Mono',monospace; font-size:13px; letter-spacing:1px; text-transform:uppercase; }
+
+/* Line card lite */
+.line-card-lite { background:#fff; border:2px dashed var(--ruby-border); border-radius:10px; padding:24px 20px; margin:28px 0; }
+.line-card-lite h4 { color:var(--ruby); font-family:'JetBrains Mono',monospace; font-size:13px; letter-spacing:1px; text-transform:uppercase; margin-top:0; }
+
+/* Do / Don't */
+.do-item::before { content:"✓ "; color:var(--mint); font-weight:700; }
+.dont-item::before { content:"✗ "; color:var(--warn); font-weight:700; }
+
+/* Photo placeholder */
+.photo-placeholder { border:2px dashed var(--border); border-radius:8px; padding:20px; text-align:center; color:var(--ink-m); font-size:14px; margin:12px 0; }
+
+/* Media link */
+.media-link { background:var(--cream-deep); border-radius:6px; padding:10px 14px; margin:8px 0; font-size:14px; }
+
+/* Source tag */
+.source-tag { font-size:11px; color:var(--ink-m); vertical-align:super; }
+
+/* Myth box */
+.myth-box { background:var(--cream-deep); border-left:3px solid var(--ink-m); border-radius:0 8px 8px 0; padding:14px 18px; margin:16px 0; }
+
+/* Verification log */
+.verification-log { margin-top:40px; padding:20px; background:var(--cream-deep); border-radius:8px; font-size:13px; }
+.verification-log h3 { color:var(--ink-m); font-size:20px; }
+.verification-log table { width:100%; border-collapse:collapse; margin-top:12px; }
+.verification-log th { font-size:11px; text-transform:uppercase; padding:6px 4px; border-bottom:2px solid var(--border); text-align:left; }
+.verification-log td { padding:6px 4px; border-bottom:1px solid var(--border); font-size:12px; vertical-align:top; }
+
+/* Glossary */
+.glossary dt { font-weight:600; color:var(--ruby); margin-top:12px; }
+.glossary dd { margin-left:0; margin-bottom:8px; padding-left:16px; }
+
+/* Responsive */
+@media (max-width:680px) {
+  .page { padding:24px 16px 48px; }
+  .cover h1 { font-size:36px; }
+  h2 { font-size:26px; }
+  body { font-size:16px; }
+  .step-num { font-size:24px; }
+  .ingredient-table, .troubleshooting { display:block; overflow-x:auto; }
+}
+
+/* Print */
+@media print {
+  body { background:#fff; font-size:14px; }
+  .page { padding:20px; max-width:100%; }
+  .no-print, .source-tag, .verification-log, .tldr, .media-link, .sister-card-box { display:none !important; }
+  .term::after { display:none !important; }
+  .recipe-card { page-break-inside:avoid; border:2px solid #000; }
+  .line-card-lite { page-break-before:always; border:2px solid #000; }
+  h2 { page-break-after:avoid; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- COVER -->
+<div class="cover">
+<div class="cover-label">Peppi · Tech karta</div>
+<h1>Madeleines</h1>
+<div class="subtitle">Klasické francouzské (tradiční) · Basic</div>
+<div class="badge">Režim B (Adaptovaný) — FCI gramáže, domácí trouba</div>
+</div>
+
+<!-- FALSELY SIMPLE WARNING -->
+<div class="warn">
+<div class="warn-label">⚠ Falešně jednoduchý produkt</div>
+<p style="margin:0;">Madeleines vypadají jako jednoduché sušenky, ale klíčová technika (<span class="term" data-tooltip="Povinná fáze chlazení těstíčka (minimum 1 hodina) v lednici před pečením. Fyzický předpoklad vzniku bosse — bez chlazení teplotní diferenciál nestačí spustit mechanismus hrbolku." tabindex="0">repos</span> + teplotní šok) je neviditelná a časová — vynechání odpočinku je nejčastější příčina neúspěchu začátečníků.</p>
+</div>
+
+<!-- ═══ OBSAH ═══ -->
+<nav id="toc" style="background:var(--cream-deep); border-radius:10px; padding:20px 24px; margin-bottom:40px;">
+<h3 style="margin-top:0; font-size:20px; color:var(--ruby);">Obsah</h3>
+<p style="font-size:15px; line-height:2;">
+0. <a href="#co-hodnotime" style="color:var(--ruby);">Co hodnotíme — kritéria úspěšné madeleine</a><br>
+1. <a href="#blok1" style="color:var(--ruby);">Co to je a proč to funguje</a> — <a href="#s1a" style="color:var(--ink-l);">identita</a> · <a href="#s1b" style="color:var(--ink-l);">věda</a> · <a href="#s1c" style="color:var(--ink-l);">proměnné</a> · <a href="#s1d" style="color:var(--ink-l);">kam to patří</a><br>
+2. <a href="#blok2" style="color:var(--ruby);">Mise en place</a> — <a href="#s2a" style="color:var(--ink-l);">ingredience</a> · <a href="#s2b" style="color:var(--ink-l);">nářadí</a> · <a href="#s2c" style="color:var(--ink-l);">workflow</a> · <a href="#s2e" style="color:var(--ink-l);">limity a zkratky</a><br>
+3. <a href="#blok3" style="color:var(--ruby);">Golden standard recept</a> — <a href="#trouba-box" style="color:var(--ink-l);">trouba</a> · <a href="#s3a" style="color:var(--ink-l);">pracovní karta</a> · <a href="#s3b" style="color:var(--ink-l);">senzorický profil</a> · <a href="#s3c" style="color:var(--ink-l);">troubleshooting</a> · <a href="#s3d" style="color:var(--ink-l);">pasti</a> · <a href="#what-if" style="color:var(--ink-l);">what-if scénáře</a><br>
+4. <a href="#blok4" style="color:var(--ruby);">Varianty</a><br>
+5. <a href="#blok5" style="color:var(--ruby);">Pravidla a mýty</a><br>
+6. <a href="#blok6" style="color:var(--ruby);">Škálování a skladování</a><br>
+7. <a href="#blok7" style="color:var(--ruby);">Tréninkový protokol</a><br>
+<a href="#glosar" style="color:var(--ruby);">Glosář</a>
+</p>
+</nav>
+
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SEKCE 0 — CO HODNOTÍME               -->
+<!-- ═══════════════════════════════════════ -->
+<h2 id="co-hodnotime">Co hodnotíme — kritéria úspěšné madeleine</h2>
+
+<p>Tohle jsou kritéria, podle kterých hodnotí madeleines ve francouzském cukrářském kurikulu (CAP Pâtissier) i ve školní kuchyni FCI. Projdi si je dřív než začneš — budeš pak vědět, na co se při práci soustředit a jak poznáš, že výsledek je opravdu povedený.</p>
+
+<p style="font-size:13px; color:var(--ink-m);">Zdroj: <a href="https://www.francecompetences.fr/recherche/rncp/12049/" style="color:var(--ruby);">CAP Pâtissier — RC1.2 Pôle 1: Petits fours moelleux et gâteaux de voyage</a>; kritéria rozšířena o FCI „Evaluating Your Success" (Session 9, p. 472–473). Poznámka: adaptace scope CAP RC1 + FCI kritérií, ne přímý scrape veřejného PDF.</p>
+
+<h3>Vizuální</h3>
+<ul style="margin:0 0 14px 20px; line-height:1.8;">
+<li>Výrazná <span class="term" data-tooltip="Charakteristický vypouklý hrbolek na vrcholu madeleine vzniklý teplotním šokem při pečení. Vizuální indikátor kvality v CAP Pâtissier a FCI — musí být viditelná z profilu." tabindex="0">bosse</span> (hrbolek) na vrcholu — viditelná z profilu</li>
+<li>Rovnoměrně zlatohnědé okraje a spodek, světlejší střed</li>
+<li>Čistý tvar škeble bez deformací nebo přetoků</li>
+</ul>
+<p style="font-size:14px; color:var(--ink-l);"><em>Měřitelný práh: bosse viditelná z profilu při pohledu ze strany (ne jen zeshora).</em></p>
+
+<h3>Strukturální</h3>
+<ul style="margin:0 0 14px 20px; line-height:1.8;">
+<li>Lehká, jemně pórovitá středa — ne hutná nebo kompaktní</li>
+<li>Tenký, lehce křupavý okraj — ne gumový</li>
+<li>Homogenní crumb bez syrových nebo přepečených míst</li>
+</ul>
+
+<h3>Senzorická</h3>
+<ul style="margin:0 0 14px 20px; line-height:1.8;">
+<li>Výrazná citrusová aroma (pomerančová nebo citronová)</li>
+<li>Mírná sladkost — ne přeslazené (FCI: „only slightly sweet")</li>
+<li>Vlhká středa kontrastující s lehce křupavým okrajem</li>
+<li>Jemná máslová chuť v pozadí</li>
+</ul>
+
+<h3>Technická</h3>
+<ul style="margin:0 0 14px 20px; line-height:1.8;">
+<li>Těstíčko míchané bez nadměrného rozvoje glutenu (jen do spojení)</li>
+<li>Repos dodržen minimum 1 hodinu (klíčové pro bosse)</li>
+<li>Formičky správně připraveny — žádné přilepení, žádné křivé okraje</li>
+</ul>
+
+<h3>Procesní</h3>
+<ul style="margin:0 0 14px 20px; line-height:1.8;">
+<li><span class="term" data-tooltip="Kompletní příprava všech surovin, nářadí a forem před začátkem práce. U madeleines obzvlášť důležité — hmota čeká krátce po vyndání z lednice a musí okamžitě do trouby." tabindex="0">Mise en place</span> připraveno před startem</li>
+<li>Formičky plněny rovnoměrně na ¾ objemu</li>
+<li>Pečeno ze studené hmoty — přímý přechod lednice → trouba bez prodlevy</li>
+</ul>
+
+<p style="text-align:right;"><a href="#toc" style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink-m); text-decoration:none;">↑ obsah</a></p>
+
+
+<!-- ═══════════════════════════════════════ -->
+<!-- BLOK 1 — CO TO JE A PROČ TO FUNGUJE -->
+<!-- ═══════════════════════════════════════ -->
+<h2 id="blok1">Blok 1 — Co to je a proč to funguje</h2>
+
+<div class="tldr">
+<div class="tldr-label">Přečti tohle a máš 80 %</div>
+<p>Madeleines stojí nebo padají s jedním mechanismem: teplotním šokem. Studená hmota (4–8 °C z lednice) + horká trouba (200 °C) = okraje se zatáhnou dřív než studený střed, který nemá kam jinam než stoupat — vzniká bosse. Bez minimálně 1h repos v lednici tento diferenciál nestačí a madeleines budou ploché.</p>
+<p>Hmota se míchá ručně, jen do spojení — mixer rozvíjí lepek a ničí jemný crumb středu. Máslo se přidává vychladlé (~40 °C), jinak spálí citrusovou aroma.</p>
+</div>
+
+<h3 id="s1a">1A. Identita</h3>
+<p>Madeleines jsou malé francouzské máslové koláčky ve tvaru škeble s typickým hrbolkem (<em>bosse</em>) na vrcholu. Klíč k úspěchu: studená hmota po minimálně 1 hodině odpočinku a horká trouba — bez těchto dvou podmínek bosse nevznikne.</p>
+
+<p>Madeleines jsou <span class="term" data-tooltip="Malé měkké koláčky s jemnou, vlhkou texturou. V CAP Pâtissier zahrnuje madeleines, financiers a visitandines v Pôle 1 RC1.2." tabindex="0">petits fours moelleux</span> (malé měkké koláčky). Původ: francouzský, Commercy v Lotrinsku; název pravděpodobně podle Marie Madeleine Paulmier, kuchařky 18. století. Madeleines jsou nesmrtelné díky Marcelu Proustovi — v „Hledání ztraceného času" (1913) spouštěly vůní máslové sušenky namočené v čaji záplavu vzpomínek (Rinsky, <em>The Pastry Chef's Companion</em>, 2008, p. 180).</p>
+
+<p>Rodina produktů: financiers, visitandines, petits fours moelleux, mini bundt cakes.</p>
+
+<h3 id="s1b">1B. Věda</h3>
+
+<p>Madeleines stojí nebo padají s jedním principem: <strong>teplotní šok</strong>. Vychladlá hmota (4–8 °C z lednice) jde přímo do velmi horké trouby. Okraje koláčků v kontaktu s horkou formou se zatáhnou a zapečou za prvních několik sekund — zatímco studený střed ještě nestačil ztuhnout. Nemá kam jinam, než stoupat nahoru a vytvořit charakteristický hrbolek <em>bosse</em>. Zároveň máslo, které v chladu ztuhlo a rovnoměrně se distribuovalo, se při pečení najednou uvolní jako pára — výsledkem je výbušnější nárůst a výraznější bosse oproti teplé hmotě. Bez odpočinku v lednici (minimum 1 hodina) se hmota ohřeje, teplotní diferenciál nestačí mechanismus spustit a madeleines budou ploché. <em>[robustní empirické pravidlo]</em></p>
+
+<p>Zlatohnědá barva a komplexní máslová aroma vznikají <span class="term" data-tooltip="Chemická reakce redukujících cukrů s aminokyselinami při teplotách nad 140 °C. Vytváří zlatohnědou barvu a stovky aromatických sloučenin — typický máslový aroma madeleines (Figoni, How Baking Works, 2010)." tabindex="0">Maillardovou reakcí</span>: redukující cukry v těstíčku reagují s aminokyselinami při teplotách nad 140 °C. Čím vyšší teplota pečení, tím rychlejší a intenzivnější zbarvení — proto madeleines pečeme na 200–205 °C, a ne na 160 °C jako sušenky. Tinned steel forma (ne silikon) zesiluje vedení tepla na okrajích a urychluje Maillardovu reakci právě tam, kde to chceme — křupavý lem, světlejší střed. <em>[mechanismus — konsenzus]</em></p>
+
+<p>Minimum míchání je technická nutnost: čím méně se těstíčko míchá, tím méně se rozvíjí lepková síť. Jemné provázání bílkovin dá lehký, lehce drobivý crumb — výsledek, který chceme. Přemíchání (zejména mixérem) aktivuje příliš mnoho glutenu → tuhá, gumová textura. Prášek do pečiva doplňuje kypření dvěma vlnami (kontakt s vlhkostí + zahřátí) a spolu s pářením se másla stabilizuje výslednou bosse. <em>[mechanismus — konsenzus]</em></p>
+
+<h3 id="s1c">1C. Klíčové proměnné</h3>
+<p>Tyto proměnné mají největší vliv na výsledek madeleines:</p>
+
+<p><strong>1. Délka repos (odpočinek v lednici)</strong> — Kratší = menší nebo žádná bosse. Delší = výraznější bosse a plnější chuť (hydratace mouky). Přes noc je optimum. <em>Rozsah: 1 h (minimum funkční) — přes noc (optimum); max 4 dny v lednici.</em></p>
+
+<p><strong>2. Teplota trouby</strong> — Nízká = pomalé zatahování okrajů, bosse nevznikne. Vysoká = výrazná bosse, rychlé hnědnutí. Špatná teplota = syrový střed nebo spálené okraje. <em>Rozsah: 190–230 °C (horkovzduch); 200–205 °C doporučeno pro domácí troubu.</em></p>
+
+<p><strong>3. Poměr máslo:mouka</strong> — 1:1 = vlhké, bohaté. Méně másla = sušší. Výrazně více másla = příliš tučné, rozteče se. <em>Rozsah: 0,9:1 — 1,2:1 hmotnostně (máslo:mouka); FCI = 1:1.</em></p>
+
+<p><strong>4. Plnění formiček</strong> — Pod ½ = plochý výsledek. Na ¾ = optimum pro bosse. Přes ¾ = přetéká, ztrácí tvar škeble. <em>Rozsah: ½ — ¾ objemu formičky; GS = ¾.</em></p>
+
+<p><strong>5. Teplota hmoty při plnění</strong> — Teplá hmota se roztéká, bosse nevznikne. Studená (z lednice) drží tvar při plnění a maximalizuje teplotní šok. <em>Rozsah: 4–8 °C (ideál — těsně z lednice).</em></p>
+
+<h3 id="s1d">1D. Kam to patří</h3>
+<p>Madeleines spadají do kategorie <span class="term" data-tooltip="Kategorie francouzského pečiva s dostatečnou trvanlivostí na přepravu bez chlazení. Charakteristické vyšším obsahem tuku a cukru. Madeleines, financiers a cannelés jsou klasičtí reprezentanti. V CAP Pâtissier RC1.2 Pôle 1." tabindex="0">gâteaux de voyage</span> (koláčky na cestu) — pečivo s dostatečnou trvanlivostí na přepravu, charakteristické pro francouzskou cukrářskou tradici. V CAP Pâtissier jsou v Pôle 1 RC1.2 vedle financiers a visitandines. Jednou zvládneš základní techniku (repos + teplotní šok), odemkneš celou rodinu petits fours moelleux.</p>
+
+<p style="text-align:right;"><a href="#toc" style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink-m); text-decoration:none;">↑ obsah</a></p>
+
+
+<!-- ═══════════════════════════════════════ -->
+<!-- BLOK 2 — MISE EN PLACE                -->
+<!-- ═══════════════════════════════════════ -->
+<h2 id="blok2">Blok 2 — Mise en place</h2>
+
+<div class="tldr">
+<div class="tldr-label">Přečti tohle a máš 80 %</div>
+<p>7 ingrediencí, 5 kroků mise en place. Kritické: máslo vychladit na ~40 °C před přidáním (horké spálí citrusovou aroma), vejce na pokojové teplotě 30 minut před prací. Formu vymazat těsně před plněním — vlhkost ve formě přilepí madeleines. Mixér nikdy — dřevěná vařečka, jen do spojení.</p>
+</div>
+
+<h3 id="s2a">2A. Ingredience</h3>
+
+<p><strong>Golden standard recept: FCI — The Fundamental Techniques of Classic Pastry Arts (2009), Session 9: Petits Fours — Madeleines.</strong> Gramáže převzaty přímo z FCI.</p>
+
+<div style="overflow-x:auto;">
+<table class="ingredient-table">
+<thead>
+<tr><th>Ingredience</th><th>Gramáž</th><th>Specifikace</th><th>Role</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cukr krupicový</strong></td>
+<td><strong>125 g</strong></td>
+<td>Jemný krupicový</td>
+<td>Sladidlo + struktura</td>
+</tr>
+<tr>
+<td><strong>Mouka hladká</strong></td>
+<td><strong>110 g</strong></td>
+<td>T450–T550, prosátá</td>
+<td>Struktura</td>
+</tr>
+<tr>
+<td><strong>Prášek do pečiva</strong></td>
+<td><strong>3 g</strong></td>
+<td>Standardní dvojčinný</td>
+<td>Kypření</td>
+</tr>
+<tr>
+<td><strong>Sůl</strong></td>
+<td><strong>1 g</strong></td>
+<td>Jemná kuchyňská</td>
+<td>Zvýraznění chuti</td>
+</tr>
+<tr>
+<td><strong>Kůra z pomeranče nebo citronu</strong></td>
+<td><strong>5 g</strong></td>
+<td>Bio, jen zbarvená část; FCI = pomeranč; klasičtější alternativa = citron</td>
+<td>Aroma</td>
+</tr>
+<tr>
+<td><strong>Vejce (L)</strong></td>
+<td><strong>100 g</strong></td>
+<td>2 ks L, pokojová teplota; 100 g = odhad 2 × 50 g bez skořápky</td>
+<td>Vazba + struktura + vlhkost</td>
+</tr>
+<tr>
+<td><strong>Máslo nesolené</strong></td>
+<td><strong>110 g</strong></td>
+<td>82% tuku, roztavené, vychladlé na ~40 °C</td>
+<td>Tuk + textura + chuť</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<p><strong>Poměr máslo:mouka = 1:1</strong> (110 g : 110 g) — kritický pro texturu. Odhadování odměrkami vede k selhání.</p>
+
+<h3 id="s2b">2B. Nářadí</h3>
+
+<h4>Musíš mít</h4>
+<ul style="margin:0 0 14px 20px; line-height:1.8;">
+<li><strong>Madeleine plech 12 dutin (standard tinned steel)</strong> — tvar škeble je definující pro produkt; bez formy nelze. Josefina jej má.</li>
+<li><strong>Kuchyňská váha s přesností 1 g</strong> — poměr 1:1 máslo:mouka je kritický; odměrky jsou nedostatečně přesné.</li>
+<li><strong>Cukrářský sáček s kulatou trubičkou č. 5–6</strong> — lze nahradit; viz níže.</li>
+<li><strong>Dřevěná vařečka nebo silikonová stěrka</strong> — jakákoliv lžíce nebo stěrka; silikonová stěrka je přesnější.</li>
+</ul>
+
+<h4>Hodí se mít</h4>
+<ul style="margin:0 0 14px 20px; line-height:1.8;">
+<li><strong>Silikonový madeleine plech (místo tinned steel)</strong> — tinned steel = lepší Maillard na okrajích (doporučeno); silikon = snazší vyjmutí, ale slabší kůrka.</li>
+<li><strong>Kuchyňský teploměr (pro ověření teploty másla)</strong> — máslo ~40 °C: ponoř prst — teplo, ale ne horko, vydržíš 3 sekundy. Bez teploměru OK.</li>
+</ul>
+
+<h4>Domácí substituce</h4>
+<div class="tip">
+<div class="tip-label">Substituce 1 — forma</div>
+<p style="margin:0;"><strong>Místo profesionální non-stick formy (Teflon):</strong> Standardní tinned steel madeleine forma — vymazat máslem + poprášit moukou. <em>Plnohodnotná náhrada.</em> Vyžaduje pečlivou přípravu; vyjmutí ťuknutím o povrch; hnědnutí okrajů je u tinned steel ale lepší než u silikonu.</p>
+</div>
+<div class="tip">
+<div class="tip-label">Substituce 2 — citrus</div>
+<p style="margin:0;"><strong>Citronová kůra (klasicky tradiční, „proustovská") ↔ Pomerančová kůra (FCI verze):</strong> Pomerančová = sladší, méně kyselá; citronová = svěžejší, tradičnější pro Commercy styl. <em>Plnohodnotná náhrada.</em></p>
+</div>
+
+<h4>Nepotřebuješ</h4>
+<ul style="margin:0 0 14px 20px; line-height:1.8;">
+<li>Elektrický mixer nebo KitchenAid — madeleines se míchají ručně (záměr pro omezení glutenu)</li>
+<li>Profesionální cukrářský sáček s kovovými trubičkami — plastový sáček s ustřiženým rohem stačí</li>
+<li>Blast chiller — lednice postačí; madeleines nevyžadují průmyslové chlazení</li>
+</ul>
+
+<h3 id="s2c">2C. Mise en place — workflow</h3>
+
+<p><strong>Kroky přípravy před mícháním těstíčka:</strong></p>
+
+<p><strong>1. Roztavit máslo a vychladit</strong> — Máslo roztavit na nízkém ohni nebo v mikrovlnné. Nechat vychladnout na ~40 °C — teplo, ne horko. <em>PROČ: horké máslo denaturuje vejce při míchání a spaluje citrusovou aroma.</em></p>
+
+<p><strong>2. Nastrouhat citrusovou kůru</strong> — Mikrostrouhadlo nebo jemné struhadlo — jen zbarvená část, bez bílé (hořká). 1 pomeranč nebo 1 citron = cca 5 g. <em>PROČ: kůra obsahuje esenciální oleje; bílá část přidává hořkost.</em></p>
+
+<p><strong>3. Vyjmout vejce na pokojovou teplotu</strong> — 30 minut před začátkem vyndat z lednice. <em>PROČ: studená vejce špatně emulgují s tukem; hrudky v těstíčku.</em></p>
+
+<p><strong>4. Zvážit a připravit všechny suroviny</strong> — Každou ingredienci zvážit do oddělené misky. Mouku prosát. <em>PROČ: poměr 1:1 máslo:mouka je kritický — odhadování vede k selhání.</em></p>
+
+<p><strong>5. Připravit formu (těsně před plněním, ne předem)</strong> — Každou dutinu vymazat máslem (štětcem nebo prstem), poprášit moukou, přebytek vyklepat. <em>PROČ: příprava moc dopředu = vlhkost v povrchu formy → přilepení.</em></p>
+
+<h3 id="s2e">2E. Zkratky a limity</h3>
+
+<div class="tip">
+<div class="tip-label">Bezpečná zkratka 1</div>
+<p style="margin:0;"><strong>Citronová kůra místo pomerančové (nebo kombinace)</strong> — Obě jsou historicky autentické (Rinsky p. 180). Chuťový rozdíl minimální — citron je svěžejší.</p>
+</div>
+
+<div class="tip">
+<div class="tip-label">Bezpečná zkratka 2</div>
+<p style="margin:0;"><strong>Repos pouze 1 hodinu místo přes noc</strong> — 1 h je funkční minimum (FCI). Bosse bude menší než po celonoční přípravě, ale vznikne.</p>
+</div>
+
+<div class="tip">
+<div class="tip-label">Bezpečná zkratka 3</div>
+<p style="margin:0;"><strong>Hmotu naředit sáčkem s ustřiženým rohem místo cukrářského sáčku</strong> — Méně kontroly nad tloušťkou proudu, ale výsledek stejný — plnit pomalu.</p>
+</div>
+
+<div class="warn">
+<div class="warn-label">Zakázaná zkratka 1 — kritická</div>
+<p style="margin:0;"><strong>Vynechat repos nebo zkrátit pod 1 hodinu</strong> — Bez dostatečného chlazení hmota nevytvoří teplotní diferenciál → ploché madeleines bez bosse. Toto není tradice — je to fyzikální limit.</p>
+</div>
+
+<div class="warn">
+<div class="warn-label">Zakázaná zkratka 2 — kritická</div>
+<p style="margin:0;"><strong>Míchat těstíčko elektrickým mixérem nebo šlehačem</strong> — Mixer rozvíjí lepek → gumová, tuhá textura. Madeleines se míchají výhradně ručně.</p>
+</div>
+
+<div class="warn">
+<div class="warn-label">Zakázaná zkratka 3</div>
+<p style="margin:0;"><strong>Plnit formičky teplou hmotou (nečekat na repos)</strong> — Teplá hmota se roztéká, bosse nevznikne. Chlad je aktivní součást receptury, ne jen hygiena.</p>
+</div>
+
+<p>Vejce L v ČR = EU třída L (63–73 g celé vejce, ~50–60 g bez skořápky). 2 ks odpovídá FCI 100 g — vážit před přidáním pro jistotu. Máslo 82% tuku = ČR standard (Madeta, Hollandia). Plně odpovídá FCI receptuře — rozdíl od profi 84% u madeleines zanedbatelný. Mouky: ČR hladká T450/T500 nebo polohrubá T550 — obě fungují. Hladká preferovaná pro jemnější crumb.</p>
+
+<p style="text-align:right;"><a href="#toc" style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink-m); text-decoration:none;">↑ obsah</a></p>
+
+
+<!-- ═══════════════════════════════════════ -->
+<!-- BLOK 3 — GOLDEN STANDARD RECEPT       -->
+<!-- ═══════════════════════════════════════ -->
+<h2 id="blok3">Blok 3 — Golden standard recept</h2>
+
+<div class="tldr">
+<div class="tldr-label">Přečti tohle a máš 80 %</div>
+<p><strong>Zdroj:</strong> FCI — The Fundamental Techniques of Classic Pastry Arts (2009), Session 9. Režim B — teplota adaptována z FCI 205 °C → 200 °C horkovzduch. 12 kroků: suchá + vejce + máslo → repos min. 1h → plnit z lednice → péct BEZ prodlevy.</p>
+<p>Zásada: každá minuta, kdy hmota ohřívá před pečením, snižuje teplotní diferenciál → menší nebo žádná bosse. Z lednice rovnou do sáčku, sáček rovnou do trouby.</p>
+</div>
+
+<!-- TECHNOLOGY BOX (generic_oven) -->
+<div class="mora-box" id="trouba-box">
+<h4>🔥 Trouba — adaptace (NEOVĚŘENO)</h4>
+<table>
+<tr><td>Režim:</td><td><strong>Horkovzduch (200 °C)</strong></td></tr>
+<tr><td>Zdroj:</td><td>FCI uvádí 205 °C horkovzduch. Adaptace na 200 °C jako bezpečná domácí úprava. Žádný specifický URL pro Mora 545 + madeleines nebyl ověřen.</td></tr>
+<tr><td>Předehřev:</td><td><strong>Min. 20 minut</strong> — nedostatečný předehřev je druhou nejčastější příčinou ploché bosse po krátkém repos.</td></tr>
+<tr><td>Pozice roštu:</td><td>Střed trouby. Po 5 minutách lze otočit plech o 180° při nerovnoměrném hnědnutí.</td></tr>
+<tr><td>SteamBake:</td><td><strong>NE.</strong> Madeleines jsou tukové těstíčko — pára by narušila Maillardovo zbarvení a křupavost okrajů.</td></tr>
+<tr><td>Čas:</td><td><strong>7–8 minut</strong> (standard plech 12 dutin). FCI uvádí ~7 min; rozšířeno na 7–8 min pro domácí troubu.</td></tr>
+</table>
+<div class="warn" style="margin-top:12px;">
+<div class="warn-label">⚠ Adaptace neověřena — zkontroluj teploměrem</div>
+<p style="margin:0;">200 °C horkovzduch je bezpečná adaptace z FCI 205 °C. <strong>Doporučeno ověřit teploměrem</strong> — Mora 545 může mít odchylku ±10 °C. Při odchylce upravit: pokud trouba peče o 10 °C méně (190 °C skutečných), prodlužit pečení na 9–10 min nebo nastavit 210 °C na displeji.</p>
+</div>
+</div>
+
+<!-- PRACOVNÍ KARTA 3A -->
+<div class="recipe-card">
+<h3 id="s3a">Pracovní karta — Madeleines</h3>
+<p style="font-size:14px; color:var(--ink-l);">Golden standard: FCI — The Fundamental Techniques of Classic Pastry Arts (2009), Session 9 · Režim B (Adaptovaný — teplota 200 °C horkovzduch) · 1 dávka · Výtěžnost: 12–15 madeleines</p>
+
+<div class="warn" style="margin-bottom:20px;">
+<div class="warn-label">Top 3 pravidla</div>
+<p style="margin:0;">1. Repos min. 1h (ideálně přes noc) — bez repos šok nefunguje, bosse nevznikne.<br>
+2. Míchat jen do spojení — mixer nikdy, jen dřevěná vařečka.<br>
+3. Plnit a péct BEZ prodlevy — z lednice rovnou do sáčku, sáček rovnou do trouby.</p>
+</div>
+
+<div class="step">
+<div class="step-num">1</div>
+<div class="step-content">
+<p><strong>110 g mouky hladké</strong> — prosát do větší mísy. Přidat <strong>125 g cukru krupicového</strong>, <strong>3 g prášku do pečiva</strong>, <strong>1 g soli</strong> a <strong>5 g kůry z pomeranče</strong> (nebo citronu, jen zbarvená část). Promíchat dřevěnou vařečkou do rovnoměrné směsi.</p>
+<div class="step-checkpoint">Rovnoměrná světlá směs, žádné shluky prášku; vůně citrusu</div>
+<p class="step-why">PROČ: rovnoměrné rozložení kypřidla předchází nerovnoměrnému nárůstu</p>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">2</div>
+<div class="step-content">
+<p><strong>100 g vajec</strong> (2 ks L, pokojová teplota) — vmíchat do suchých surovin dřevěnou vařečkou. Jen do spojení — ve chvíli kdy není vidět suchá mouka, STOP.</p>
+<div class="step-checkpoint">Hmota je matná, mírně hrubá — ne lesklá; žádná suchá mouka viditelná</div>
+<p class="step-why">PROČ: minimum míchání = méně glutenu = jemnější crumb</p>
+<p style="font-size:14px; color:var(--warn); font-style:italic; margin-top:4px;">Nešlehat, nikdy mixer nebo šlehač — přemíchání = gumová textura.</p>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">3</div>
+<div class="step-content">
+<p><strong>110 g másla</strong> (roztaveného, vychladlého na ~40 °C) — vmíchat ve 3 přídavcích dřevěnou vařečkou. Pokaždé míchat jen do zapracování.</p>
+<div class="step-checkpoint">Hmota je lesklá, rovnoměrná zlatavá barva, žádné tukové kapky na povrchu</div>
+<p class="step-why">PROČ: postupné přidávání = homogenní emulze, ne oddělená vrstva tuku</p>
+<p style="font-size:14px; color:var(--warn); font-style:italic; margin-top:4px;">Máslo nesmí být horké (přes 50 °C) — spálí citrusovou aroma.</p>
+</div>
+</div>
+
+<div class="step" style="background:var(--mint-bg); border-radius:6px; padding:12px;">
+<div class="step-num">4</div>
+<div class="step-content">
+<p><strong>Kontrolní ochutnávka</strong> — ihned po zapracování másla, před zakrytím a chlazením.</p>
+<div class="step-checkpoint">Hmota hustá jako tuhší palačinkové těsto; lesklá, rovnoměrná zlatavá barva. Chuť neutrálně máslová s citrusovou notou. Hrudky másla: prohnětat stěrkou. Příliš tekutá (teče z lžíce bez odporu): zkontrolovat gramáže — máslo mohlo být příliš horké při přidání.</div>
+<div class="step-checkpoint">Hustá, lesklá hmota; lžíce stojí vzpřímeně, pak pomalu klesá</div>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">5</div>
+<div class="step-content">
+<p><strong>Hotovou hmotu</strong> zakrýt kontaktní fólií — fólie se musí dotýkat povrchu těstíčka (ne jen přes mísu). Chladit v lednici <strong>minimum 1 hodinu</strong> — ideálně přes noc, max 4 dny.</p>
+<div class="step-checkpoint">Po repos: hmota viditelně tužší než před chlazením</div>
+<p class="step-why">PROČ: chlad tuhne máslo; teplotní diferenciál lednice → trouba = bosse</p>
+<p style="font-size:14px; color:var(--warn); font-style:italic; margin-top:4px;">Bez repos neexistuje bosse. Toto je nejdůležitější krok celého procesu.</p>
+</div>
+</div>
+
+<div class="step" style="background:var(--honey-bg); border-radius:6px; padding:12px;">
+<div class="step-num">6</div>
+<div class="step-content">
+<p><strong>Rozehřej troubu</strong> na 200 °C (horkovzduch). Plech umístit do středu trouby. Předehřev: minimálně 20 minut před plněním formiček.</p>
+<p class="step-why">PROČ: nedostatečný předehřev je druhou nejčastější příčinou ploché bosse</p>
+<p style="font-size:14px; color:var(--warn); font-style:italic; margin-top:4px;">200 °C horkovzduch — bezpečná adaptace z FCI 205 °C. Doporučeno ověřit teploměrem. → viz Trouba box výše</p>
+</div>
+</div>
+
+<div class="step" style="background:var(--honey-bg); border-radius:6px; padding:12px;">
+<div class="step-num">7</div>
+<div class="step-content">
+<p><strong>Připrav formičky</strong> — každou dutinu vymazat tenkou vrstvou másla (štětcem nebo prstem), poprášit moukou, přebytek vyklepat. Dělat těsně před plněním — ne moc dopředu.</p>
+<div class="step-checkpoint">Matný bílý film mouky pokrývá celou plochu dutiny; žádná mokrá nebo holá místa</div>
+<p class="step-why">PROČ: správná příprava = madeleines celé vyklopí; vlhkost ve formě = přilepení</p>
+</div>
+</div>
+
+<div class="step" style="background:var(--mint-bg); border-radius:6px; padding:12px;">
+<div class="step-num">8</div>
+<div class="step-content">
+<p><strong>Kontrolní ochutnávka</strong> — těsně před plněním formiček, po ukončení repos.</p>
+<div class="step-checkpoint">Hmota je studená a mírně tužší než před chlazením. Drží tvar v sáčku, neteče volně. Chlad je cítit přes sáček. Příliš teplá (teče sama): vrátit do lednice dalších 30 minut. Příliš tuhá (jako zmrzlina): temperovat 5 minut při pokojové teplotě.</div>
+<div class="step-checkpoint">Hmota drží tvar, neteče samovolně — studená na dotek přes sáček</div>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">9</div>
+<div class="step-content">
+<p><strong>Chladnou hmotu (~454 g celkem)</strong> přenést do cukrářského sáčku. Plnit formičky na <strong>¾ objemu</strong> — rovnoměrně, bez vzduchových kapes. Pracovat rychle.</p>
+<div class="step-checkpoint">Hmota v sáčku je pevná, vyžaduje mírný tlak — nekape samovolně</div>
+<p class="step-why">PROČ: ¾ = optimum pro bosse; méně = plochý výsledek, více = přetéká a ztrácí tvar</p>
+<p style="font-size:14px; color:var(--warn); font-style:italic; margin-top:4px;">Plnit rychle a péct BEZ prodlevy — každá minuta čekání ohřívá hmotu a snižuje teplotní diferenciál.</p>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">10</div>
+<div class="step-content">
+<p><strong>Naplněný plech</strong> — vložit okamžitě do středu předehřáté trouby. Péct <strong>7–8 minut</strong> bez otevírání trouby.</p>
+<div class="step-checkpoint">Po 5–6 min přes sklo trouby: okraje zlatohnědé, bílý hrbolek (bosse) se vynořuje uprostřed</div>
+<div class="step-checkpoint">Vizuální kontrola PŘES SKLO — troubu NEOTEVÍRAT. Pokud bosse nevzniká po 7 min: trouba pravděpodobně nebyla dostatečně nahřátá nebo repos byl příliš krátký. Příště: delší předehřev (25 min), delší chlazení (přes noc).</div>
+<p class="step-why">PROČ: teplotní šok = studená hmota + maximální teplo od počátku</p>
+<p style="font-size:14px; color:var(--warn); font-style:italic; margin-top:4px;">Neotevírej troubu prvních 5 minut — unikající pára narušuje teplotní šok.</p>
+</div>
+</div>
+
+<div class="step" style="background:var(--mint-bg); border-radius:6px; padding:12px;">
+<div class="step-num">11</div>
+<div class="step-content">
+<p><strong>Press test</strong> — do 5 sekund po vytažení z trouby.</p>
+<div class="step-checkpoint">Lehce stlač střed prstu — pružně se vrátí zpět = hotové. Nezvrátí se = péct dalších 1 minutu. Příliš tmavé okraje + suchý dotek = přepečeno; příště zkrátit o 1 min nebo snížit o 5 °C.</div>
+<div class="step-checkpoint">Zlatohnědé okraje, výrazná bosse, jemná vůně másla a citrusu</div>
+</div>
+</div>
+
+<div class="step">
+<div class="step-num">12</div>
+<div class="step-content">
+<p><strong>Horké madeleines</strong> — ihned vyklopit úderem formy o pracovní plochu (pečicí stranou dolů na mřížku). Vychladit 5 minut, podávat teplé.</p>
+<div class="step-checkpoint">Zlatohnědý spodek s výraznou bosse, světlejší vrchol; jemná vůně másla a citrusu</div>
+<p class="step-why">PROČ: ihned vyklopit = okraje zůstanou křupavé; čekání = pára změkčí kůrku</p>
+<p style="font-size:14px; color:var(--warn); font-style:italic; margin-top:4px;">Podávat teplé nebo do 2 hodin — křupavost okrajů rychle mizí (FCI: „serve warm or within a few hours").</p>
+</div>
+</div>
+
+</div><!-- /recipe-card -->
+
+<!-- PRE-BAKE CHECKPOINT -->
+<div class="prebake-check">
+<h4>⏸ Stop and check — před troubou</h4>
+<p>☐ Trouba na 200 °C min. 20 minut? (ověřeno teploměrem?)<br>
+☐ Hmota studená na dotek — těsně z lednice?<br>
+☐ Formičky vymazány máslem + poprášeny moukou? (připraveny těsně teď, ne půl hodiny zpět)<br>
+☐ Plnění rovnoměrné na ¾ objemu, bez vzduchových kapes?<br>
+☐ Sáček naplněn, plech naplněn — jdeš péct IHNED?<br>
+→ Pokud NE u jakéhokoliv bodu: ZASTAV a diagnostikuj PŘED pečením.</p>
+</div>
+
+<!-- 3B. SENZORICKÝ PROFIL -->
+<h3 id="s3b">3B. Jak poznáš úspěch</h3>
+
+<h4>(a) Procesní signály podle fází</h4>
+<p><strong>Míchání suchých surovin (krok 1):</strong> Rovnoměrná světlá směs, žádné shluky prášku; vůně citrusu se uvolní (zrak + čich).</p>
+<p><strong>Po přidání vajec (krok 2):</strong> Hmota ztmavne na krémově žlutou, matný povrch — žádný lesk ještě (zrak). <strong>Anti-signály:</strong> viditelná suchá mouka = nedostatečně promíchané; příliš hladká a lesklá = přemíchané.</p>
+<p><strong>Po přidání másla (krok 3):</strong> Hmota se rozzáří — lesklá, zlatavá, rovnoměrná barva; lžíce stojí a pomalu padá (zrak + hmat). <strong>Anti-signály:</strong> hrudky másla = máslo bylo příliš horké nebo studené; příliš tekutá = gramáže mimo nebo horké máslo.</p>
+<p><strong>Po repos (krok 5–8):</strong> Hmota viditelně tužší, drží tvar v sáčku, chlad je cítit přes sáček (hmat + teplota). <strong>Anti-signály:</strong> teče samovolně = vrátit do lednice 30 min; tuhá jako zmrzlina = temperovat 5 min.</p>
+<p><strong>Plnění (krok 9):</strong> Sáček klade odpor, hmota nevytéká samovolně — studená a pevná (hmat).</p>
+<p><strong>V troubě po 5–6 min (krok 10):</strong> Okraje zlatohnědé, středový hrbolek bílý nebo světlý a stoupá (zrak přes sklo). <strong>Anti-signál:</strong> žádný hrbolek po 7 min = nedostatečný předehřev nebo příliš krátký repos.</p>
+<p><strong>Po vytažení (krok 11–12):</strong> Zlatohnědý povrch s výraznou bosse, intenzivní vůně másla a citrusu (zrak + čich). <span class="term" data-tooltip="Diagnostický test propečenosti ihned po vytažení z trouby: lehce stlačit střed prstem. Pružná odpověď (vrátí se zpět) = hotové. Deformace bez návratu = péct dalších 1 minutu." tabindex="0">Press test</span>: střed pružný = hotové.</p>
+
+<h4>(b) Výsledkový profil</h4>
+<p>Madeleine po vychladnutí: výrazná bosse viditelná z profilu, zlatohnědé okraje se světlejším středem. Při zakousnutí: lehce křupavý okraj kontrastuje s vlhkou, jemně pórovitou středou. Chuť máslová s citrusovou notou, mírně sladká — ne přeslazené. Anti-signály: hutná nebo gumová středa = přemíchání nebo přepečení; bez bosse = příliš krátký repos nebo nedostatečný předehřev; slabá citrusová aroma = kůra přidána do příliš horkého másla.</p>
+
+<!-- 3C. TROUBLESHOOTING -->
+<h3 id="s3c">3C. Troubleshooting</h3>
+
+<div style="overflow-x:auto;">
+<table class="troubleshooting">
+<thead>
+<tr><th>Symptom</th><th>Diagnostika</th><th>Prevence</th><th>Kdy detekovatelné</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Žádná bosse — madeleines jsou ploché</strong></td>
+<td>Příliš krátký nebo žádný repos; hmota příliš teplá při plnění; trouba nedostatečně nahřátá</td>
+<td>Min. 1h repos v lednici, ideálně přes noc. Plnit ihned z lednice. Trouba na 200 °C min. 20 min předem. Profi: konvektomat s přesnou teplotou, bosse spolehlivá; Doma: 20 min předehřev je minimum, ověřit teploměrem.</td>
+<td>Po přechodu z trouby (5–7 min)</td>
+</tr>
+<tr>
+<td><strong>Suché, drobivé madeleines</strong></td>
+<td>Přepečení nebo nesprávný poměr máslo:mouka (méně másla)</td>
+<td>Press test po 7 min. Dodržet poměr 1:1 máslo:mouka. Nepřekračovat 10 min při 200 °C. Doma: každá trouba peče jinak — první dávka je vždy test, zaznamenat čas.</td>
+<td>Po vychladnutí</td>
+</tr>
+<tr>
+<td><strong>Gumová, tuhá textura</strong></td>
+<td>Přemíchání těstíčka → nadměrný rozvoj glutenu; použití mixéru</td>
+<td>Míchat jen do spojení — ve chvíli kdy není vidět suchá mouka, STOP. Dřevěná vařečka, nikdy mixer.</td>
+<td>Po vychladnutí</td>
+</tr>
+<tr>
+<td><strong>Madeleines se přilepí k formě</strong></td>
+<td>Nedostatečné vymazání máslem nebo poprášení moukou; forma připravena příliš dopředu (vlhkost)</td>
+<td>Každou formičku vymazat jemnou vrstvou másla, poprášit moukou, přebytek vyklepat. Formu připravovat těsně před plněním. Silikon je odpouštivější; tinned steel vyžaduje pečlivou přípravu.</td>
+<td>Bezprostředně po vyklopení</td>
+</tr>
+<tr>
+<td><strong>Nerovnoměrné hnědnutí</strong></td>
+<td>Hot spots v troubě nebo špatné umístění plechu (příliš blízko topnému tělesu)</td>
+<td>Plech do středu trouby. Otočit o 180° po 4–5 minutách. Horkovzduch obecně pomáhá rovnoměrnosti. Doma: otočení je standardní praxe; Profi: konvektomat s rotací.</td>
+<td>Během pečení (5–6 min)</td>
+</tr>
+<tr>
+<td><strong>Chuťově nevýrazné — slabá citrusová aroma</strong></td>
+<td>Kůra přidána do příliš horkého másla (aroma vyprchalo) nebo použita sušená nebo stará kůra</td>
+<td>Přidat kůru do suchých surovin nebo do vychladlého másla (~40 °C). Čerstvá kůra, jen zbarvená část. Strouhat těsně před přidáním.</td>
+<td>Po vychladnutí</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<!-- 3D. PASTI -->
+<h3 id="s3d">3D. Technologické pasti</h3>
+
+<p><strong>Past 1 — Měřit suroviny odměrkami místo váhou.</strong> Poměr máslo:mouka mimo 1:1 → suché nebo příliš tučné madeleines. Mouka se v odměrce liší o 20–30 % podle plnění. <em>Řešení: vždy váha, minimum přesnosti 1 g.</em></p>
+
+<p><strong>Past 2 — Přidat horké máslo (přes 50 °C) přímo do těstíčka.</strong> Citrusová aroma se spálí; vejce se mohou srážet → hrudkovitá hmota s plochou chutí. <em>Řešení: vychladit máslo na ~40 °C. Test prstem: vydržíš 3 sekundy = OK.</em></p>
+
+<p><strong>Past 3 — Péct z teplé hmoty (zkrátit repos na méně než 30 min).</strong> Teplotní diferenciál nestačí spustit bosse mechanismus — ploché madeleines. <em>Řešení: minimum 1 hodina. Časová zkratka zde nefunguje — je to fyzikální limit, ne tradice.</em></p>
+
+<p><strong>Past 4 — Otevřít troubu v prvních 5 minutách pro kontrolu.</strong> Únik páry → pára je součástí teplotního šoku; bosse se sesune nebo nevznikne. <em>Řešení: kontrolovat výhradně přes sklo trouby. Troubu neotevírat minimálně 5 minut.</em></p>
+
+<p><strong>Past 5 — Ponechat madeleines ve formě po vyndání z trouby.</strong> Pára uvnitř formy změkčí okraje → ztratí křupavost; extrakce těžší. <em>Řešení: vyklopit ihned po press testu — do 30 sekund od vytažení z trouby.</em></p>
+
+<!-- 3E. WHAT-IF -->
+<h3 id="what-if">3E. What-if scénáře</h3>
+
+<div class="warn">
+<div class="warn-label">⚠ Scénář: hmota se roztéká z formiček před vložením do trouby</div>
+<p><strong>Diagnóza:</strong> Hmota příliš teplá (nedostatečný repos nebo příliš dlouhé čekání po vyndání z lednice) nebo formičky přeplněné.</p>
+<p><strong>Co teď:</strong> Okamžitě plech s formičkami vložit do mrazáku na 5 minut — hmota ztuhl zpět. Pak péct bez odkladu.</p>
+<p style="margin:0;"><strong>Prevence:</strong> Vyjmout hmotu z lednice těsně před plněním. Plnit na ¾, ne víc. Plnit rychle a péct bez prodlevy.</p>
+</div>
+
+<div class="warn">
+<div class="warn-label">⚠ Scénář: hmota po smíchání má hrudky másla nebo je příliš tekutá</div>
+<p><strong>Diagnóza:</strong> Hrudky: máslo bylo příliš horké nebo studené při přidání, nerovnoměrná emulze. Příliš tekutá: máslo přidáno horké a „rozvodnilo" vejce.</p>
+<p><strong>Co teď:</strong> Hrudky másla: prohnětat silikonovou stěrkou v krouživých pohybech. Příliš tekutá hmota: zkontrolovat gramáže — pokud jsou správné, chladit déle (3h místo 1h) a doufat v mírnou korekci.</p>
+<p style="margin:0;"><strong>Prevence:</strong> Máslo vychladit na ~40 °C před přidáním. Přidávat ve 3 přídavcích.</p>
+</div>
+
+<div class="warn">
+<div class="warn-label">⚠ Scénář: hmota po repos je příliš tuhá (téměř zmrznutá)</div>
+<p><strong>Diagnóza:</strong> Přechlazení (lednice nastavena na &lt;3 °C) nebo hmota v lednici příliš dlouho bez zakrytí.</p>
+<p><strong>Co teď:</strong> Nechat temperovat 5–10 minut při pokojové teplotě. Nestlačovat silou — prasknutí sáčku.</p>
+<p style="margin:0;"><strong>Prevence:</strong> Zakrýt kontaktní fólií (fólie na povrchu, ne jen přes mísu). Standardní lednice 4–6 °C je správná.</p>
+</div>
+
+<div class="warn">
+<div class="warn-label">⚠ Scénář: bosse nevzniká po 7 minutách v troubě</div>
+<p><strong>Diagnóza:</strong> Trouba nebyla dostatečně nahřátá (méně než 190 °C při vložení); nebo repos byl příliš krátký (hmota nezchladla dost).</p>
+<p><strong>Co teď:</strong> Dokončit pečení na 8–9 minut pro správné propečení. Bosse v tomto cyklu nevznikne — to je příští pokus.</p>
+<p style="margin:0;"><strong>Prevence:</strong> Vždy 20 min předehřev na plný výkon (200 °C). Repos minimum 1h — ideálně přes noc. Plnit a péct bez prodlevy.</p>
+</div>
+
+<div class="warn">
+<div class="warn-label">⚠ Scénář: příliš tmavé okraje po 7 minutách — bosse ještě není hotová</div>
+<p><strong>Diagnóza:</strong> Trouba peče nerovnoměrně nebo plech umístěn příliš blízko spodního topného tělesa.</p>
+<p><strong>Co teď:</strong> Vyndat, provést press test — pokud je pružný, je hotové. Příliš tmavé okraje ≠ přepečený střed.</p>
+<p style="margin:0;"><strong>Prevence:</strong> Plech umístit do středu trouby. Otočit o 180° po 4 minutách při nerovnoměrném hnědnutí.</p>
+</div>
+
+<p style="text-align:right;"><a href="#toc" style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink-m); text-decoration:none;">↑ obsah</a></p>
+
+
+<!-- ═══════════════════════════════════════ -->
+<!-- BLOK 4 — VARIANTY                     -->
+<!-- ═══════════════════════════════════════ -->
+<h2 id="blok4">Blok 4 — Varianty</h2>
+
+<div class="tldr">
+<div class="tldr-label">Přečti tohle a máš 80 %</div>
+<p>4 varianty. Základní trénink: citronová kůra místo pomerančové — stejná technika, jiná chuť, oba styly historicky autentické. Ostatní varianty (beurre noisette, mini, čokoládová) až po zvládnutí základu 3× po sobě.</p>
+</div>
+
+<h3>Varianta 1: Madeleine au citron (citronová)</h3>
+<p><em>Kdy použít: základní varianta pro trénink klasického stylu. Preferovat pokud chceš „správnou" madeleines — citron je v tradici primární (Rinsky p. 180).</em></p>
+<p>Citronová kůra místo pomerančové. Nejbližší tradiční „proustovská" verze — Commercy styl. Citron = svěžejší, lehce kyselá nota oproti sladší pomerančové. Aroma intenzivnější. <strong>Obtížnost: stejná</strong> — pouze záměna citrusu.</p>
+
+<h3>Varianta 2: Madeleine beurre noisette (s opáleným máslem)</h3>
+<p><em>Kdy použít: až zvládneš FCI základní verzi. Výrazná chuťová eskalace při minimálním technickém přidání. Letní verze s ořechovou aromou.</em></p>
+<p><span class="term" data-tooltip="Máslo zahřáté do zlatohnědé barvy (140–150 °C) s charakteristickou ořechovou vůní způsobenou Maillardovou reakcí mléčných bílkovin. Alternativa k roztavenému máslu pro intenzivnější chuťový profil madeleines." tabindex="0">Beurre noisette</span> (opálené máslo) místo roztaveného. Přidává ořechový tón a vyšší komplexitu. Beurre noisette zvyšuje Maillardovu reakci i v těstíčku → tmavší, intenzivnější chuť. Máslo musí být přefiltrováno přes plátno (sraženiny odstraněny). <strong>Obtížnost: mírně těžší</strong> — sledovat teplotu opálení másla (140–150 °C, ne víc), filtrovat.</p>
+
+<h3>Varianta 3: Petites madeleines (mini verze)</h3>
+<p><em>Kdy použít: pro servírování s čajem nebo jako petits fours na večeři. CIA B&amp;P pracuje s mini verzí (Chapter 11, p. 362).</em></p>
+<p>Mini forma (24–36 dutin, cca 3 cm) místo standardní 12-dutin. Pečení ~4–5 min při 200 °C (horkovzduch). Plnit na ½ objemu (menší dutiny). Bosse méně výrazná u mini kvůli poměru povrch:objem. <strong>Obtížnost: jednodušší</strong> — kratší čas pečení, ale vyšší riziko přepečení; press test po 4 min.</p>
+
+<h3>Varianta 4: Madeleine au chocolat (čokoládová)</h3>
+<p><em>Kdy použít: až zvládneš FCI základní verzi — záměna suroviny mění fyziku těstíčka. Pro svátky nebo dárky.</em></p>
+<p>Nahradit 15 g mouky 15 g holandského kakaového prášku (dutch-process). Bez citrusové kůry, přidat špetku vanilky. Kakaový prášek absorbuje více vlhkosti → hmota hustší, může být třeba 1 extra vejce (50 g). Bosse menší kvůli jiné struktuře těstíčka. <strong>Obtížnost: mírně těžší</strong> — úprava hustoty hmoty (extra vejce pokud příliš tuhá), bosse méně předvídatelná.</p>
+
+<p style="text-align:right;"><a href="#toc" style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink-m); text-decoration:none;">↑ obsah</a></p>
+
+
+<!-- ═══════════════════════════════════════ -->
+<!-- BLOK 5 — PRAVIDLA A MÝTY             -->
+<!-- ═══════════════════════════════════════ -->
+<h2 id="blok5">Blok 5 — Pravidla a mýty</h2>
+
+<div class="tldr">
+<div class="tldr-label">Přečti tohle a máš 80 %</div>
+<p>6 pravidel a 2 mýty. Klíčové: repos je fyzikální limit, ne tradice — nejde obejít. Více prášku do pečiva bosse nevytvoří — bosse vzniká teplotním šokem, ne kypřidlem. CIA B&amp;P verze bez repos (okamžité pečení) je jiný produkt, ne madeleines v klasickém smyslu.</p>
+</div>
+
+<h3>5A. Klíčová pravidla</h3>
+<p class="do-item"><strong>Repos je povinný — minimum 1 hodina, ideálně přes noc.</strong> Teplotní šok (studená hmota + horká trouba) je jediný mechanismus vzniku bosse. Bez chlazení hmoty šok nestačí. · Porušení: zkrácení repos na 20–30 min „protože na víc není čas" → ploché madeleines bez bosse.</p>
+<p class="do-item"><strong>Trouba musí být plně nahřátá minimálně 20 minut před pečením.</strong> Nedostatečná teplota při vložení plechu = okraje se zahřívají pomalu = teplotní diferenciál nestačí = žádná bosse. · Porušení: vložit plech do trouby, která „skoro" nahřátá — zobrazuje 200 °C, ale keramické stěny a plech nejsou na teplotě.</p>
+<p class="do-item"><strong>Míchat jen do spojení — ve chvíli kdy není vidět suchá mouka, STOP.</strong> Každé další míchání rozvíjí lepek. Madeleines = tender baked good (jemné pečivo) — minimum glutenu je záměr. · Porušení: míchat „do hladka" nebo použít mixer „pro jistotu homogenity".</p>
+<p class="do-item"><strong>Plnit formičky na ¾ objemu — ne víc, ne méně.</strong> Pod ½ = plochý výsledek (hmota nemá dost masy pro bosse). Přes ¾ = přetéká, deformace tvaru škeble. · Porušení: odhadovat oko — první dávka přeplněná nebo poloprázdná, zbytek nerovnoměrný.</p>
+<p class="do-item"><strong>Máslo přidat vychladlé (~40 °C), ne horké.</strong> Horké máslo spálí citrusovou aroma a může srážet vejce → hrudkovitá hmota s plochou chutí. · Porušení: přidat máslo ihned po roztavení, bez čekání na vychladnutí.</p>
+<p class="do-item"><strong>Plnit a péct BEZ prodlevy — ihned z lednice do sáčku, ihned do trouby.</strong> Každá minuta čekání ohřívá hmotu a snižuje teplotní diferenciál potřebný pro bosse. · Porušení: naplnit formičky a nechat je stát při pokojové teplotě 10–15 minut než se trouba dohřeje.</p>
+
+<h3>5B. Mýty vs. fakta</h3>
+
+<div class="myth-box">
+<p><strong>Mýtus: „Více prášku do pečiva = vyšší a výraznější bosse."</strong><br>
+Realita: Bosse vzniká teplotním šokem (studená hmota + horká trouba), ne kypřidlem. Nadměrný prášek způsobí přepečenou chuť a nestabilní strukturu — bosse se sesuje.<br>
+Zdroj: Figoni, <em>How Baking Works</em>, ch. 5 (Leavening Agents)</p>
+</div>
+
+<div class="myth-box">
+<p><strong>Mýtus: „Madeleines jsou jen jednoduché sušenky — stačí smíchat a péct."</strong><br>
+Realita: Technika (repos + teplotní šok) je neviditelná a časová. CIA B&amp;P verze bez repos (creaming, okamžité pečení) nevytváří bosse — je to jiný produkt, ne madeleines v klasickém smyslu.<br>
+Zdroj: FCI Session 9 (konflikty ve zdrojích)</p>
+</div>
+
+<p style="text-align:right;"><a href="#toc" style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink-m); text-decoration:none;">↑ obsah</a></p>
+
+
+<!-- ═══════════════════════════════════════ -->
+<!-- BLOK 6 — ŠKÁLOVÁNÍ A SKLADOVÁNÍ      -->
+<!-- ═══════════════════════════════════════ -->
+<h2 id="blok6">Blok 6 — Škálování a skladování</h2>
+
+<div class="tldr">
+<div class="tldr-label">Přečti tohle a máš 80 %</div>
+<p>Základ = 1 plech, 12–15 madeleines. Zdvojit recepturu = péct ve 2 sériích ze stejné vychladlé zásoby, plech vychladit a znovu vymazat mezi sériemi. Nedoporučuje se dělit pod 100 % (příliš malé množství pro rovnoměrné ruční míchání). Upečené nejlepší tentýž den — křupavost mizí rychle.</p>
+</div>
+
+<h3>6A. Škálování</h3>
+
+<p>Základní recept dává 12–15 standardních madeleines (1 plech 12 dutin). Při zdvojení receptury hmotu rozdělit do 2 mís a péct ve 2 dávkách ze stejné vychladlé zásoby — plech mezi dávkami nechat vychladnout 10 minut a znovu vymazat. Nedoporučuje se dělat pod 100 % receptury (příliš malé množství pro rovnoměrné ruční míchání).</p>
+
+<div style="overflow-x:auto;">
+<table class="ingredient-table">
+<thead>
+<tr><th>Parametr</th><th>Změna</th><th>Riziko</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Dávka ×2</strong></td>
+<td>Zdvojení gramáží; chladit ve 2 oddělených mísách; péct ve 2 sériích</td>
+<td>Druhá série na horkém plechu — vychladit 10 min a znovu vymazat formu; jinak přilepení a přepečení okrajů</td>
+</tr>
+<tr>
+<td><strong>Dávka ×0,5</strong></td>
+<td>NEDOPORUČENO</td>
+<td>Příliš malé množství pro rovnoměrné ruční míchání; poměry hůř kontrolovatelné; minimum = celý recept</td>
+</tr>
+<tr>
+<td><strong>Hmota připravena den předem</strong></td>
+<td>Bez úpravy receptury; hmota v lednici 1–4 dny</td>
+<td>Hmota může mírně ztmavnout — OK, neznamená zkažení. Déle = výraznější chuť (hydratace mouky).</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h3>6B. Skladování a trvanlivost</h3>
+
+<div class="tip">
+<div class="tip-label">Surová hmota (batter)</div>
+<p style="margin:0;"><strong>Lednice, zakrytá kontaktní fólií:</strong> Max 4 dny. Výhoda: připravit dopředu a péct po částech. Hmota může mírně ztmavnout — normální, nevadí chuti.</p>
+</div>
+
+<div class="tip">
+<div class="tip-label">Upečené madeleines</div>
+<p style="margin:0;"><strong>Vzduchotěsná nádoba, pokojová teplota:</strong> Nejlepší tentýž den; max 2 dny. Křupavost okrajů mizí rychle po vychladnutí — madeleines jsou určeny k okamžité konzumaci (FCI: „serve warm or within a few hours"). Druhý den jsou stále dobré, ale jemnější.</p>
+</div>
+
+<div class="tip">
+<div class="tip-label">Zmrazené madeleines</div>
+<p style="margin:0;"><strong>Mrazák, vzduchotěsný sáček:</strong> Max 1 měsíc. Rozmrazit při pokojové teplotě 15 min nebo v troubě 150 °C (horkovzduch) / 3 min pro částečné obnovení křupavosti okrajů.</p>
+</div>
+
+<p style="text-align:right;"><a href="#toc" style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink-m); text-decoration:none;">↑ obsah</a></p>
+
+
+<!-- ═══════════════════════════════════════ -->
+<!-- BLOK 7 — TRÉNINKOVÝ PROTOKOL          -->
+<!-- ═══════════════════════════════════════ -->
+<h2 id="blok7">Blok 7 — Tréninkový protokol</h2>
+
+<div class="tldr">
+<div class="tldr-label">Přečti tohle a máš 80 %</div>
+<p>Mastery ~4 hodiny aktivní práce (3–5 pokusů). Prerequisit: přesná váha (NEZBYTNÉ). Cíl pokus 1: zvládnout míchání do spojení + repos min. 1h. Cíl pokus 3: bosse u min. 8/12. Cíl pokus 5: 12/12, rovnoměrné hnědnutí, press test spolehlivý.</p>
+</div>
+
+<h3>7A. Předpoklady</h3>
+
+<p><strong>NEZBYTNÉ: přesné vážení surovin (kuchyňská váha 1 g)</strong> — Poměr 1:1 máslo:mouka je kritický; odhadování objemem vede k selhání.</p>
+<p><strong>Doporučeno: příprava forem (vymazání + poprášení)</strong> — Jednoduché, ale bez zvládnutí vede k přilepení madeleines a frustraci.</p>
+
+<div class="tip">
+<div class="tip-label">Odhad zvládnutí + co se odemkne</div>
+<p><strong>~4 hodiny aktivní práce</strong> (3–5 pokusů po 45–60 min + čas repos).</p>
+<p style="margin:0;">Po zvládnutí odemkneš: <strong>financiers, visitandines, petits fours moelleux, mini bundt cakes</strong> — celá rodina produktů pracujících s podobným principem tukové hmoty pečené na vyšší teplotě.</p>
+</div>
+
+<h3>7B. Postup po pokusech</h3>
+
+<h4>Pokus 1 — cíl</h4>
+<p>Cíl: zvládnout míchání do spojení (ne přemíchat) + první repos minimum 1h. Neřeš estetiku — rozříznout 1 kus pro kontrolu crumbu.</p>
+
+<h4>Pokus 3 — cíl</h4>
+<p>Cíl: bosse u min. 8 z 12 kusů. Konzistentní plnění na ¾. Zaznamenat čas repos a čas pečení.</p>
+
+<h4>Pokus 5 — cíl</h4>
+<p>Cíl: bosse u všech 12 kusů, rovnoměrné hnědnutí, press test spolehlivý. Zkusit citronovou i pomerančovou verzi a poznat rozdíl.</p>
+
+<h3>7C. Checklist zvládnutí</h3>
+<p>☐ Bosse viditelná z profilu u min. 8/12 kusů<br>
+☐ <span class="term" data-tooltip="Diagnostický test propečenosti ihned po vytažení z trouby: lehce stlačit střed prstem. Pružná odpověď = hotové. Deformace bez návratu = péct dalších 1 minutu." tabindex="0">Press test</span>: střed pružný po 7 minutách<br>
+☐ Crumb: jemně pórovitý, vlhký — ne suchý nebo gumový (rozříznout 1 kus)<br>
+☐ Okraje zlatohnědé, střed světlejší — žádné přilepení k formě</p>
+
+<h3>7D. Tréninkové cíle</h3>
+
+<div class="ex">
+<div class="ex-label">Tréninkový cíl 1</div>
+<p><strong>Žádná bosse — madeleines jsou ploché</strong></p>
+<p><strong>Kritérium úspěchu:</strong> Po 3× za sebou (pečení A, B, C) bosse viditelná z profilu u min. 8/12 kusů v každém běhu. Zaznamenat čas repos a teplotu trouby pro každý pokus.</p>
+<p style="margin:0;"><strong>Tip:</strong> Prvních 5 pokusů dělat vždy repos přes noc — eliminuj proměnnou. Zaznamenat čas vložení do trouby vs. čas vyndání z lednice (maximálně 5 min mezi nimi).</p>
+</div>
+
+<div class="ex">
+<div class="ex-label">Tréninkový cíl 2</div>
+<p><strong>Suché, drobivé madeleines</strong></p>
+<p><strong>Kritérium úspěchu:</strong> Rozříznout 1 madeleine po vychladnutí — střed vlhký a jemně pórovitý, ne drobivý. 3× za sebou správná textura.</p>
+<p style="margin:0;"><strong>Tip:</strong> Nastavit časovač na 7 min a udělat press test. Pokud pochybuješ — raději 1 minuta míň než víc. Zaznamenat odchylku od 7 min pro svou troubu.</p>
+</div>
+
+<p style="text-align:right;"><a href="#toc" style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink-m); text-decoration:none;">↑ obsah</a></p>
+
+
+<!-- ═══════════════════════════════════════ -->
+<!-- GLOSÁŘ                                 -->
+<!-- ═══════════════════════════════════════ -->
+<h2 id="glosar">Glosář</h2>
+
+<dl class="glossary">
+<dt>bosse</dt>
+<dd>Charakteristický vypouklý hrbolek na vrcholu madeleine vzniklý teplotním šokem při pečení. Uznávaný vizuální indikátor kvality v CAP Pâtissier a FCI — bosse musí být „viditelná z profilu" (FCI, Session 9). Synonymum: hrbolek, boule.</dd>
+
+<dt>repos</dt>
+<dd>Povinná fáze chlazení těstíčka (minimum 1 hodina) v lednici před pečením. Umožní máslu ztuhnout a rovnoměrně se distribuovat — fyzický předpoklad vzniku bosse. Zkrácení nebo vynechání repos je nejčastější příčina neúspěchu.</dd>
+
+<dt>beurre noisette</dt>
+<dd>Máslo zahřáté do zlatohnědé barvy (140–150 °C) s charakteristickou ořechovou vůní způsobenou Maillardovou reakcí mléčných bílkovin. Alternativa k roztavenému máslu pro intenzivnější chuťový profil madeleines (varianta 2).</dd>
+
+<dt>petits fours moelleux</dt>
+<dd>Kategorie malého pečiva s jemnou, vlhkou texturou a výraznou máslovou chutí. V CAP Pâtissier zahrnuje madeleines, financiers a visitandines v Pôle 1 RC1.2 (gâteaux de voyage).</dd>
+
+<dt>gâteaux de voyage</dt>
+<dd>Kategorie francouzského pečiva s dostatečnou trvanlivostí na přepravu bez chlazení. Charakteristické vyšším obsahem tuku a cukru. Madeleines, financiers a cannelés jsou klasičtí reprezentanti. V CAP Pâtissier RC1.2 Pôle 1.</dd>
+
+<dt>réaction de Maillard / Maillardova reakce</dt>
+<dd>Chemická reakce redukujících cukrů s aminokyselinami při teplotách nad 140 °C. Vytváří zlatohnědou barvu a stovky aromatických sloučenin — typický máslový aroma madeleines. Intenzita roste s teplotou a časem (Figoni, <em>How Baking Works</em>, 2010).</dd>
+
+<dt>mise en place</dt>
+<dd>Kompletní příprava všech surovin, nářadí a forem před začátkem práce. U madeleines obzvlášť důležité — hmota čeká krátce po vyndání z lednice a musí okamžitě do trouby.</dd>
+
+<dt>press test</dt>
+<dd>Diagnostický test propečenosti ihned po vytažení z trouby: lehce stlačit střed prstem. Pružná odpověď (vrátí se zpět) = hotové. Deformace bez návratu = péct dalších 1 minutu. Doporučuje FCI Session 9.</dd>
+
+<dt>batter (tekuté těstíčko)</dt>
+<dd>Řídká nebo polořídká směs surovin s vyšším obsahem tekutiny než klasické těsto. Madeleinové těstíčko je hustší batter (někdy označovaný „thick batter"), téměř na hranici polotuhy konzistence po repos.</dd>
+
+<dt>zest (citrusová kůra, nastrouhaná)</dt>
+<dd>Nastrouhaná barevná část citrusové kůže (pomeranč nebo citron) obsahující esenciální oleje. Přidávat do vychladlého másla nebo suchých surovin — nikdy do horkého másla nad 50 °C (aroma se spaluje). Jen zbarvená část — bílá (albedo) je hořká.</dd>
+</dl>
+
+<p style="text-align:right;"><a href="#toc" style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink-m); text-decoration:none;">↑ obsah</a></p>
+
+
+<!-- ═══════════════════════════════════════ -->
+<!-- ZDROJOVÝ MANIFEST                      -->
+<!-- ═══════════════════════════════════════ -->
+<div class="verification-log no-print" style="margin-top:40px; padding:20px; background:var(--cream-deep); border-radius:8px; font-size:13px;">
+<h3 style="color:var(--ink-m);">Zdrojový manifest</h3>
+<p><strong>GS recept:</strong> FCI — The Fundamental Techniques of Classic Pastry Arts (2009), Session 9: Petits Fours — Madeleines. Režim B (Adaptovaný). Gramáže a poměry převzaty přímo z FCI (125g cukr, 110g mouka, 3g prášek, 1g sůl, 5g kůra, 100g vejce, 110g máslo). Adaptace: teplota 200 °C horkovzduch (z FCI 205 °C, generic_oven, mora_545.verified=false); délka pečení 7–8 min (FCI ~7 min); citronová kůra jako klasická alternativa k pomerančové dokumentována v Rinsky p. 180.</p>
+
+<table>
+<tr><th>Blok</th><th>Claim</th><th>Zdroj</th><th>Confidence</th><th>Poznámka</th></tr>
+<tr>
+<td>2A</td>
+<td>Gramáže: 125g cukr, 110g mouka, 3g prášek, 1g sůl, 5g kůra, 100g vejce, 110g máslo</td>
+<td>FCI — Fundamental Techniques of Classic Pastry Arts (2009), Session 9. ISBN 9781584798033.</td>
+<td>převzato</td>
+<td>Vejce 100g = odhad (FCI uvádí „2 large eggs" bez gramáže; 2 × 50g bez skořápky US large egg).</td>
+</tr>
+<tr>
+<td>3A</td>
+<td>Teplota pečení 200 °C horkovzduch, předehřev 20 min</td>
+<td>Adaptace z FCI 205 °C horkovzduch (generic_oven box — mora_545.verified=false)</td>
+<td>adaptováno</td>
+<td>FCI = 205 °C. Sníženo na 200 °C jako bezpečná adaptace pro domácí troubu. Doporučeno ověřit teploměrem.</td>
+</tr>
+<tr>
+<td>3A</td>
+<td>Délka pečení 7–8 minut (standard 12-dutin plech)</td>
+<td>FCI Session 9 (GS: „~7 min"); rozšířeno na 7–8 min pro domácí troubu</td>
+<td>adaptováno</td>
+<td>CIA B&amp;P uvádí ~10 min pro mini madeleines (3 cm) — nesrovnatelné se standard formičkami.</td>
+</tr>
+<tr>
+<td>3A, 4</td>
+<td>Citronová kůra jako plnohodnotná alternativa k pomerančové</td>
+<td>Rinsky, The Pastry Chef's Companion (2008), p. 180</td>
+<td>převzato</td>
+<td>Obě citrusové varianty historicky autentické. GS = pomeranč (FCI); citron = klasičtější pro tradiční styl.</td>
+</tr>
+<tr>
+<td>technology_box</td>
+<td>generic_oven typ, 200 °C horkovzduch, source_url=null</td>
+<td>mora_545.verified=false — žádný specifický Mora 545 + madeleines URL nalezen</td>
+<td>adaptováno</td>
+<td>Pokud Josefina vlastní teploměr do trouby, doporučit ověřit nastavení — Mora 545 může mít odchylku ±10 °C.</td>
+</tr>
+<tr>
+<td>1B, 3E</td>
+<td>Teplotní šok (repos + horká trouba) jako primární mechanismus bosse</td>
+<td>Figoni, How Baking Works, 3rd ed. (2010); bakinglikeachef.com/secrets-of-the-madeleine-hump/</td>
+<td>převzato</td>
+<td>Označeno jako „robustní empirické pravidlo" v ResearchBrief. FCI Session 9 potvrzuje repos jako klíčový krok.</td>
+</tr>
+<tr>
+<td>section_0</td>
+<td>Rubric kritéria z CAP Pâtissier RC1.2 + FCI „Evaluating Your Success" Session 9</td>
+<td>CAP Pâtissier RNCP 12049 (francecompetences.fr); FCI Session 9, p. 472–473</td>
+<td>adaptováno</td>
+<td>t1_availability=partial — adaptace scope CAP RC1 + FCI kritérií, ne přímý scrape veřejného PDF. C3 condition respektována.</td>
+</tr>
+</table>
+</div>
+
+</div><!-- /page -->
+</body>
+</html>
