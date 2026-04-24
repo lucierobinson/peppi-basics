@@ -104,14 +104,19 @@ const PREFLIGHT_CODE = `
 //
 const CONTENT_SETUP_CODE = `
 (async () => {
-  const BASE = "https://raw.githubusercontent.com/lucierobinson/peppi-basics/main/review-packages/example-v0_1_0";
-  const [prompt, card, rubric] = await Promise.all([
+  const PACKAGE_SLUG = window.__PACKAGE_OVERRIDE || "example-v0_1_0";
+  const BASE = \`https://raw.githubusercontent.com/lucierobinson/peppi-basics/main/review-packages/\${PACKAGE_SLUG}\`;
+  const [prompt, card] = await Promise.all([
     fetch(BASE + "/reviewer-prompt.md").then(r => r.text()),
     fetch(BASE + "/card.html").then(r => r.text()),
-    fetch(BASE + "/rubric.md").then(r => r.text()),
   ]);
+  let rubric = "";
+  try {
+    const r = await fetch(BASE + "/rubric.md");
+    if (r.ok) rubric = await r.text();
+  } catch {}
   window.__reviewContent = { prompt, card, rubric };
-  return { prompt_chars: prompt.length, card_chars: card.length, rubric_chars: rubric.length };
+  return { package_slug: PACKAGE_SLUG, prompt_chars: prompt.length, card_chars: card.length, rubric_chars: rubric.length };
 })();
 `;
 
@@ -128,10 +133,11 @@ const CONTENT_SETUP_CODE = `
 const _CALL_REVIEWER = `
 async function callReviewer(slug, modelPref, identifyAs) {
   const { prompt, card, rubric } = window.__reviewContent;
+  const rubricSection = rubric.trim() ? ["## REVIEW RUBRIC", "", rubric, "", "---", ""] : [];
   const query_str = [
     prompt, "", "---", "",
     "## CARD TO REVIEW", "", card, "", "---", "",
-    "## REVIEW RUBRIC", "", rubric, "", "---", "",
+    ...rubricSection,
     "IDENTIFY YOURSELF AS: " + identifyAs,
   ].join("\\n");
 
