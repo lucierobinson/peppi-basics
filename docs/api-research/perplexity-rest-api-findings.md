@@ -221,3 +221,106 @@ pplx_alpha       + query "say pong" → HTTP 200, stream >45s    ✅ (no timeout
 ---
 
 *Výzkum provedl Claude Code session 2026-04-20. Endpoint ověřen live voláními z Chrome MCP.*
+
+---
+
+## Update 2026-04-24: Model identifier verification
+
+### Critical finding: `claude2` ≠ Claude
+
+Testing revealed that `claude2` identifier in `model_preference` routes to Grok 4.1
+(backend: `grok41nonreasoning`), not to any Claude model. The UI label in
+`/rest/models/config` says "Claude Sonnet 4.0" but the routing is broken or
+intentionally remapped by Perplexity.
+
+**Correct identifier for Claude Sonnet 4.6: `claude46sonnet`**
+
+Implication: the original panel (research doc above) had Grok 4.1 twice (via `claude2`
+and `grok`) and Claude zero times. Fixed in production spec.
+
+### New endpoint discovered: `/rest/models/config`
+
+`GET https://www.perplexity.ai/rest/models/config?config_schema=v1` returns the full
+catalog of available models with labels, providers, and internal routing keys. This
+should be called at the start of every production run to verify that identifiers still
+map to expected models. Perplexity may remap backend routing at any time without
+changing UI labels.
+
+Example response structure (abridged):
+
+```json
+{
+  "config_schema": "v1",
+  "models": {
+    "claude46sonnet": { "label": "Claude Sonnet 4.6", "provider": "ANTHROPIC", "mode": "search" },
+    "gpt54":          { "label": "GPT-5.4",           "provider": "OPENAI",    "mode": "search" },
+    "gemini31pro_high": { "label": "Gemini 3.1 Pro Thinking", "provider": "GOOGLE", "mode": "search" }
+  }
+}
+```
+
+Notable entries found in the catalog (2026-04-24):
+
+| Key | Label | Provider | Notes |
+|-----|-------|----------|-------|
+| `claude46sonnet` | Claude Sonnet 4.6 | ANTHROPIC | ✅ Use this for Claude reviewer |
+| `claude2` | Claude Sonnet 4.0 | ANTHROPIC | ❌ Routes to `grok41nonreasoning`, do not use |
+| `claude47opus` | Claude Opus 4.7 | ANTHROPIC | Max-only, unavailable on Pro |
+| `gpt54` | GPT-5.4 | OPENAI | ✅ |
+| `gemini31pro_high` | Gemini 3.1 Pro Thinking | GOOGLE | ✅ |
+| `gemini31pro_low` | Gemini 3.1 Pro | GOOGLE | Removed from panel (redundant) |
+| `nv_nemotron_3_super` | Nemotron 3 Super | NVIDIA | ✅ |
+| `pplx_alpha` | Deep research | PERPLEXITY | ✅ Confirmed as Sonar DR |
+| `grok` | Grok 3 Beta (label stale) | XAI | ✅ Actually routes to `grok41nonreasoning` |
+| `kimik26instant` | Kimi K2.6 | MOONSHOT_AI | Candidate for future panel expansion |
+| `experimental` | Sonar | PERPLEXITY | Basic Sonar (no deep research) |
+
+### `search_focus` affects `displayModel` behavior
+
+With `search_focus: "internet"` (default web-search mode), `displayModel` in the SSE
+response echoes the request's `model_preference`. Models also perform web search before
+answering, which can contaminate self-identification — e.g., a model finds a news
+article "Perplexity now uses Grok 4.1" and reports itself as Grok.
+
+With `search_focus: "writing"` (no web search), `displayModel` reveals the actual
+backend routing key (e.g., `grok41nonreasoning` for `claude2`). This is the reliable
+mode for diagnostics AND for production review workflows where the reviewer must
+evaluate only the submitted card content, not web search results.
+
+**Production recommendation: use `search_focus: "writing"` for all review panel calls.**
+
+### Verified panel composition (2026-04-24)
+
+| # | API path | Identifier / URL | Model | Verification status |
+|---|----------|-----------------|-------|---------------------|
+| 1 | REST | `claude46sonnet` | Claude Sonnet 4.6 | ✅ displayModel confirmed |
+| 2 | REST | `gpt54` | GPT-5.4 | ✅ Partial self-ID + displayModel |
+| 3 | REST | `gemini31pro_high` | Gemini 3.1 Pro Thinking | ⚠️ Self-ID blocked; routing confirmed via config + provider |
+| 4 | REST | `nv_nemotron_3_super` | Nemotron 3 Super | ✅ Clean self-ID |
+| 5 | REST | `pplx_alpha` | Sonar Deep Research | ✅ Confirmed as DR via config |
+| 6 | REST | `grok` | Grok 4.1 | ⚠️ Routes to `grok41nonreasoning`; config label "Grok 3 Beta" is stale |
+| 7 | Copy-paste | https://gemini.google.com | Gemini 3.1 Pro (direct) | Manual — outside REST scope |
+
+### Descoped models
+
+- **`gemini31pro_low`** — redundant with `gemini31pro_high`, removed from panel.
+- **`kimik26instant` (Kimi K2.6)** — available via REST, but self-identifies as "Sonar"
+  (heavy wrapper wrapping). Candidate for future panel expansion after standalone
+  evaluation; NOT in current production panel.
+- **`claude47opus` (Claude Opus 4.7)** — Max-only, not accessible on Pro plan.
+- **Grok direct (grok.com)** — removed. `grok` via REST already routes to Grok 4.1.
+
+### Newer Grok identifiers in config
+
+`/rest/models/config` reveals additional Grok keys not yet used as direct
+`model_preference` values in our panel:
+
+- `grok41nonreasoning` — what `grok` routes to today
+- `grok41reasoning` — thinking variant
+- `grok4`, `grok4nonthinking` — previous Grok 4 variants
+
+For now, `grok` is the Perplexity-blessed stable alias.
+
+---
+
+*Update provedl Claude Code session 2026-04-24. Identity verification přes Chrome MCP.*
