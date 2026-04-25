@@ -3,7 +3,7 @@ session: handover-attachment-fix
 date_handover: 2026-04-25
 phase: cesta-1-s3-upload-implementation
 predecessor_session: 2026-04-24-review-panel-pilot-and-diagnostic
-status: blocked-on-second-network-capture
+status: ready-for-orchestrator-implementation
 priority: P1
 ---
 
@@ -65,6 +65,8 @@ replikovat tento upload protokol v orchestrátoru.
 
 ## 3. Co potřebujeme zjistit (blocker)
 
+> **VYŘEŠENO 2026-04-25** — viz `docs/api-research/perplexity-upload-protocol.md`
+
 Tři URL, které capture z 2026-04-24 nezískal, protože Chrome MCP zablokoval requesty
 s auth tokeny v query stringu:
 
@@ -93,9 +95,11 @@ s auth tokeny v query stringu:
 
 ---
 
-## 4. Plán implementace (po druhém capture)
+## 4. Plán implementace
 
-Pořadí kroků po získání chybějících URL:
+> Primární zdroj URL a těl requestů: `docs/api-research/perplexity-upload-protocol.md`
+
+Pořadí kroků:
 
 1. **Přidat helper `uploadCardToS3(cardPath)`** do orchestrátoru (nebo jako samostatný modul):
    - Krok A: POST na presign endpoint → získat `s3_url` + `upload_uuid`
