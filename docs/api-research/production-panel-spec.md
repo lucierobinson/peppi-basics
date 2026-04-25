@@ -14,7 +14,7 @@ Seven reviewers, executed for every card version review session.
 | # | `model_preference` | Identify as | Provider |
 |---|---|---|---|
 | 1 | `claude46sonnetthinking` | Claude Sonnet 4.6 (Thinking) | Anthropic |
-| 2 | `gpt54` | GPT-5.4 | OpenAI |
+| 2 | `gpt54_thinking` | GPT-5.4 (Thinking) | OpenAI |
 | 3 | `gemini31pro_high` | Gemini 3.1 Pro Thinking (Perplexity) | Google (via Perplexity) |
 | 4 | `nv_nemotron_3_super` | Nemotron 3 Super | NVIDIA |
 | 5 | `pplx_alpha` | Sonar Deep Research | Perplexity |
@@ -22,6 +22,11 @@ Seven reviewers, executed for every card version review session.
 
 > **Note (2026-04-24):** Claude identifier updated from `claude46sonnet` to `claude46sonnetthinking` (Thinking variant).
 > This matches what the Perplexity UI sends when the user selects "Claude Sonnet 4.6" — confirmed via network capture.
+>
+> **Note (2026-04-25):** GPT identifier updated from `gpt54` to `gpt54_thinking` (Thinking variant).
+> `gpt54` and `gpt54_thinking` are distinct entries in `/rest/models/config`. `gpt54_thinking`
+> is the backend that supports S3 attachments. `gpt54` does NOT. Confirmed via fourth capture
+> (Robinson manually enabled Thinking mode in UI). See `docs/api-research/three-capture-cross-check.md`.
 
 ### Copy-paste path (1 reviewer)
 
@@ -170,7 +175,7 @@ expected providers:
 | Identifier | Expected provider |
 |---|---|
 | `claude46sonnetthinking` | ANTHROPIC |
-| `gpt54` | OPENAI |
+| `gpt54_thinking` | OPENAI |
 | `gemini31pro_high` | GOOGLE |
 | `nv_nemotron_3_super` | NVIDIA |
 | `pplx_alpha` | PERPLEXITY |
