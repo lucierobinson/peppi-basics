@@ -268,7 +268,13 @@ async function callReviewer(slug, modelPref, identifyAs) {
   try {
     const resp = await fetch("https://www.perplexity.ai/rest/sse/perplexity_ask", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "x-perplexity-request-endpoint": "https://www.perplexity.ai/rest/sse/perplexity_ask",
+        "x-perplexity-request-reason": "perplexity-query-state-provider",
+        "x-perplexity-request-try-number": "1",
+        "x-request-id": body.params.frontend_uuid,
+      },
       body: JSON.stringify(body),
     });
     if (!resp.ok) {
