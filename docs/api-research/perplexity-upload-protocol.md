@@ -41,7 +41,7 @@ ne 5 jak se předpokládalo.
     "files": {
       "<client-generated-uuid>": {
         "filename": "card.html",
-        "content_type": "",
+        "content_type": "text/html",
         "source": "default",
         "file_size": 29060,
         "force_image": false,
@@ -51,7 +51,7 @@ ne 5 jak se předpokládalo.
   }
   ```
   - Key in `files` dict = any UUID generated client-side (not reused later — Perplexity assigns its own `file_uuid`)
-  - `content_type`: empty string `""` — Perplexity detects type server-side
+  - `content_type`: MIME type odpovídající příponě souboru — `"text/html"` pro `.html`, `""` pro `.md` (UI posílá prázdný string pro Markdown). Potvrzeno čtvrtým capture 2026-04-25 (cross-check: `docs/api-research/three-capture-cross-check.md`).
   - `file_size`: byte count of the file to upload
 - **Response (200):**
   ```json
@@ -62,9 +62,9 @@ ne 5 jak se předpokládalo.
         "s3_object_url": "https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/<user_id>/<file_uuid>/<filename>",
         "fields": {
           "acl": "private",
-          "Content-Type": "",
+          "Content-Type": "text/html",
           "tagging": "<Tagging>...</Tagging>",
-          "x-amz-meta-is_text_only": "false",
+          "x-amz-meta-is_text_only": "true",
           "key": "web/direct-files/attachments/<user_id>/<file_uuid>/<filename>",
           "AWSAccessKeyId": "<aws-key>",
           "x-amz-security-token": "<aws-session-token>",
@@ -95,9 +95,9 @@ ne 5 jak se předpokládalo.
   - No Perplexity auth headers — S3 authenticated via policy/signature in form fields
 - **Form fields (order matters for S3 policy compliance):**
   1. `acl` = `"private"` (from Step A `fields.acl`)
-  2. `Content-Type` = `""` (from Step A `fields["Content-Type"]`)
+  2. `Content-Type` = `"text/html"` (from Step A `fields["Content-Type"]`)
   3. `tagging` = `"<Tagging>...</Tagging>"` (from Step A `fields.tagging`)
-  4. `x-amz-meta-is_text_only` = `"false"` (from Step A `fields["x-amz-meta-is_text_only"]`)
+  4. `x-amz-meta-is_text_only` = `"true"` (from Step A `fields["x-amz-meta-is_text_only"]`)
   5. `key` = `"web/direct-files/attachments/..."` (from Step A `fields.key`)
   6. `AWSAccessKeyId` = `"..."` (from Step A `fields.AWSAccessKeyId`)
   7. `x-amz-security-token` = `"..."` (from Step A `fields["x-amz-security-token"]`)
@@ -188,6 +188,19 @@ Zachycené tělo ask callu s přílohou:
 }
 ```
 
+**Request headers (Step E ask call):**
+
+- `content-type: application/json`
+- `x-perplexity-request-endpoint: https://www.perplexity.ai/rest/sse/perplexity_ask`
+- `x-perplexity-request-reason: perplexity-query-state-provider`
+- `x-perplexity-request-try-number: 1`
+- `x-request-id: <frontend_uuid>` (= totéž UUID co `params.frontend_uuid`)
+
+Potvrzeno pro Claude, GPT-5.4, Nemotron — uniformní UI chování (cross-check 2026-04-25).
+Původní protocol doc tato headers nezdokumentoval — opraveno čtvrtým capture.
+
+---
+
 **Srovnání s production-panel-spec.md:**
 
 | Pole | Spec (původní) | Zachyceno | Stav |
@@ -245,10 +258,6 @@ chybí. Klíčové povinné: `attachments`, `skip_search_enabled`, `version`, `d
 
 ## 8. Otevřené otázky
 
-- **`content_type: ""`:** Perplexity posílá prázdný string i pro `.md` soubor. Pro `.html`
-  by možná bylo správnější `text/html` — testovat zda server přijme nebo odmítne.
-- **`x-amz-meta-is_text_only: "false"`:** Pro čisté HTML/MD soubory by mohlo být `"true"`.
-  Hodnota pochází z Step A response — orchestrátor ji kopíruje jak přijde.
 - **`supported_block_use_cases`:** Velký seznam feature flags. Neznámo zda jejich vynechání
   způsobí jiné chování (např. chybějící `answer_modes` může ovlivnit formát odpovědi).
   Doporučeno: zkopírovat seznam celý z capture.
