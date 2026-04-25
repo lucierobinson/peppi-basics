@@ -13,12 +13,15 @@ Seven reviewers, executed for every card version review session.
 
 | # | `model_preference` | Identify as | Provider |
 |---|---|---|---|
-| 1 | `claude46sonnet` | Claude Sonnet 4.6 | Anthropic |
+| 1 | `claude46sonnetthinking` | Claude Sonnet 4.6 (Thinking) | Anthropic |
 | 2 | `gpt54` | GPT-5.4 | OpenAI |
 | 3 | `gemini31pro_high` | Gemini 3.1 Pro Thinking (Perplexity) | Google (via Perplexity) |
 | 4 | `nv_nemotron_3_super` | Nemotron 3 Super | NVIDIA |
 | 5 | `pplx_alpha` | Sonar Deep Research | Perplexity |
 | 6 | `grok` | Grok 4.1 | xAI |
+
+> **Note (2026-04-24):** Claude identifier updated from `claude46sonnet` to `claude46sonnetthinking` (Thinking variant).
+> This matches what the Perplexity UI sends when the user selects "Claude Sonnet 4.6" — confirmed via network capture.
 
 ### Copy-paste path (1 reviewer)
 
@@ -53,10 +56,90 @@ For each REST call, use this JSON body:
 }
 ```
 
-> **`search_focus: "writing"` is mandatory.** Reviewers must evaluate based on the
-> provided card content only — not web search results. Using `"internet"` mode causes
-> web search contamination (models find news about AI models and report incorrect
-> self-identities).
+> **`search_focus: "writing"` is used in the current orchestrator** as an attempt to suppress
+> web search. However, this conclusion was based on incomplete observation — see
+> **[Known parameter inaccuracies (2026-04-24)](#known-parameter-inaccuracies-2026-04-24)** below
+> for the correction. The actual "no web search" toggle confirmed via UI network capture is
+> `skip_search_enabled: true`.
+
+---
+
+## Real attachment workflow (target architecture)
+
+> **TARGET — not yet implemented.** This section documents the upload flow observed via
+> network capture of Robinson's manual UI workflow (2026-04-24). The current orchestrator
+> (`scripts/run-review-panel.js`) does NOT use this flow — it inlines the full card HTML
+> in `query_str`, which exhausts the shared input/output budget for some models.
+> See handover: `_handoff/2026-04-25-review-pipeline-attachment-fix.md`.
+
+The Perplexity UI uploads `card.html` to S3 as a separate step before the ask call, then
+references it via `params.attachments`. This keeps `query_str` at ~16 kB (reviewer-prompt only),
+leaving full output budget for the review text.
+
+### Three-step upload flow (before `perplexity_ask` call)
+
+**Step A — Presign request**
+- Endpoint: UNKNOWN (blocked by Chrome MCP auth-token check in URL — needs second capture)
+- Returns: presigned S3 upload URL + `upload_uuid`
+
+**Step B — S3 upload**
+- PUT request directly to S3 presigned URL (blob upload of `card.html`)
+- No Perplexity auth header — direct S3 PUT
+
+**Step C — File register**
+- Endpoint: UNKNOWN (blocked — needs second capture)
+- Sends: filename, content_type (`text/html`), file_size metadata, `upload_uuid`
+- Returns: `processed_uuid` (Perplexity-side file handle)
+
+**Step D — Processing subscribe**
+- POST to `/rest/sse/attachment_processing/subscribe` with `processed_uuid`
+- Wait for SSE event confirming processing complete
+
+**Ask call (after upload complete)**
+
+```json
+{
+  "query_str": "<reviewer-prompt only, ~16 kB>",
+  "params": {
+    "model_preference": "<model identifier>",
+    "mode": "copilot",
+    "attachments": ["<s3_url_from_step_b>"],
+    "dsl_query": "<same as query_str>",
+    "search_focus": "internet",
+    "skip_search_enabled": true,
+    "use_schematized_api": true,
+    "version": "2.18",
+    "language": "en-US",
+    "timezone": "Europe/Prague",
+    "frontend_uuid": "<random UUID>",
+    "frontend_context_uuid": "<random UUID>"
+  }
+}
+```
+
+> Step A and Step C URLs are the current implementation blocker. Once captured,
+> implementation proceeds as described in the handover doc.
+
+---
+
+## Known parameter inaccuracies (2026-04-24)
+
+The following items in this spec were incorrect as of the 2026-04-24 network capture:
+
+1. **`search_focus: "writing"` does NOT mean "no web search."** That conclusion was based
+   on incomplete observation of a single field. The Perplexity UI uses `search_focus: "internet"`
+   for normal assistant conversations and still produces web-search-free responses when
+   `skip_search_enabled: true` is set. The correct "no web search" toggle is
+   **`skip_search_enabled: true`** in `params`.
+
+2. **Until the orchestrator is rewritten with the full S3 attachment flow** (Cesta 1),
+   the current production script may behave unpredictably with respect to web search
+   activation — `search_focus: "writing"` may or may not suppress search across all
+   six model backends.
+
+3. **`params.version`, `params.dsl_query`, `params.send_back_text_in_streaming_api`,
+   and `params.attachments`** are present in live UI requests but absent from the current
+   orchestrator body. Their omission may contribute to behavioral differences.
 
 ---
 
@@ -86,7 +169,7 @@ expected providers:
 
 | Identifier | Expected provider |
 |---|---|
-| `claude46sonnet` | ANTHROPIC |
+| `claude46sonnetthinking` | ANTHROPIC |
 | `gpt54` | OPENAI |
 | `gemini31pro_high` | GOOGLE |
 | `nv_nemotron_3_super` | NVIDIA |
@@ -142,7 +225,7 @@ outer: while (true) {
 
 | Reviewer | Expected time |
 |---|---|
-| `claude46sonnet` | ~2–5 s |
+| `claude46sonnetthinking` | ~2–5 s |
 | `gpt54` | ~5–10 s |
 | `gemini31pro_high` | ~10–15 s |
 | `nv_nemotron_3_super` | ~5–10 s |
