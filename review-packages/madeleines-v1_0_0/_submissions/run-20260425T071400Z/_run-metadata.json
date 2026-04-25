@@ -1,0 +1,24 @@
+{
+  "run_id": "run-20260425T071400Z",
+  "package_slug": "madeleines-v1_0_0",
+  "date": "2026-04-25",
+  "orchestrator_version": "v2-browser-s3-attachment",
+  "s3_attachment": true,
+  "card_size_bytes": 73530,
+  "upload_steps": ["A:OK", "B:HTTP204", "D:OK"],
+  "query_count_before": 285,
+  "reviewers": [
+    { "slug": "claude-sonnet-46",    "model_preference": "claude46sonnetthinking", "status": "OK", "chars": 14849, "durationMs": 344377, "attachment_used": true,  "timestamp": "2026-04-25T07:18:15.748Z" },
+    { "slug": "gpt-54",              "model_preference": "gpt54",                  "status": "OK", "chars": 1618,  "durationMs": 22856,  "attachment_used": false, "timestamp": "2026-04-25T07:14:04.885Z", "note": "attachment not supported by model" },
+    { "slug": "gemini-31-pro-high",  "model_preference": "gemini31pro_high",       "status": "OK", "chars": 18162, "durationMs": 78019,  "attachment_used": true,  "timestamp": "2026-04-25T07:15:00.049Z" },
+    { "slug": "grok",                "model_preference": "grok",                   "status": "OK", "chars": 8387,  "durationMs": 28784,  "attachment_used": true,  "timestamp": "2026-04-25T07:14:10.815Z" },
+    { "slug": "nemotron-3-super",    "model_preference": "nv_nemotron_3_super",    "status": "OK", "chars": 1587,  "durationMs": 34545,  "attachment_used": false, "timestamp": "2026-04-25T07:14:16.577Z", "displayModel": "gpt51", "note": "attachment not supported, remapped to gpt51" },
+    { "slug": "sonar-deep-research", "model_preference": "pplx_alpha",             "status": "OK", "chars": 36670, "durationMs": 617901, "attachment_used": false, "timestamp": "2026-04-25T07:23:59.936Z", "note": "no direct card access, review from web research + prompt context" }
+  ],
+  "notes": [
+    "claude46sonnetthinking, gemini31pro_high, grok: successfully read S3 attachment",
+    "gpt54, nv_nemotron_3_super: S3 attachment not supported — responded 'no access to attachments'",
+    "pplx_alpha (Sonar): claimed no attachment access but produced extensive review from web research and prompt context",
+    "Two concurrent Claude calls ran (solo test + fire-all-6): 344s call produced 14849 chars and overwrote 43s/914-char result"
+  ]
+}

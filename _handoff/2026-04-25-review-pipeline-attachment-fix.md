@@ -3,7 +3,8 @@ session: handover-attachment-fix
 date_handover: 2026-04-25
 phase: cesta-1-s3-upload-implementation
 predecessor_session: 2026-04-24-review-panel-pilot-and-diagnostic
-status: ready-for-orchestrator-implementation
+status: completed
+completed_date: 2026-04-25
 priority: P1
 ---
 
@@ -188,3 +189,37 @@ URLs that Chrome MCP blocked during the 2026-04-24 capture. Coordinate with Robi
 the manual workflow step. Do not start orchestrator implementation until upload URLs are
 confirmed.
 ```
+
+---
+
+## 8. Výsledek (2026-04-25) — COMPLETED
+
+Handover byl vyřešen browser-based orchestrátorem (Chrome MCP `javascript_tool`), bez Node.js fetch (blokovaný Cloudflare). Upload protokol Steps A+B+D implementován přímo v browseru.
+
+### Co bylo hotovo
+
+- **Smoke test `example-v0_1_0`** ✅ — S3 upload 3 kB, protokol OK; krátké odpovědi claude+grok způsobeny reviewer-promptem (GitHub URL místo přílohy), ne pipeline bugem.
+- **Produkční run `madeleines-v1_0_0`** ✅ — S3 upload 73 kB, 6 recenzí, run `run-20260425T071400Z`.
+- **Stará pilot run smazána:** `_submissions/run-20260424T213504Z/` odstraněna.
+
+### Výsledky produkčního runu
+
+| Reviewer | chars | attachment_used | Verdict |
+|---|---|---|---|
+| claude-sonnet-46 | 14849 | ✅ true | SHIPS WITH PATCHES |
+| gemini-31-pro-high | 18162 | ✅ true | SHIPS WITH PATCHES |
+| grok | 8387 | ✅ true | SHIPS WITH PATCHES |
+| sonar-deep-research | 36670 | ❌ false (no attachment support) | SHIPS WITH PATCHES |
+| gpt-54 | 1618 | ❌ false (no attachment support) | N/A — no file access |
+| nemotron-3-super | 1587 | ❌ false (no attachment support, remapped to gpt51) | N/A — no file access |
+
+### Klíčový nález (D59)
+
+3/6 modelů podporují S3 přílohy (claude46sonnetthinking, gemini31pro_high, grok). 3/6 nepodporují (gpt54, nv_nemotron_3_super, sonar_deep_research). Původní problém (8.7 kB cutoff) vyřešen pro modely s přílohou. Pro ostatní: inline-card nebo GitHub URL přístup.
+
+### Commity
+
+- `7bfd601` — browser-based orchestrator (`scripts/run-review-panel.js`)
+- `052dd65` — Node.js upload lib reference (`scripts/lib/perplexity-upload.js`)
+- D59 přidán do `docs/v2-architecture-tracker.md`
+- Výsledky v `review-packages/madeleines-v1_0_0/_submissions/run-20260425T071400Z/`

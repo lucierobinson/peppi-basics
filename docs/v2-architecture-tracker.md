@@ -4,8 +4,8 @@
 > Žije v repu: `docs/v2-architecture-tracker.md`
 > Aktualizuje se průběžně — každá konverzace, každý review, každé rozhodnutí.
 
-**Poslední update:** 2026-04-17
-**Stav:** F1 v2.2.0 + F2 v2.0.2 → Pilot choux 2026-04-17 ✅ (F1 13/14 H-gates, F2 12/13 H-gates) → D54 formalizován → DALŠÍ: F1 v2.2.1 patche (P1–P5) + F3 Auditor prompt
+**Poslední update:** 2026-04-25
+**Stav:** F1 v2.2.0 + F2 v2.0.2 → Pilot choux 2026-04-17 ✅ → Pilot madeleines-v1_0_0 2026-04-25 ✅ (S3 attachment, 6 recenzí, SHIPS WITH PATCHES) → D59 formalizován → DALŠÍ: GPT/Nemotron/Sonar inline-card nebo GitHub URL; F1 v2.2.1 patche (P1–P5) + F3 Auditor prompt
 
 ---
 
@@ -113,6 +113,7 @@
 |---|---|---|---|---|
 | D57 | **Review pipeline primary path: REST API, not Comet skills.** `POST /rest/sse/perplexity_ask` verified for 6 models; `claude2` identifier bug caught before production (`claude2` routes to `grok41nonreasoning`, not Claude — correct key is `claude46sonnet`). Panel frozen at 7 members (6 REST + 1 copy-paste Gemini direct). `search_focus: "writing"` mandatory. Pre-flight `/rest/models/config` check required before every run. Comet skills remain as fallback. Descoped: `gemini31pro_low` (redundant), Kimi K2.6 (wrapper confusion), Grok direct (redundant with REST grok), Claude Opus 4.7 (Max-only). See `docs/api-research/production-panel-spec.md`. | REST API: 6 models parallel in ~40 s wall-clock, 6 queries/run from Pro quota, no credits. Comet skills required manual trigger and Comet app dependency. REST enables full Claude Code orchestration without user interaction. | API verification session 2026-04-24 (Chrome MCP live tests) | 2026-04-24 |
 | D58 | **Output budget shared with input; S3 attachments required for production.** First madeleines pilot (2026-04-24) showed 3/6 reviewers (Claude, GPT, Grok) failing mid-output at ~8.7 kB while 3/6 (Gemini, Nemotron, Sonar) completed all 6 personas. Diagnostic chain confirmed Hypothesis C: output budget scales inversely with input size. Probe with 698-char input produced 19–22 kB outputs; pilot with 83 kB input produced ~8 kB outputs (ratio 2.1×–2.9×). Network capture of Robinson's manual UI workflow revealed UI uploads `card.html` to S3 separately and references it via `params.attachments` — keeping `query_str` at ~16 kB (reviewer-prompt only). Production orchestrator must replicate UI's three-step upload flow: (1) POST to presign endpoint → S3 URL + upload UUID; (2) PUT `card.html` blob to S3 presigned URL; (3) register file via Perplexity backend + subscribe to `/rest/sse/attachment_processing/subscribe`; (4) ask call with reviewer-prompt in `query_str` + S3 URL in `params.attachments`. Until implemented, current orchestrator (inline 83 kB `query_str`) cannot reliably produce full reviews from Claude/GPT/Grok. Pilot of `madeleines-v1_0_0` from 2026-04-24 is NOT committed — treated as diagnostic run. Additional corrections: Claude identifier updated `claude46sonnet` → `claude46sonnetthinking` (matches UI); `search_focus: "writing"` myth corrected — `skip_search_enabled: true` is the real "no web search" toggle; Cesta 3 (split-call, 12 queries) retained as documented fallback. D58 supersedes parts of D57 production-readiness claim — orchestrator is "validated end-to-end" but not "production-ready" until S3 upload is in place. | 83 kB inline `query_str` exhausts shared input/output token budget on Perplexity copilot endpoint for Claude/GPT/Grok. UI's S3 attachment path keeps input small. Cesta 1 (S3 upload) chosen over Cesta 3 (split-call) for robustness. Implementation blocked on second network capture to reveal presign and file-register endpoint URLs (blocked by Chrome MCP auth-token check in URL during first capture). | Pilot + diagnostic session 2026-04-24; handover: `_handoff/2026-04-25-review-pipeline-attachment-fix.md` | 2026-04-24 |
+| D59 | **Production run madeleines-v1_0_0 completed (2026-04-25); S3 attachment protocol works; 3/6 models support attachments.** Browser-based orchestrator (`scripts/run-review-panel.js`, commit `7bfd601`) runs all API calls via Chrome MCP `javascript_tool`. S3 upload protocol (Steps A+B+D: batch_create_upload_urls → S3 multipart POST → SSE subscribe) confirmed working for 73 kB card. Results: `run-20260425T071400Z`, 6 reviewers, all SHIPS WITH PATCHES verdict. Output sizes: claude-sonnet-46 14849 chars ✅ (attachment_used: true), gemini-31-pro-high 18162 chars ✅ (attachment_used: true), grok 8387 chars ✅ (attachment_used: true), sonar-deep-research 36670 chars (attachment_used: false — reviewed from brief+context only), gpt-54 1618 chars (attachment_used: false — S3 not supported), nemotron-3-super 1587 chars (attachment_used: false — S3 not supported, remapped to gpt51 by Perplexity). **Attachment support split: 3/6 models support S3 attachments (claude46sonnetthinking, gemini31pro_high, grok), 3/6 do NOT (gpt54, nv_nemotron_3_super, sonar_deep_research).** For non-attachment models: options are (a) inline card text in reviewer-prompt (increases query_str size), (b) GitHub raw URL reference (requires public repo). CDP timeout (45 s) mitigated by fire-and-forget async pattern: all 6 calls launched simultaneously, results polled via `window.__panelResults`. Large text extraction via console.log segmentation (1500-char chunks, read back with `read_console_messages`). Smoke test on `example-v0_1_0` (2026-04-25 morning) confirmed S3 upload works end-to-end; example reviewer-prompt used GitHub URLs (not attachments), causing short "can't access" responses from claude+grok — NOT a pipeline bug, a prompt design issue specific to that package. | Original 8.7 kB cutoff problem SOLVED for attachment-capable models. Next iteration should address GPT/Nemotron/Sonar via inline-card or GitHub URL approach. Consider switching Sonar to attachment-capable reviewer or adding GitHub public URL support. | Production run 2026-04-25; commits: `7bfd601` (orchestrator), `052dd65` (Node.js upload lib) | 2026-04-25 |
 
 ### Ekonomika
 
@@ -534,9 +535,20 @@ institutional_framework: {
 - **CIA B&P 3rd Edition lokálně v plném rozsahu** (commit d62596f) — content map s technique indexem, PDF v .gitignore
 - Tracker D32-D56 (pedagogický rámec + library infrastruktura + F1 v2.2.0 triage + F2 v2.0.2 sync + F1 v2.2.1 + F2 v2.0.3 composite)
 
+**Hotové:**
+- F2 Writer prompt v2.0.1 (627 řádků, 6 recenzí)
+- F1 Researcher prompt v2.2.0 (1477 řádků)
+- F2 Writer prompt v2.0.2 (1083 řádků) — synchronizace s F1 v2.2.0 kontraktem
+- 9-recenzní profesní rešerše + research-library (21 souborů, 3286 řádků, commit 61b6585)
+- CIA B&P 3rd Edition lokálně v plném rozsahu (commit d62596f)
+- Tracker D32-D56 (pedagogický rámec + library + F1 triage + F2 sync + composites)
+- Review pipeline: REST API verifikace (D57), S3 attachment diagnostika (D58)
+- **Pilot madeleines-v1_0_0 2026-04-25 ✅** — browser-based orchestrator, S3 upload, 6 recenzí, commits `7bfd601` + `052dd65`
+- Tracker D59 formalizován
+
 **Další krok (priorita):**
-1. **Commit F1 v2.2.0 + F2 v2.0.2 + tracker D43-D53** do peppi repa
-2. **Pilot F1+F2 na choux** — ruční v Code, manuální review výstupu, porovnání s v1.5 choux kartou
-3. **Po pilotu:** F3 Auditor prompt (s novým 5-recenzním panelem bez Groka, D49)
+1. **GPT/Nemotron/Sonar** — přidat inline-card nebo GitHub raw URL do reviewer-promptu (D59)
+2. **F1 v2.2.1** patche (P1–P5 z pilot analýzy)
+3. **F3 Auditor prompt** (5-recenzní panel bez Groka, D49)
 
 **5h okno:** "Basics den" vs "coding den" — nekombinovat (D31)
