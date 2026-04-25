@@ -1,0 +1,60 @@
+{
+  "run_id": "run-20260425T205535Z",
+  "package_slug": "madeleines-v1_0_0",
+  "started_at": "2026-04-25T20:55:35.740Z",
+  "fixes": [
+    "O1-content_type_text_html",
+    "O2-gpt54_thinking",
+    "O3-x-perplexity-headers"
+  ],
+  "reviewers": [
+    {
+      "slug": "claude-sonnet-46",
+      "identify_as": "Claude Sonnet 4.6",
+      "chars": 52342,
+      "durationMs": 17592,
+      "attachment_used": true,
+      "verdict_line": "(no verdict found)"
+    },
+    {
+      "slug": "gpt-54",
+      "identify_as": "GPT-5.4",
+      "chars": 68049,
+      "durationMs": 33704,
+      "attachment_used": true,
+      "verdict_line": "(no verdict found)"
+    },
+    {
+      "slug": "gemini-31-pro-high",
+      "identify_as": "Gemini 3.1 Pro Thinking (Perplexity)",
+      "chars": 47275,
+      "durationMs": 26137,
+      "attachment_used": true,
+      "verdict_line": "(no verdict found)"
+    },
+    {
+      "slug": "grok",
+      "identify_as": "Grok 4.1",
+      "chars": 39973,
+      "durationMs": 23255,
+      "attachment_used": true,
+      "verdict_line": "(no verdict found)"
+    },
+    {
+      "slug": "nemotron-3-super",
+      "identify_as": "Nemotron 3 Super",
+      "chars": 43437,
+      "durationMs": 30274,
+      "attachment_used": true,
+      "verdict_line": "(no verdict found)"
+    },
+    {
+      "slug": "sonar-deep-research",
+      "identify_as": "Sonar Deep Research",
+      "chars": 35344,
+      "durationMs": 310149,
+      "attachment_used": false,
+      "verdict_line": "SHIPS WITH PATCHES"
+    }
+  ]
+}
