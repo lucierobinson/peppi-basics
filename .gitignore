@@ -10,3 +10,4 @@ docs/basics-v2/_handoff/*
 !docs/basics-v2/_handoff/.gitkeep
 docs/basics-v2/_inbox/*
 !docs/basics-v2/_inbox/.gitkeep
+.vercel
