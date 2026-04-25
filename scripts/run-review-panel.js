@@ -25,6 +25,24 @@
  * @see docs/api-research/production-panel-spec.md
  */
 
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+
+/**
+ * Returns the MIME type that the Perplexity UI sends for a given filename.
+ * Matches UI behaviour confirmed via HAR captures 2026-04-25.
+ * .html → "text/html"  (server sets x-amz-meta-is_text_only: "true")
+ * .md   → ""           (UI sends empty string; server sets is_text_only: "false")
+ * @param {string} filename
+ * @returns {string}
+ */
+function contentTypeForFile(filename) {
+  if (filename.endsWith('.html')) return 'text/html';
+  if (filename.endsWith('.md'))   return '';
+  if (filename.endsWith('.pdf'))  return 'application/pdf';
+  if (filename.endsWith('.txt'))  return 'text/plain';
+  return '';
+}
+
 // ─── PANEL ───────────────────────────────────────────────────────────────────
 
 const PANEL = [
@@ -129,7 +147,7 @@ const UPLOAD_CODE = `
       files: {
         [clientUuid]: {
           filename: "card.html",
-          content_type: "",
+          content_type: "${contentTypeForFile('card.html')}",
           source: "default",
           file_size: cardBlob.size,
           force_image: false,
