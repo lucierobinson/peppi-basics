@@ -47,7 +47,7 @@ function contentTypeForFile(filename) {
 
 const PANEL = [
   { slug: "claude-sonnet-46",    model_preference: "claude46sonnetthinking", identify_as: "Claude Sonnet 4.6 (Thinking)", pair_group: 1 },
-  { slug: "gpt-54",              model_preference: "gpt54",                  identify_as: "GPT-5.4",                       pair_group: 1 },
+  { slug: "gpt-54",              model_preference: "gpt54_thinking",         identify_as: "GPT-5.4 (Thinking)",            pair_group: 1 },
   { slug: "gemini-31-pro-high",  model_preference: "gemini31pro_high",       identify_as: "Gemini 3.1 Pro Thinking (Perplexity)", pair_group: 2 },
   { slug: "grok",                model_preference: "grok",                   identify_as: "Grok 4.1",                      pair_group: 2 },
   { slug: "nemotron-3-super",    model_preference: "nv_nemotron_3_super",    identify_as: "Nemotron 3 Super",               pair_group: 3 },
@@ -319,7 +319,7 @@ ${_CALL_REVIEWER}
   const t0 = Date.now();
   const [r1, r2] = await Promise.all([
     callReviewer("claude-sonnet-46",  "claude46sonnetthinking", "Claude Sonnet 4.6 (Thinking)"),
-    callReviewer("gpt-54",            "gpt54",                  "GPT-5.4"),
+    callReviewer("gpt-54",            "gpt54_thinking",          "GPT-5.4 (Thinking)"),
   ]);
   return { group: 1, elapsed_s: ((Date.now()-t0)/1000).toFixed(1), results: [r1, r2] };
 })();
